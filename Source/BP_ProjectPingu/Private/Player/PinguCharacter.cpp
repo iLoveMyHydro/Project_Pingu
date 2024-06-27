@@ -3,8 +3,11 @@
 
 #include "Player/PinguCharacter.h"
 #include "Camera/CameraComponent.h"
-#include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "EnhancedInputComponent.h"
+#include "InputMappingContext.h"
+#include "InputAction.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 
 // Sets default values
@@ -32,35 +35,42 @@ auto APinguCharacter::InitCamera() -> UCameraComponent*
 void APinguCharacter::InitInputAction()
 {
 	if (!InputCtx) InputCtx = ConstructorHelpers::FObjectFinder<UInputMappingContext>(*PLAYER_CTX_PATH).Object;
-	if (!MoveAction) MoveAction = ConstructorHelpers::FObjectFinder<UInputAction>(*IA_MOVE_PATH).Object;
+	if (!MoveActionRight) MoveActionRight = ConstructorHelpers::FObjectFinder<UInputAction>(*IA_MOVE_RIGHT_PATH).Object;
 }
 
-void APinguCharacter::MovePlayer()
+
+
+void APinguCharacter::HandleRightMovement(const FInputActionValue& Ctx)
 {
-	auto loca = GetActorLocation() + (Speed * Dir * GetWorld()->GetDeltaSeconds());
-	SetActorLocation(loca);
+	auto input = Ctx.Get<float>();
+	if (input < 0.0f)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, "Links");
+		auto location = GetActorLocation();
+		location += FVector(0.0f, input, 0.0f) * GetWorld()->TimeSeconds * Speed;
+		SetActorLocation(location);
+		//AddMovementInput(FVector(10000.0f, 0.0f, 0.0f), -10000, true);
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, "Rechts");
+		auto location = GetActorLocation();
+		location += FVector(0.0f, input, 0.0f) * GetWorld()->TimeSeconds * Speed;
+		SetActorLocation(location);
+	}
 }
 
-void APinguCharacter::HandleRightMovement(const FInputActionValue& ctx)
+void APinguCharacter::HandleStopMovement()
 {
-	//auto input = ctx.Get<float>;
-	//if (input < 0.0f) UE_LOG(LogTemp, Warning, TEXT("Left"));
-	//Dir.Y = input;
-}
+	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, "Stop");
 
-void APinguCharacter::HandleLeftMovement(const FInputActionValue& ctx)
-{
-	//auto input = ctx.Get<float>;
-	//if (input > 0.0f) UE_LOG(LogTemp, Warning, TEXT("Right"));
-	//Dir.Y = input;
+	Dir.Y = 0.0f;
 }
 
 // Called when the game starts or when spawned
 void APinguCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	if (Speed == 0) Speed = 50.0f;
-	if (Dir == FVector::Zero()) Dir = FVector::ForwardVector;
 
 	if (auto* controller = CastChecked<APlayerController>(GetController()))
 	{
@@ -81,7 +91,6 @@ void APinguCharacter::BeginPlay()
 void APinguCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	MovePlayer();
 }
 
 // Called to bind functionality to input
@@ -91,11 +100,7 @@ void APinguCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 	if (UEnhancedInputComponent* inputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		if (MoveAction)
-		{
-			inputComponent->BindAction(MoveAction, ETriggerEvent::Started, this, &APinguCharacter::HandleLeftMovement);
-			inputComponent->BindAction(MoveAction, ETriggerEvent::Started, this, &APinguCharacter::HandleRightMovement);
-		}
+		inputComponent->BindAction(MoveActionRight, ETriggerEvent::Triggered, this, &APinguCharacter::HandleRightMovement);
+		inputComponent->BindAction(MoveActionRight, ETriggerEvent::Completed, this, &APinguCharacter::HandleStopMovement);
 	}
 }
-

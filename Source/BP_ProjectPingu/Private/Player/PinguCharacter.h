@@ -25,9 +25,8 @@ private:
 	auto InitCamera(void) -> class UCameraComponent*;
 	void InitInputAction(void);
 
-	void MovePlayer(void);
-	void HandleRightMovement(const FInputActionValue& ctx);
-	void HandleLeftMovement(const FInputActionValue& ctx);
+	void HandleRightMovement(const FInputActionValue& Ctx);
+	void HandleStopMovement();
 
 protected:
 	// Called when the game starts or when spawned
@@ -42,11 +41,11 @@ public:
 
 private:
 
-	const FString MESH_PATH = TEXT("");
-	const FString MAT_PATH = TEXT("");
+	const FString MESH_PATH = TEXT("/Script/Engine.SkeletalMesh'/Engine/EngineMeshes/SkeletalCube.SkeletalCube'");
+	const FString MAT_PATH = TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'");
 	const FString CAMERA_NAME = TEXT("Camera");
-	const FString IA_MOVE_PATH = TEXT("");
-	const FString PLAYER_CTX_PATH = TEXT("/Script/EnhancedInput.InputMappingContext'/Game/Input/IMC_Character.IMC_Character'");
+	const FString IA_MOVE_RIGHT_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_MoveRight.IA_MoveRight'");
+	const FString PLAYER_CTX_PATH = TEXT("/Game/Input/IMC_Character");
 
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Material", Category = "Components"))
 	TObjectPtr<UMaterialInterface> Material = nullptr;
@@ -57,7 +56,7 @@ private:
 #pragma region Movement
 
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Speed", Category = "Movement"))
-	int32 Speed = 0;
+	int32 Speed = 1000;
 
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Direction", Category = "Movement"))
 	FVector Dir = FVector::Zero();
@@ -68,8 +67,8 @@ private:
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Context", Category = "InputAction"))
 	UInputMappingContext* InputCtx = nullptr;
 
-	UPROPERTY(EditAnywhere, meta = (DisplayName = "Move", Category = "InputAction"))
-	UInputAction* MoveAction = nullptr;
+	UPROPERTY(EditAnywhere, meta = (DisplayName = "MoveRight", Category = "InputAction"))
+	UInputAction* MoveActionRight = nullptr;
 
 
 #pragma endregion
