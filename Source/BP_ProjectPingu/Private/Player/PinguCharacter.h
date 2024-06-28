@@ -24,6 +24,7 @@ public:
 private:
 	auto InitCamera(void) -> class UCameraComponent*;
 	void InitInputAction(void);
+	void InitPlayer(void);
 
 	void HandleRightMovement(const FInputActionValue& Ctx);
 	void HandleStopMovement();
@@ -46,6 +47,7 @@ private:
 	const FString CAMERA_NAME = TEXT("Camera");
 	const FString IA_MOVE_RIGHT_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_MoveRight.IA_MoveRight'");
 	const FString PLAYER_CTX_PATH = TEXT("/Game/Input/IMC_Character");
+	const FString IA_JUMP_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_Jump.IA_Jump'");
 
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Material", Category = "Components"))
 	TObjectPtr<UMaterialInterface> Material = nullptr;
@@ -56,7 +58,7 @@ private:
 #pragma region Movement
 
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Speed", Category = "Movement"))
-	int32 Speed = 1000;
+	int32 Speed = 1;
 
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Direction", Category = "Movement"))
 	FVector Dir = FVector::Zero();
@@ -69,6 +71,9 @@ private:
 
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "MoveRight", Category = "InputAction"))
 	UInputAction* MoveActionRight = nullptr;
+
+	UPROPERTY(EditAnywhere, meta = (DisplayName = "Jump", Category = "InputAction"))
+	UInputAction* JumpAction = nullptr;
 
 
 #pragma endregion
