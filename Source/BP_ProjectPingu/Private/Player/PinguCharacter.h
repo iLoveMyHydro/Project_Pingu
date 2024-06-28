@@ -28,14 +28,14 @@ private:
 
 	void HandleRightMovement(const FInputActionValue& Ctx);
 	void HandleStopMovement();
+	void HandleSlapAttack();
+	void HandleNootAttack();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -48,12 +48,14 @@ private:
 	const FString IA_MOVE_RIGHT_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_MoveRight.IA_MoveRight'");
 	const FString PLAYER_CTX_PATH = TEXT("/Game/Input/IMC_Character");
 	const FString IA_JUMP_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_Jump.IA_Jump'");
+	const FString IA_SLAP_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_Slap.IA_Slap'");
+	const FString IA_NOOT_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_NootNoot.IA_NootNoot'");
 
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Material", Category = "Components"))
 	TObjectPtr<UMaterialInterface> Material = nullptr;
 
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Camera", Category = "Components"))
-	TObjectPtr<class UCameraComponent> Cam = nullptr;
+	TObjectPtr<class UCameraComponent> PinguCameraComponent = nullptr;
 
 #pragma region Movement
 
@@ -75,6 +77,11 @@ private:
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Jump", Category = "InputAction"))
 	UInputAction* JumpAction = nullptr;
 
+	UPROPERTY(EditAnywhere, meta = (DisplayName = "Slap", Category = "InputAction"))
+	UInputAction* SlapAction = nullptr;
+
+	UPROPERTY(EditAnywhere, meta = (DisplayName = "Noot Noot", Category = "InputAction"))
+	UInputAction* NootAction = nullptr;
 
 #pragma endregion
 

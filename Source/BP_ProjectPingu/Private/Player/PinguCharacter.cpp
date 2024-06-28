@@ -6,6 +6,7 @@
 #include "EnhancedInputComponent.h"
 #include "InputMappingContext.h"
 #include "InputAction.h"
+#include "Components/CapsuleComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Character.h"
 
@@ -13,14 +14,10 @@
 // Sets default values
 APinguCharacter::APinguCharacter()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-
 	Material = ConstructorHelpers::FObjectFinder<UMaterialInterface>(*MAT_PATH).Object;
 	GetMesh()->SetSkeletalMesh(ConstructorHelpers::FObjectFinder<USkeletalMesh>(*MESH_PATH).Object);
 	GetMesh()->SetMaterial(0, Material);
-
-	if (!Cam) Cam = InitCamera();
+	if (!PinguCameraComponent) PinguCameraComponent = InitCamera();
 	InitInputAction();
 
 	//Init
@@ -29,19 +26,19 @@ APinguCharacter::APinguCharacter()
 
 auto APinguCharacter::InitCamera() -> UCameraComponent*
 {
-	auto cam = CreateDefaultSubobject<UCameraComponent>(*CAMERA_NAME);
-	cam->SetupAttachment(GetMesh());
-	cam->SetRelativeLocation( FVector(-500.0f, 0.0f, 0.0f) );
-	cam->SetRelativeRotation( FRotator(0.0f, 0.0f, 0.0f) );
-	return cam;
-	return nullptr;
+	PinguCameraComponent = CreateDefaultSubobject<UCameraComponent>(*CAMERA_NAME);
+	PinguCameraComponent->SetupAttachment(RootComponent);
+	PinguCameraComponent->SetRelativeLocation(FVector(-500.0f, 0.0f, 150.0f));
+	PinguCameraComponent->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
+	PinguCameraComponent->bUsePawnControlRotation = false;
+	return PinguCameraComponent;
 }
 
 void APinguCharacter::InitInputAction()
 {
-	if ( !InputCtx ) InputCtx = ConstructorHelpers::FObjectFinder<UInputMappingContext>(*PLAYER_CTX_PATH).Object;
-	if ( !MoveActionRight ) MoveActionRight = ConstructorHelpers::FObjectFinder<UInputAction>(*IA_MOVE_RIGHT_PATH).Object;
-	if ( !JumpAction ) JumpAction = ConstructorHelpers::FObjectFinder<UInputAction>(*IA_JUMP_PATH).Object;
+	if (!InputCtx) InputCtx = ConstructorHelpers::FObjectFinder<UInputMappingContext>(*PLAYER_CTX_PATH).Object;
+	if (!MoveActionRight) MoveActionRight = ConstructorHelpers::FObjectFinder<UInputAction>(*IA_MOVE_RIGHT_PATH).Object;
+	if (!JumpAction) JumpAction = ConstructorHelpers::FObjectFinder<UInputAction>(*IA_JUMP_PATH).Object;
 }
 
 void APinguCharacter::InitPlayer()
@@ -52,13 +49,31 @@ void APinguCharacter::InitPlayer()
 	GetCharacterMovement()->AirControl = 0.8f;
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 	GetCharacterMovement()->GravityScale = 2.0f;
-	GetCharacterMovement()->bOrientRotationToMovement = false;
+	FVector NewLocation(0.0f, 0.0f, 0.0f);
+	FRotator NewRotation(0.0f, 0.0f, 0.0f);
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationRoll = false;
+	bUseControllerRotationYaw = false;
+	UCharacterMovementComponent* const MovementComponent = GetCharacterMovement();
+	// Aktuelle Rotation des Actors bekommen
+	auto Rotation = GetActorRotation();
+
+	// Rotation in eine lesbare Zeichenkette umwandeln
+	auto RotationString = Rotation.ToString();
+
+	// Die Zeichenkette auf dem Bildschirm anzeigen
+	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Magenta, RotationString);
+	if (MovementComponent)
+	{
+		MovementComponent->bOrientRotationToMovement = true;
+		MovementComponent->bUseControllerDesiredRotation = false;
+	}
 }
 
-void APinguCharacter::HandleRightMovement( const FInputActionValue& Ctx )
+void APinguCharacter::HandleRightMovement(const FInputActionValue& Ctx)
 {
 	auto input = Ctx.Get<float>();
-	if ( input < 0.0f )
+	if (input < 0.0f)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, "Links");
 		auto location = GetActorLocation();
@@ -82,30 +97,31 @@ void APinguCharacter::HandleStopMovement()
 	Dir.Y = 0.0f;
 }
 
+void APinguCharacter::HandleSlapAttack()
+{
+
+}
+
+void APinguCharacter::HandleNootAttack()
+{
+}
+
 //Called when the game starts or when spawned
 void APinguCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (auto* controller = CastChecked<APlayerController>(GetController()))
+	if (APlayerController* PlayerController = CastChecked<APlayerController>(GetController()))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Player Controller exist!"));
-		if (auto subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(controller->GetLocalPlayer()))
+		if (auto Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
-			subsystem->AddMappingContext(InputCtx, 0);
+			Subsystem->AddMappingContext(InputCtx, 0);
 		}
 	}
 	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("Player Controller doesnt exist!"));
 	}
-}
-
-
-//Called every frame
-void APinguCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 }
 
 //Called to bind functionality to input
@@ -115,8 +131,20 @@ void APinguCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 	if (UEnhancedInputComponent* inputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
+		//Moving
 		inputComponent->BindAction(MoveActionRight, ETriggerEvent::Triggered, this, &APinguCharacter::HandleRightMovement);
 		inputComponent->BindAction(MoveActionRight, ETriggerEvent::Completed, this, &APinguCharacter::HandleStopMovement);
+
+		//Jumping
 		inputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &ACharacter::Jump);
+		inputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
+
+		//Slap Attack
+		inputComponent->BindAction(SlapAction, ETriggerEvent::Started, this, &APinguCharacter::HandleSlapAttack);
+
+
+		//Noot Noot Attack
+		inputComponent->BindAction(NootAction, ETriggerEvent::Started, this, &APinguCharacter::HandleNootAttack);
+
 	}
 }
