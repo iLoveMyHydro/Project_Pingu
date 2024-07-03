@@ -37,7 +37,7 @@ auto APinguCharacter::InitCamera() -> UCameraComponent*
 void APinguCharacter::InitInputAction()
 {
 	if (!InputCtx) InputCtx = ConstructorHelpers::FObjectFinder<UInputMappingContext>(*PLAYER_CTX_PATH).Object;
-	if (!MoveActionRight) MoveActionRight = ConstructorHelpers::FObjectFinder<UInputAction>(*IA_MOVE_RIGHT_PATH).Object;
+	if (!MoveActionRight) MoveActionRight = ConstructorHelpers::FObjectFinder<UInputAction>(*IA_MOVE_PATH).Object;
 	if (!JumpAction) JumpAction = ConstructorHelpers::FObjectFinder<UInputAction>(*IA_JUMP_PATH).Object;
 }
 
@@ -55,14 +55,7 @@ void APinguCharacter::InitPlayer()
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
 	UCharacterMovementComponent* const MovementComponent = GetCharacterMovement();
-	// Aktuelle Rotation des Actors bekommen
-	auto Rotation = GetActorRotation();
 
-	// Rotation in eine lesbare Zeichenkette umwandeln
-	auto RotationString = Rotation.ToString();
-
-	// Die Zeichenkette auf dem Bildschirm anzeigen
-	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Magenta, RotationString);
 	if (MovementComponent)
 	{
 		MovementComponent->bOrientRotationToMovement = true;
@@ -70,31 +63,39 @@ void APinguCharacter::InitPlayer()
 	}
 }
 
-void APinguCharacter::HandleRightMovement(const FInputActionValue& Ctx)
+void APinguCharacter::CharacterForwardDirection(FVector& outForward)
 {
-	auto input = Ctx.Get<float>();
-	if (input < 0.0f)
+	FRotator rotation = Controller->GetControlRotation();
+
+	// Adjust the Yaw by 90 degrees to place the camera at a 90-degree angle to the character
+	FRotator YawRotation = FRotator(0, rotation.Yaw + 90.0f, 0);
+
+	// get forward vector in regard to the camera
+	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+
+	outForward = ForwardDirection;
+}
+
+
+void APinguCharacter::Move(const FInputActionValue& Value)
+{
+	const FVector2D InputPlayerMovement = Value.Get<FVector2D>();
+
+	if (Controller != nullptr)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, "Links");
-		auto location = GetActorLocation();
-		location += FVector(0.0f, input, 0.0f) * GetWorld()->TimeSeconds * Speed;
-		SetActorLocation(location);
-		//AddMovementInput(FVector(10000.0f, 0.0f, 0.0f), -10000, true);
-	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, "Rechts");
-		auto location = GetActorLocation();
-		location += FVector(0.0f, input, 0.0f) * GetWorld()->TimeSeconds * Speed;
-		SetActorLocation(location);
+		FVector ForwardDirection;
+		CharacterForwardDirection(ForwardDirection);
+		AddMovementInput(ForwardDirection, Speed);
 	}
 }
 
-void APinguCharacter::HandleStopMovement()
+void APinguCharacter::HandleStopMovement(const FInputActionValue& Value)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Magenta, "Stop");
+	const FVector2D InputPlayerMovement = Value.Get<FVector2D>();
+	FVector ForwardDirection;
 
-	Dir.Y = 0.0f;
+	//Make the forward direction the direction the player is facing.
+	AddMovementInput(ForwardDirection, InputPlayerMovement.X);
 }
 
 void APinguCharacter::HandleSlapAttack()
@@ -132,7 +133,7 @@ void APinguCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	if (UEnhancedInputComponent* inputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		//Moving
-		inputComponent->BindAction(MoveActionRight, ETriggerEvent::Triggered, this, &APinguCharacter::HandleRightMovement);
+		inputComponent->BindAction(MoveActionRight, ETriggerEvent::Triggered, this, &APinguCharacter::Move);
 		inputComponent->BindAction(MoveActionRight, ETriggerEvent::Completed, this, &APinguCharacter::HandleStopMovement);
 
 		//Jumping

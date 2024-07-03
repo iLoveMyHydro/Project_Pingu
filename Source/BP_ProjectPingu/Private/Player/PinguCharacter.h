@@ -26,8 +26,9 @@ private:
 	void InitInputAction(void);
 	void InitPlayer(void);
 
-	void HandleRightMovement(const FInputActionValue& Ctx);
-	void HandleStopMovement();
+	void CharacterForwardDirection(FVector& outForward);
+	void Move(const FInputActionValue& Value);
+	void HandleStopMovement(const FInputActionValue& Value);
 	void HandleSlapAttack();
 	void HandleNootAttack();
 
@@ -45,7 +46,7 @@ private:
 	const FString MESH_PATH = TEXT("/Script/Engine.SkeletalMesh'/Engine/EngineMeshes/SkeletalCube.SkeletalCube'");
 	const FString MAT_PATH = TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'");
 	const FString CAMERA_NAME = TEXT("Camera");
-	const FString IA_MOVE_RIGHT_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_MoveRight.IA_MoveRight'");
+	const FString IA_MOVE_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_Move.IA_Move'");
 	const FString PLAYER_CTX_PATH = TEXT("/Game/Input/IMC_Character");
 	const FString IA_JUMP_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_Jump.IA_Jump'");
 	const FString IA_SLAP_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_Slap.IA_Slap'");
