@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/BoxComponent.h"
 #include "GameFramework/Character.h"
 #include "PinguCharacter.generated.h"
 
@@ -40,12 +41,19 @@ private:
 	const FString MAT_PATH = TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'");
 	const FString CAMERA_NAME = TEXT("Camera");
 	const FString CAMERA_ARM_NAME = TEXT("CameraBoom");
+	const FString BOX_COLLISION_NAME = TEXT("Box Collision");
+	const FString SCENE_ROOT_NAME = TEXT("Scene Root");
 
 
-	UPROPERTY(EditAnywhere, meta = (DisplayName = "Material", Category = "Components"))
+	UPROPERTY(EditAnywhere, DisplayName = "BoxCollider", Category = "Components", meta = (AllowPrivateAccess = true))
+	TObjectPtr<UBoxComponent> CollisionMesh = nullptr;
+
+	TObjectPtr<USceneComponent> SceneRoot = nullptr;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Material", Category = "Components", meta = (AllowPrivateAccess = true))
 	TObjectPtr<UMaterialInterface> Material = nullptr;
 
-	UPROPERTY(EditAnywhere, meta = (DisplayName = "Camera", Category = "Components"))
+	UPROPERTY(EditAnywhere, DisplayName = "Camera", Category = "Components", meta = (AllowPrivateAccess = true))
 	TObjectPtr<class UCameraComponent> PinguCameraComponent = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "CameraArm", Category = "Component", meta = (AllowPrivateAccess = true))

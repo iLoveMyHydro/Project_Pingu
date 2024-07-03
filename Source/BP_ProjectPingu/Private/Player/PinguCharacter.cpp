@@ -13,6 +13,19 @@ APinguCharacter::APinguCharacter()
 	Material = ConstructorHelpers::FObjectFinder<UMaterialInterface>(*MAT_PATH).Object;
 	GetMesh()->SetSkeletalMesh(ConstructorHelpers::FObjectFinder<USkeletalMesh>(*MESH_PATH).Object);
 	GetMesh()->SetMaterial(0, Material);
+	SceneRoot = CreateDefaultSubobject<USceneComponent>(*SCENE_ROOT_NAME);
+	RootComponent = SceneRoot;
+
+	CollisionMesh = CreateDefaultSubobject<UBoxComponent>(*BOX_COLLISION_NAME);
+	CollisionMesh->bDynamicObstacle = true;
+	CollisionMesh->SetupAttachment(RootComponent);
+	CollisionMesh->SetGenerateOverlapEvents(true);
+
+	FVector initalPosition = FVector(100.0f, 0.0f, 0.0f);
+	FTransform initalTransform = FTransform();
+	initalTransform.SetTranslation(initalPosition);
+	CollisionMesh->SetRelativeTransform(initalTransform);
+	CollisionMesh->SetBoxExtent(FVector(32.0f, 60.0f, 32.0f));
 
 	// Init Camera
 	if (!PinguCameraComponent) PinguCameraComponent = InitCamera();
@@ -30,6 +43,8 @@ auto APinguCharacter::InitCamera() -> UCameraComponent*
 	CameraBoom->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
 	CameraBoom->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 	CameraBoom->bDoCollisionTest = false;
+	CameraBoom->bEnableCameraLag = true;
+	CameraBoom->CameraLagSpeed = 3.0f;
 
 	PinguCameraComponent = CreateDefaultSubobject<UCameraComponent>(*CAMERA_NAME);
 	PinguCameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);

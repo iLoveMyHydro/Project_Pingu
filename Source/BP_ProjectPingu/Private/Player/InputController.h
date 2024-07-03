@@ -31,7 +31,6 @@ protected:
 	void HandleSlapAttack(void);
 	void HandleNootAttack(void);
 
-
 private:
 	const FString IA_MOVE_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_Move.IA_Move'");
 	const FString PLAYER_CTX_PATH = TEXT("/Game/Input/IMC_Character");
@@ -43,10 +42,10 @@ private:
 
 #pragma region Movement
 
-	UPROPERTY(EditAnywhere, meta = (DisplayName = "Speed", Category = "Movement"))
+	UPROPERTY(EditAnywhere, DisplayName = "Speed", Category = "Movement", meta = (AllowPrivateAccess = true))
 	int32 Speed = 1;
 
-	UPROPERTY(EditAnywhere, meta = (DisplayName = "Direction", Category = "Movement"))
+	UPROPERTY(EditAnywhere, DisplayName = "Direction", Category = "Movement", meta = (AllowPrivateAccess = true))
 	FVector Dir = FVector::Zero();
 
 #pragma  endregion
