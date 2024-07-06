@@ -2,11 +2,27 @@
 
 
 #include "FiniteStateMachine/FSM/FiniteStateMachineAI1.h"
+#include "FiniteStateMachine/State/StateAI1.h"
 
-FiniteStateMachineAI1::FiniteStateMachineAI1()
+void FiniteStateMachineAI1::Initialize()
 {
+	
 }
 
-FiniteStateMachineAI1::~FiniteStateMachineAI1()
+void FiniteStateMachineAI1::Tick(float a_deltaTime)
 {
+	if(currentState != nullptr)
+	{
+		currentState->Tick(a_deltaTime);
+	}
+}
+
+void FiniteStateMachineAI1::Transition(StateAI1* a_newState)
+{
+	if(currentState != nullptr)
+	{
+		currentState->Exit();
+	}
+	currentState = a_newState;
+	currentState->Enter();
 }

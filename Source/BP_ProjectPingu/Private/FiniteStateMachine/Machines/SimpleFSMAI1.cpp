@@ -2,11 +2,16 @@
 
 
 #include "FiniteStateMachine/Machines/SimpleFSMAI1.h"
+#include "FiniteStateMachine/State/States/SearchPlayerStateAI1.h"
+#include "FiniteStateMachine/State/States/ThrowObjectStateAI1.h"
+#include "FiniteStateMachine/State/States/WaitStateAI1.h"
 
-SimpleFSMAI1::SimpleFSMAI1()
+void SimpleFSMAI1::Initialize()
 {
+	SearchPlayerState = new SearchPlayerStateAI1(SEARCH_PLAYER_STATE, this);
+	ThrowObjectState = new ThrowObjectStateAI1(ThrowObjectState, this);
+	WaitState = new WaitStateAI1(WAIT_STATE, this);
+
+	Transition(SearchPlayerState);
 }
 
-SimpleFSMAI1::~SimpleFSMAI1()
-{
-}

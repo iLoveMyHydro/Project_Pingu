@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Components/BoxComponent.h"
 #include "GameFramework/Character.h"
 #include "AIEnemy1.generated.h"
 
@@ -26,4 +27,17 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+private:
+	const FString MESH_PATH = TEXT("/Script/Engine.SkeletalMesh'/Engine/EditorMeshes/SkeletalMesh/DefaultSkeletalMesh.DefaultSkeletalMesh'");
+	const FString FSM_CONTROLLER_PATH = TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.AIControllerAI1'");
+	const FString PLAYER_CLASS_PATH = TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.PinguCharacter'");
+	const FString BOX_COLLISION_NAME = TEXT("Box Collision");
+
+	UPROPERTY(EditAnywhere, DisplayName = "Health", Category = "Value", meta = (AllowPrivateAccess = true))
+	int Health = 3;
+
+	UPROPERTY(EditAnywhere, DisplayName = "BoxCollider", Category = "Components", meta = (AllowPrivateAccess = true))
+	TObjectPtr<UBoxComponent> CollisionMesh = nullptr;
+
+	TSubclassOf<AActor> playerClass;
 };
