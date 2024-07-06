@@ -96,7 +96,11 @@ void AInputController::HandleStopMovement(const FInputActionValue& Value)
 
 void AInputController::HandleSlapAttack()
 {
-
+	if(IsColliding)
+	{
+		IsAttacking = true;
+		//ApplyDamage(Damage);
+	}
 }
 
 void AInputController::HandleNootAttack()

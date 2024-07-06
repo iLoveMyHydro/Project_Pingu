@@ -39,6 +39,19 @@ private:
 	const FString IA_NOOT_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_NootNoot.IA_NootNoot'");
 	const FString IMC_PATH = TEXT("/Script/EnhancedInput.InputMappingContext'/Game/Input/IMC_Character.IMC_Character'");
 
+#pragma region Attack
+
+	UPROPERTY(EditAnywhere, DisplayName = "Is Colliding", Category = "Attack", meta = (AllowPrivateAccess = true))
+	bool IsColliding = false;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Is Attacking", Category = "Attack", meta = (AllowPrivateAccess = true))
+	bool IsAttacking = false;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Damage", Category = "Attack", meta = (AllowPrivateAccess = true))
+	float Damage = 1;
+
+#pragma endregion
+
 
 #pragma region Movement
 
