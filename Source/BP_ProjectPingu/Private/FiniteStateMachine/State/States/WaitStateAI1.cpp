@@ -9,8 +9,10 @@ WaitStateAI1::WaitStateAI1(FString A_Name, FiniteStateMachineAI1* A_Machine)
 	Machine = A_Machine;
 }
 
-void WaitStateAI1::Tick(float a_deltaTime)
+void WaitStateAI1::Tick(float DeltaTime)
 {
+	StateAI1::Tick(DeltaTime);
+
 	if(WaitTime == 0)
 	{
 		WaitTime = 2;

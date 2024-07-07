@@ -3,8 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FiniteStateMachine/FSM/FiniteStateMachineAI1.h"
 
-class FiniteStateMachineAI1;
 
 /**
  * 
@@ -17,7 +17,7 @@ public:
 	inline virtual ~StateAI1() {};
 
 	virtual void Enter(void);
-	virtual void Tick(float a_deltaTime);
+	virtual void Tick(float A_DeltaTime);
 	virtual void Exit(void);
 
 	inline const FString GetName() { return Name; }

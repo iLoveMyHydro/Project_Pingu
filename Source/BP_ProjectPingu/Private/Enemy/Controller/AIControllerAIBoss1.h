@@ -4,15 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
-#include "AIControllerAI1.generated.h"
+#include "AIControllerAIBoss1.generated.h"
 
-class FiniteStateMachineAI1;
+class FiniteStateMachineAIBoss1;
 
 /**
  * 
  */
 UCLASS()
-class AAIControllerAI1 : public AAIController
+class AAIControllerAIBoss1 : public AAIController
 {
 	GENERATED_BODY()
 
@@ -25,12 +25,12 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	AActor* GetPlayer(void) const { return Player; }
-	class AAIEnemy1* GetCharacterAI(void) const { return Character; };
+	class AAIBossEnemy1* GetCharacterAI(void) const { return Character; };
 
-	void SetCharacter(class AAIEnemy1* A_Character) { Character = A_Character; }
+	void SetCharacter(class AAIBossEnemy1* A_Character) { Character = A_Character; }
 
 private:
-	FiniteStateMachineAI1* Fsm = nullptr;
+	FiniteStateMachineAIBoss1* Fsm = nullptr;
 	AActor* Player = nullptr;
-	class AAIEnemy1* Character = nullptr;
+	class AAIBossEnemy1* Character = nullptr;
 };

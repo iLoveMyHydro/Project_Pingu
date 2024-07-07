@@ -1,13 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Enemy/Character/AIEnemy1.h"
-#include "Enemy/Controller/AIControllerAI1.h"
+#include "Enemy/Character/AIBossEnemy1.h"
+#include "Enemy/Controller/AIControllerAIBoss1.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Runtime/AIModule/Classes/AIController.h"
 
 // Sets default values
-AAIEnemy1::AAIEnemy1()
+AAIBossEnemy1::AAIBossEnemy1()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -28,23 +28,23 @@ AAIEnemy1::AAIEnemy1()
 }
 
 // Called when the game starts or when spawned
-void AAIEnemy1::BeginPlay()
+void AAIBossEnemy1::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto controller = Cast<AAIControllerAI1>(GetController());
+	auto controller = Cast<AAIControllerAIBoss1>(GetController());
 	controller->SetCharacter(this);
 }
 
 // Called every frame
-void AAIEnemy1::Tick(float DeltaTime)
+void AAIBossEnemy1::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
 }
 
 // Called to bind functionality to input
-void AAIEnemy1::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void AAIBossEnemy1::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 

@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Enemy/Controller/AIControllerAI1.h"
-#include "FiniteStateMachine/Machines/SimpleFSMAI1.h"
+#include "Enemy/Controller/AIControllerAIBoss1.h"
 #include "Kismet/GameplayStatics.h"
-#include "BP_ProjectPingu/Private/Enemy/Character/AIEnemy1.h"
+#include "BP_ProjectPingu/Private/Enemy/Character/AIBossEnemy1.h"
+#include "FiniteStateMachine/Machines/SimpleFSMBossAI1.h"
 
-void AAIControllerAI1::BeginPlay()
+void AAIControllerAIBoss1::BeginPlay()
 {
 	Super::BeginPlay();
 
@@ -14,7 +14,7 @@ void AAIControllerAI1::BeginPlay()
 
 	if(Fsm == nullptr)
 	{
-		Fsm = static_cast<FiniteStateMachineAI1*>(new SimpleFSMAI1(this));
+		Fsm = static_cast<FiniteStateMachineAIBoss1*>(new SimpleFSMBossAI1(this));
 	}
 	if(Fsm != nullptr)
 	{
@@ -22,7 +22,7 @@ void AAIControllerAI1::BeginPlay()
 	}
 }
 
-void AAIControllerAI1::Tick(float DeltaTime)
+void AAIControllerAIBoss1::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
@@ -31,3 +31,5 @@ void AAIControllerAI1::Tick(float DeltaTime)
 		Fsm->Tick(DeltaTime);
 	}
 }
+
+

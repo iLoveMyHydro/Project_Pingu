@@ -2,10 +2,8 @@
 
 
 #include "FiniteStateMachine/State/States/ThrowObjectStateAI1.h"
-#include "Enemy/Controller/AIControllerAI1.h"
 #include "BP_ProjectPingu/Private/FiniteStateMachine/FSM/FiniteStateMachineAI1.h"
 #include "BP_ProjectPingu/Private/FiniteStateMachine/State/StateAI1.h"
-#include "BP_ProjectPingu/Private/FiniteStateMachine/Machines/SimpleFSMAI1.h"
 
 ThrowObjectStateAI1::ThrowObjectStateAI1(FString A_Name, FiniteStateMachineAI1* A_Machine)
 {

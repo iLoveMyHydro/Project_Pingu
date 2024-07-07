@@ -1,20 +1,21 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "FiniteStateMachine/State/StateAI1.h"
+#include "FiniteStateMachine/State/StateBossAI1.h"
 
-void StateAI1::Enter()
+void StateBossAI1::Enter()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Entering State %s"), *Name));
 }
 
-void StateAI1::Tick(float A_DeltaTime)
+void StateBossAI1::Tick(float DeltaTime)
 {
 	
 }
 
-void StateAI1::Exit()
+void StateBossAI1::Exit()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Exiting Stae %s"), *Name));
-
 }
+
+

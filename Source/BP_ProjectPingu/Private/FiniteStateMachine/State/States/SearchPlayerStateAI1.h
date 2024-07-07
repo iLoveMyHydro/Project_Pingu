@@ -3,7 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FiniteStateMachine/FSM/FiniteStateMachineAI1.h"
 #include "FiniteStateMachine/State/StateAI1.h"
+#include "FiniteStateMachine/State/StateBossAI1.h"
 
 class AIControllerAI1;
 

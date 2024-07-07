@@ -3,7 +3,6 @@
 
 #include "FiniteStateMachine/State/States/SearchPlayerStateAI1.h"
 
-
 SearchPlayerStateAI1::SearchPlayerStateAI1(FString A_Name, FiniteStateMachineAI1* A_Machine)
 {
 	Name = A_Name;
