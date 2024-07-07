@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/BoxComponent.h"
+#include "DamageSystem/Damagable.h"
 #include "GameFramework/Character.h"
 #include "PinguCharacter.generated.h"
 
@@ -14,13 +15,15 @@ struct FInputActionValue;
 
 
 UCLASS()
-class APinguCharacter : public ACharacter
+class APinguCharacter : public ACharacter, public IDamagable
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
 	APinguCharacter();
+
+	virtual void ApplyDamage(int A_DamageAmount) override;
 
 private:
 	auto InitCamera(void) -> class UCameraComponent*;

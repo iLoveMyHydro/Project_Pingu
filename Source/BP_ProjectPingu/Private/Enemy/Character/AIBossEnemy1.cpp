@@ -50,3 +50,7 @@ void AAIBossEnemy1::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 }
 
+void AAIBossEnemy1::ApplyDamage(int A_DamageAmount)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Damage"));
+}

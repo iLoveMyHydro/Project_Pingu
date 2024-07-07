@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "InputMappingContext.h"
+#include "DamageSystem/Damagable.h"
 #include "GameFramework/PlayerController.h"
 #include "InputController.generated.h"
 
@@ -30,6 +31,7 @@ protected:
 	void HandleStopMovement(const FInputActionValue& Value);
 	void HandleSlapAttack(void);
 	void HandleNootAttack(void);
+	void HandleSlapAttackComplete(void);
 
 private:
 	const FString IA_MOVE_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_Move.IA_Move'");
@@ -38,6 +40,9 @@ private:
 	const FString IA_SLAP_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_Slap.IA_Slap'");
 	const FString IA_NOOT_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_NootNoot.IA_NootNoot'");
 	const FString IMC_PATH = TEXT("/Script/EnhancedInput.InputMappingContext'/Game/Input/IMC_Character.IMC_Character'");
+
+	UPROPERTY(EditAnywhere)
+	class AActor* SelectedActor;
 
 #pragma region Attack
 

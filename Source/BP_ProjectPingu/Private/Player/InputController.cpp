@@ -6,6 +6,7 @@
 #include "EnhancedInputComponent.h"
 #include "InputMappingContext.h"
 #include "InputAction.h"
+#include "PinguCharacter.h"
 #include "GameFramework/Character.h"
 
 class UEnhancedInputLocalPlayerSubsystem;
@@ -44,6 +45,7 @@ void AInputController::SetupInputComponent()
 
 		//Slap Attack
 		EnhancedInputComponent->BindAction(SlapAction, ETriggerEvent::Started, this, &AInputController::HandleSlapAttack);
+		EnhancedInputComponent->BindAction(SlapAction, ETriggerEvent::Completed, this, &AInputController::HandleSlapAttackComplete);
 
 		//Noot Noot Attack
 		EnhancedInputComponent->BindAction(NootNootAction, ETriggerEvent::Started, this, &AInputController::HandleNootAttack);
@@ -99,10 +101,17 @@ void AInputController::HandleSlapAttack()
 	if(IsColliding)
 	{
 		IsAttacking = true;
-		//ApplyDamage(Damage);
+		UE_LOG(LogTemp, Warning, TEXT("Slap Attack"));
+		//TODO: Apply Damage richtig einstellen
 	}
 }
 
 void AInputController::HandleNootAttack()
 {
+
+}
+
+void AInputController::HandleSlapAttackComplete()
+{
+	IsAttacking = false;
 }

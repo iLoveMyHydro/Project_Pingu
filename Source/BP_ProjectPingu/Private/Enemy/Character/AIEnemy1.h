@@ -5,10 +5,11 @@
 #include "CoreMinimal.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/Character.h"
+#include "BP_ProjectPingu/Private/DamageSystem/Damagable.h"
 #include "AIEnemy1.generated.h"
 
 UCLASS()
-class AAIEnemy1 : public ACharacter
+class AAIEnemy1 : public ACharacter, public IDamagable
 {
 	GENERATED_BODY()
 
@@ -26,6 +27,8 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	virtual void ApplyDamage(int A_DamageAmount) override;
 
 private:
 	const FString MESH_PATH = TEXT("/Script/Engine.SkeletalMesh'/Engine/EditorMeshes/SkeletalMesh/DefaultSkeletalMesh.DefaultSkeletalMesh'");

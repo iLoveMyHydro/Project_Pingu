@@ -50,3 +50,8 @@ void AAIEnemy1::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
+void AAIEnemy1::ApplyDamage(int A_DamageAmount)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Damage Set"));
+}
+

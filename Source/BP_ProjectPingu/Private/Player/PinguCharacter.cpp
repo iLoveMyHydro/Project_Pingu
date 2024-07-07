@@ -20,12 +20,16 @@ APinguCharacter::APinguCharacter()
 	CollisionMesh->SetGenerateOverlapEvents(true);
 	CollisionMesh->SetBoxExtent(FVector(32.0f, 60.0f, 32.0f));
 
-
 	// Init Camera
 	if (!PinguCameraComponent) PinguCameraComponent = InitCamera();
 
 	// Init Player
 	InitPlayer();
+}
+
+void APinguCharacter::ApplyDamage(int A_DamageAmount)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Damage"));
 }
 
 auto APinguCharacter::InitCamera() -> UCameraComponent*

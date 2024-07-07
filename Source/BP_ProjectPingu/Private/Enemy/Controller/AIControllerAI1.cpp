@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "BP_ProjectPingu/Private/Enemy/Character/AIEnemy1.h"
 
+
 void AAIControllerAI1::BeginPlay()
 {
 	Super::BeginPlay();
