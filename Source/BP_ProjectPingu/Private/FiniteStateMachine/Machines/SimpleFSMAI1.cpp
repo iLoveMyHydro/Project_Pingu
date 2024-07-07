@@ -9,9 +9,10 @@
 void SimpleFSMAI1::Initialize()
 {
 	SearchPlayerState = new SearchPlayerStateAI1(SEARCH_PLAYER_STATE, this);
-	ThrowObjectState = new ThrowObjectStateAI1(ThrowObjectState, this);
+	ThrowObjectState = new ThrowObjectStateAI1(THROW_OBJECT_STATE, this);
 	WaitState = new WaitStateAI1(WAIT_STATE, this);
 
 	Transition(SearchPlayerState);
+	Transition(WaitState);
 }
 

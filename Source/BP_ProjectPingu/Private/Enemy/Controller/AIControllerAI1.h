@@ -4,8 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
-#include "FiniteStateMachine/FSM/FiniteStateMachineAI1.h"
 #include "AIControllerAI1.generated.h"
+
+class FiniteStateMachineAI1;
 
 /**
  * 
@@ -22,16 +23,14 @@ protected:
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
-	void virtual Initialize();
 
-	AActor* GetPlayer(void) { return player; }
-	class AAIEnemy1* GetCharacter(void) { return character; }
+	AActor* GetPlayer(void) const { return Player; }
+	class AAIEnemy1* GetCharacterAI(void) const { return Character; };
 
-	void SetCharacter(class AAIEnemy1* a_Character) { character = a_Character; }
+	void SetCharacter(class AAIEnemy1* A_Character) { Character = A_Character; }
 
 private:
 	FiniteStateMachineAI1* fsm = nullptr;
-
-	AActor* player = nullptr;
-	class AAIEnemy1* character = nullptr;
+	AActor* Player = nullptr;
+	class AAIEnemy1* Character = nullptr;
 };

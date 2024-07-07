@@ -2,17 +2,20 @@
 
 
 #include "FiniteStateMachine/State/States/SearchPlayerStateAI1.h"
-#include "BP_ProjectPingu/Private/FiniteStateMachine/Machines/SimpleFSMAI1.h"
 
 
-SearchPlayerStateAI1::SearchPlayerStateAI1(FString a_name, FiniteStateMachineAI1* a_machine) : name(a_name), machine(a_machine) {}
-
-void SearchPlayerStateAI1::Enter()
+SearchPlayerStateAI1::SearchPlayerStateAI1(FString A_Name, FiniteStateMachineAI1* A_Machine)
 {
-	StateAI1::Enter();
+	Name = A_Name;
+	Machine = A_Machine;
 }
 
-void SearchPlayerStateAI1::Tick(float a_deltaTime)
+void SearchPlayerStateAI1::Tick(float A_DeltaTime)
 {
-	StateAI1::Tick(a_deltaTime);
+	StateAI1::Tick(A_DeltaTime);
+}
+
+void SearchPlayerStateAI1::SearchPlayer(AActor* A_Player)
+{
+	//TODO:
 }

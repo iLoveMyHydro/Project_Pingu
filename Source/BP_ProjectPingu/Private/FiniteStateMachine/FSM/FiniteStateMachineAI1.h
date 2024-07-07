@@ -15,17 +15,17 @@ class AAIControllerAI1;
 class FiniteStateMachineAI1
 {
 public:
-	inline FiniteStateMachineAI1(AAIControllerAI1* a_controller) : fsmController(a_controller) {}
-	inline ~FiniteStateMachineAI1() {};
+	explicit inline FiniteStateMachineAI1(AAIControllerAI1* A_Controller) : FsmController(A_Controller) {};
+	virtual ~FiniteStateMachineAI1() {};
 
 	virtual void Initialize(void);
-	virtual void Tick(float a_deltaTime);
+	virtual void Tick(float A_DeltaTime);
 
-	AAIControllerAI1* GetController(void) { return fsmController; }
+	AAIControllerAI1* GetController(void) const { return FsmController; }
 
-	void Transition(StateAI1* a_newState);
+	void Transition(StateAI1* A_NewState);
 
 protected:
-	StateAI1* currentState = nullptr;
-	AAIControllerAI1* fsmController = nullptr;
+	StateAI1* CurrentState = nullptr;
+	AAIControllerAI1* FsmController = nullptr;
 };

@@ -12,8 +12,8 @@
 class ThrowObjectStateAI1 : public StateAI1
 {
 public:
-	ThrowObjectStateAI1(FString a_name, FiniteStateMachineAI1* a_machine);
-	inline ~ThrowObjectStateAI1() {};
+	ThrowObjectStateAI1(FString A_Name, FiniteStateMachineAI1* A_Machine);
+	virtual ~ThrowObjectStateAI1() override {};
 
 	virtual void Enter(void) override;
 	virtual void Tick(float a_deltaTime) override;

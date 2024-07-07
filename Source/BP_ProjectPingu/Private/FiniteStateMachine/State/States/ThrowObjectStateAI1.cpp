@@ -7,7 +7,11 @@
 #include "BP_ProjectPingu/Private/FiniteStateMachine/State/StateAI1.h"
 #include "BP_ProjectPingu/Private/FiniteStateMachine/Machines/SimpleFSMAI1.h"
 
-ThrowObjectStateAI1::ThrowObjectStateAI1(FString a_name, FiniteStateMachineAI1* a_machine) : name(a_name), machine(a_machine) {}
+ThrowObjectStateAI1::ThrowObjectStateAI1(FString A_Name, FiniteStateMachineAI1* A_Machine)
+{
+	Name = A_Name;
+	Machine = A_Machine;
+}
 
 void ThrowObjectStateAI1::Enter()
 {
@@ -21,4 +25,5 @@ void ThrowObjectStateAI1::Tick(float a_deltaTime)
 
 void ThrowObjectStateAI1::ThrowObject()
 {
+	//TODO:
 }

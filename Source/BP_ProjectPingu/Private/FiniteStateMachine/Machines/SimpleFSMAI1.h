@@ -5,21 +5,20 @@
 #include "CoreMinimal.h"
 #include "FiniteStateMachine/FSM/FiniteStateMachineAI1.h"
 
-
 /**
  * 
  */
 class SimpleFSMAI1 : public FiniteStateMachineAI1
 {
 public:
-	inline SimpleFSMAI1(AAIControllerAI1* a_controller) : FiniteStateMachineAI1(a_controller) {};
+	inline SimpleFSMAI1(AAIControllerAI1* A_Controller) : FiniteStateMachineAI1(A_Controller) {};
 	inline ~SimpleFSMAI1() {};
 
-	void Initialize() override;
+	virtual void Initialize() override;
 
-	StateAI1* GetSearchPlayerState(void) { return SearchPlayerState; }
-	StateAI1* GetThrowObjectState(void) { return ThrowObjectState; }
-	StateAI1* GetWaitState(void) { return WaitState; }
+	StateAI1* GetSearchPlayerState(void) const { return SearchPlayerState; }
+	StateAI1* GetThrowObjectState(void) const { return ThrowObjectState; }
+	StateAI1* GetWaitState(void) const { return WaitState; }
 
 private:
 	const FString SEARCH_PLAYER_STATE = TEXT("Search Player State");

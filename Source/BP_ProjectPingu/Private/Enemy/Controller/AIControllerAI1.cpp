@@ -10,7 +10,7 @@ void AAIControllerAI1::BeginPlay()
 {
 	Super::BeginPlay();
 
-	player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+	Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 
 	if(fsm == nullptr)
 	{

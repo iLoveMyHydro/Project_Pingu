@@ -5,7 +5,7 @@
 
 void StateAI1::Enter()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf((ENTERING_STATE), name));
+	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Entering State %s"), *Name));
 }
 
 void StateAI1::Tick(float a_deltaTime)
@@ -15,6 +15,6 @@ void StateAI1::Tick(float a_deltaTime)
 
 void StateAI1::Exit()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf((EXIT_STATE), name));
+	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Red, FString::Printf(TEXT("Exiting Stae %s"), *Name));
 
 }

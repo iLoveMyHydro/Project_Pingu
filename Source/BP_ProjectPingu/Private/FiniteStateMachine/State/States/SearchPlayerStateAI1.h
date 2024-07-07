@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "FiniteStateMachine/State/StateAI1.h"
 
+class AIControllerAI1;
 
 /**
  * 
@@ -12,9 +13,10 @@
 class SearchPlayerStateAI1 : public StateAI1
 {
 public:
-	SearchPlayerStateAI1(FString a_name, FiniteStateMachineAI1* a_machine);
-	inline ~SearchPlayerStateAI1();
+	SearchPlayerStateAI1(FString A_Name, FiniteStateMachineAI1* A_Machine);
+	virtual ~SearchPlayerStateAI1() override {};
 
-	virtual void Enter(void) override;
-	virtual void Tick(float a_deltaTime) override;
+	virtual void Tick(float A_DeltaTime) override;
+
+	static void SearchPlayer(AActor* A_Player);
 };

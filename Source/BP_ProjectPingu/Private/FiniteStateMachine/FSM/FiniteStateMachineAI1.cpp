@@ -9,20 +9,20 @@ void FiniteStateMachineAI1::Initialize()
 	
 }
 
-void FiniteStateMachineAI1::Tick(float a_deltaTime)
+void FiniteStateMachineAI1::Tick(float A_DeltaTime)
 {
-	if(currentState != nullptr)
+	if(CurrentState != nullptr)
 	{
-		currentState->Tick(a_deltaTime);
+		CurrentState->Tick(A_DeltaTime);
 	}
 }
 
-void FiniteStateMachineAI1::Transition(StateAI1* a_newState)
+void FiniteStateMachineAI1::Transition(StateAI1* A_NewState)
 {
-	if(currentState != nullptr)
+	if(CurrentState != nullptr)
 	{
-		currentState->Exit();
+		CurrentState->Exit();
 	}
-	currentState = a_newState;
-	currentState->Enter();
+	CurrentState = A_NewState;
+	CurrentState->Enter();
 }

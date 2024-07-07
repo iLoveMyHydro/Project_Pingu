@@ -1,9 +1,13 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "BP_ProjectPingu/Private/FiniteStateMachine/State/StateAI1.h"
 #include "FiniteStateMachine/State/States/WaitStateAI1.h"
 
-WaitStateAI1::WaitStateAI1(FString a_name, FiniteStateMachineAI1* a_machine) : name(a_name), machine(a_machine) {}
+WaitStateAI1::WaitStateAI1(FString A_Name, FiniteStateMachineAI1* A_Machine)
+{
+	Name = A_Name;
+	Machine = A_Machine;
+}
 
 void WaitStateAI1::Tick(float a_deltaTime)
 {
