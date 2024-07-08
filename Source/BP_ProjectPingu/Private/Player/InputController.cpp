@@ -98,17 +98,24 @@ void AInputController::HandleStopMovement(const FInputActionValue& Value)
 
 void AInputController::HandleSlapAttack()
 {
-	if(IsColliding)
-	{
-		IsAttacking = true;
-		UE_LOG(LogTemp, Warning, TEXT("Slap Attack"));
-		//TODO: Apply Damage richtig einstellen
-	}
+	//TODO: Animation ausführen
+
+	//if(PinguCharacter->GetIsColliding())
+	//{
+	//	IsAttacking = true;
+	//	UE_LOG(LogTemp, Warning, TEXT("Slap Attack"));
+	//	//TODO: Apply Damage richtig einstellen
+	//}
 }
 
 void AInputController::HandleNootAttack()
 {
+	//TODO: Animation ausführen
 
+	if( IceSpikes > 0 )
+	{
+		//TODO: Ice Spike abfeuern
+	}
 }
 
 void AInputController::HandleSlapAttackComplete()

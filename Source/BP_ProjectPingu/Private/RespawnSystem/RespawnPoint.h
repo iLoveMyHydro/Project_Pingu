@@ -33,6 +33,7 @@ private:
 	const FString ARROW_NAME = TEXT("Arrow");
 	const FString BOX_COLLISION_NAME = TEXT("Box Collision");
 
+
 	UPROPERTY(EditAnywhere, DisplayName = "BoxCollider", Category = "Components", meta = (AllowPrivateAccess = true))
 	TObjectPtr<UBoxComponent> CollisionMesh = nullptr;
 

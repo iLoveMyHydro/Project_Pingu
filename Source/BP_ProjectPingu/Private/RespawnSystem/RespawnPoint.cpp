@@ -3,6 +3,9 @@
 
 #include "RespawnSystem/RespawnPoint.h"
 
+#include "GameModeBase/GameModeBaseCode.h"
+#include "Player/PinguCharacter.h"
+
 // Sets default values
 ARespawnPoint::ARespawnPoint()
 {
@@ -31,5 +34,6 @@ void ARespawnPoint::Tick(float DeltaTime)
 void ARespawnPoint::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Respawn"));
+	bSpawnPointSet = true;
+	
 }

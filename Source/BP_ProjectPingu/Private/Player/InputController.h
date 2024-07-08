@@ -8,6 +8,7 @@
 #include "GameFramework/PlayerController.h"
 #include "InputController.generated.h"
 
+class APinguCharacter;
 /**
  * 
  */
@@ -46,8 +47,8 @@ private:
 
 #pragma region Attack
 
-	UPROPERTY(EditAnywhere, DisplayName = "Is Colliding", Category = "Attack", meta = (AllowPrivateAccess = true))
-	bool IsColliding = false;
+	UPROPERTY(EditAnywhere, DisplayName = "Ice Spikes", Category = "Attack", meta = (AllowPrivateAccess = true))
+	int IceSpikes = 3;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Is Attacking", Category = "Attack", meta = (AllowPrivateAccess = true))
 	bool IsAttacking = false;
@@ -65,6 +66,8 @@ private:
 
 	UPROPERTY(EditAnywhere, DisplayName = "Direction", Category = "Movement", meta = (AllowPrivateAccess = true))
 	FVector Dir = FVector::Zero();
+
+
 
 #pragma  endregion
 
@@ -86,4 +89,6 @@ private:
 	UInputAction* NootNootAction = nullptr;
 
 #pragma endregion
+
+	APinguCharacter* PinguCharacter = nullptr;
 };

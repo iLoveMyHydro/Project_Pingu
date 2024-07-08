@@ -52,5 +52,12 @@ void AAIBossEnemy1::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 void AAIBossEnemy1::ApplyDamage(int A_DamageAmount)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Damage"));
+	A_DamageAmount -= A_DamageAmount;
+
+	Health += A_DamageAmount;
+
+	if (Health <= 0)
+	{
+		AAIBossEnemy1::Destroy();
+	}
 }

@@ -2,6 +2,8 @@
 
 #include "Player/PinguCharacter.h"
 #include "Camera/CameraComponent.h"
+#include "Enemy/Character/AIEnemy1.h"
+#include "Enemy/Controller/AIControllerAIBoss1.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -20,6 +22,7 @@ APinguCharacter::APinguCharacter()
 	CollisionMesh->SetGenerateOverlapEvents(true);
 	CollisionMesh->SetBoxExtent(FVector(32.0f, 60.0f, 32.0f));
 
+
 	// Init Camera
 	if (!PinguCameraComponent) PinguCameraComponent = InitCamera();
 
@@ -29,7 +32,19 @@ APinguCharacter::APinguCharacter()
 
 void APinguCharacter::ApplyDamage(int A_DamageAmount)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Damage"));
+	A_DamageAmount -= A_DamageAmount;
+
+	Health += A_DamageAmount;
+
+	if (Health <= 0)
+	{
+		APinguCharacter::Destroy();
+	}
+}
+
+bool APinguCharacter::GetIsColliding()
+{
+	return IsColliding;
 }
 
 auto APinguCharacter::InitCamera() -> UCameraComponent*
@@ -73,5 +88,15 @@ void APinguCharacter::InitPlayer()
 void APinguCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	CollisionMesh->OnComponentBeginOverlap.AddDynamic(this, &APinguCharacter::OnBoxBeginOverlap);
+
 }
 
+void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	UE_LOG(LogTemp, Warning, TEXT("Respawn"));
+
+	IsColliding = true;
+}

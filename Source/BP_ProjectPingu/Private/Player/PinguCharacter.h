@@ -25,10 +25,16 @@ public:
 
 	virtual void ApplyDamage(int A_DamageAmount) override;
 
+	bool GetIsColliding();
+
 private:
 	auto InitCamera(void) -> class UCameraComponent*;
 
 	void InitPlayer(void);
+
+	UFUNCTION()
+	void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	FORCEINLINE class UCameraComponent* Get2DCameraComponent() const { return PinguCameraComponent; }
 
@@ -47,6 +53,12 @@ private:
 	const FString BOX_COLLISION_NAME = TEXT("Box Collision");
 	const FString SCENE_ROOT_NAME = TEXT("Scene Root");
 
+
+	UPROPERTY(EditAnywhere, DisplayName = "Health", Category = "Value", meta = (AllowPrivateAccess = true))
+	int Health = 3;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Is Colliding", Category = "Attack", meta = (AllowPrivateAccess = true))
+	bool IsColliding = false;
 
 	UPROPERTY(EditAnywhere, DisplayName = "BoxCollider", Category = "Components", meta = (AllowPrivateAccess = true))
 	TObjectPtr<UBoxComponent> CollisionMesh = nullptr;
