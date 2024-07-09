@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/BoxComponent.h"
 #include "DamageSystem/Damagable.h"
+#include "DamageSystem/IceSpikes.h"
 #include "GameFramework/Character.h"
 #include "PinguCharacter.generated.h"
 
@@ -27,6 +28,12 @@ public:
 
 	bool GetIsColliding();
 
+	ACharacter* GetOtherCharacter();
+
+	int GetIceSpikes();
+
+	void ThrowIceSpikes();
+
 private:
 	auto InitCamera(void) -> class UCameraComponent*;
 
@@ -48,11 +55,17 @@ private:
 
 	const FString MESH_PATH = TEXT("/Script/Engine.SkeletalMesh'/Engine/EngineMeshes/SkeletalCube.SkeletalCube'");
 	const FString MAT_PATH = TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'");
+	//const FString MESH_ICE_SPIKE_PATH = TEXT("");
+	//const FString MAT_ICE_SPIKE_PATH = TEXT("");
+
 	const FString CAMERA_NAME = TEXT("Camera");
 	const FString CAMERA_ARM_NAME = TEXT("CameraBoom");
 	const FString BOX_COLLISION_NAME = TEXT("Box Collision");
 	const FString SCENE_ROOT_NAME = TEXT("Scene Root");
+	//const FString ICE_SPIKE_NAME = TEXT("Ice Spike");
 
+	UPROPERTY(EditAnywhere, DIsplayName = "Other Characters", Category = "Other Character", meta = (AllowPrivateAccess = true))
+	ACharacter* OtherCharacter = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Health", Category = "Value", meta = (AllowPrivateAccess = true))
 	int Health = 3;
@@ -73,4 +86,16 @@ private:
 
 	UPROPERTY(EditAnywhere, DisplayName = "CameraArm", Category = "Component", meta = (AllowPrivateAccess = true))
 	TObjectPtr<class USpringArmComponent> CameraBoom = nullptr;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Ice Spikes", Category = "Attack", meta = (AllowPrivateAccess = true))
+	int IceSpikes = 0;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Ice Spikes Max", Category = "Attack", meta = (AllowPrivateAccess = true))
+	int IceSpikesMax = 5;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Ice Spike Speed", Category = "Attack", meta = (AllowPrivateAccess = true))
+	int IceSpikeSpeed = 5;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Ice Spike Material", Category = "Component", meta = (AllowPrivateAccess = true))
+	TObjectPtr<AIceSpikes> IceSpikeMat = nullptr;
 };

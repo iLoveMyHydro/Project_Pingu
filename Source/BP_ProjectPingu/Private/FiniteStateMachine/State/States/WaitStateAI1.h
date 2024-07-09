@@ -4,6 +4,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "FiniteStateMachine/State/StateAI1.h"
 
 class FiniteStateMachineAI1;
 /**

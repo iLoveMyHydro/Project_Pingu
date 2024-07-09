@@ -52,9 +52,7 @@ void AAIBossEnemy1::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 void AAIBossEnemy1::ApplyDamage(int A_DamageAmount)
 {
-	A_DamageAmount -= A_DamageAmount;
-
-	Health += A_DamageAmount;
+	Health -= A_DamageAmount;
 
 	if (Health <= 0)
 	{

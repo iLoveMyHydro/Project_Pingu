@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "InputMappingContext.h"
 #include "DamageSystem/Damagable.h"
+#include "Enemy/Character/AIBossEnemy1.h"
+#include "Enemy/Character/AIEnemy1.h"
 #include "GameFramework/PlayerController.h"
 #include "InputController.generated.h"
 
@@ -45,10 +47,8 @@ private:
 	UPROPERTY(EditAnywhere)
 	class AActor* SelectedActor;
 
-#pragma region Attack
 
-	UPROPERTY(EditAnywhere, DisplayName = "Ice Spikes", Category = "Attack", meta = (AllowPrivateAccess = true))
-	int IceSpikes = 3;
+#pragma region Attack
 
 	UPROPERTY(EditAnywhere, DisplayName = "Is Attacking", Category = "Attack", meta = (AllowPrivateAccess = true))
 	bool IsAttacking = false;
@@ -91,4 +91,6 @@ private:
 #pragma endregion
 
 	APinguCharacter* PinguCharacter = nullptr;
+	AAIBossEnemy1* BossEnemy = nullptr;
+	AAIEnemy1* Enemy = nullptr;
 };

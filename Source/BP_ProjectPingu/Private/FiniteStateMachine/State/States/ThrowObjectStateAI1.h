@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Enemy/Character/OilBarrel/OilBarrel.h"
 #include "FiniteStateMachine/FSM/FiniteStateMachineAI1.h"
 #include "FiniteStateMachine/State/StateAI1.h"
 
@@ -20,4 +21,8 @@ public:
 
 private:
 	void ThrowObject(void);
+
+
+	UPROPERTY()
+	TObjectPtr<AOilBarrel> OilBarrel = nullptr;
 };

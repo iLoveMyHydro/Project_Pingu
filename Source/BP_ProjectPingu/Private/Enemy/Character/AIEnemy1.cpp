@@ -4,7 +4,7 @@
 #include "Enemy/Character/AIEnemy1.h"
 #include "Enemy/Controller/AIControllerAI1.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Runtime/AIModule/Classes/AIController.h"
+#include "OilBarrel/OilBarrel.h"
 
 // Sets default values
 AAIEnemy1::AAIEnemy1()
@@ -15,6 +15,12 @@ AAIEnemy1::AAIEnemy1()
 	GetMesh()->SetSkeletalMesh(ConstructorHelpers::FObjectFinder<USkeletalMesh>(*MESH_PATH).Object);
 	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+
+	//OilBarrel = GetWorld()->SpawnActor<AOilBarrel>(FVector::ZeroVector, FRotator::ZeroRotator);
+	//if(OilBarrel != nullptr)
+	//{
+	//	OilBarrel->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale);
+	//}
 
 	CollisionMesh = CreateDefaultSubobject<UBoxComponent>(*BOX_COLLISION_NAME);
 	CollisionMesh->bDynamicObstacle = true;
@@ -52,9 +58,7 @@ void AAIEnemy1::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AAIEnemy1::ApplyDamage(int A_DamageAmount)
 {
-	A_DamageAmount -= A_DamageAmount;
-
-	Health += A_DamageAmount;
+	Health -= A_DamageAmount;
 
 	if(Health <= 0)
 	{

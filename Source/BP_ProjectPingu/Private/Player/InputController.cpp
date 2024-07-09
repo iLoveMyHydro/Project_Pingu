@@ -7,6 +7,8 @@
 #include "InputMappingContext.h"
 #include "InputAction.h"
 #include "PinguCharacter.h"
+#include "Enemy/Character/AIBossEnemy1.h"
+#include "Enemy/Character/AIEnemy1.h"
 #include "GameFramework/Character.h"
 
 class UEnhancedInputLocalPlayerSubsystem;
@@ -99,23 +101,36 @@ void AInputController::HandleStopMovement(const FInputActionValue& Value)
 void AInputController::HandleSlapAttack()
 {
 	//TODO: Animation ausführen
+	//TODO: Apply Damage richtig einstellen
 
-	//if(PinguCharacter->GetIsColliding())
-	//{
-	//	IsAttacking = true;
-	//	UE_LOG(LogTemp, Warning, TEXT("Slap Attack"));
-	//	//TODO: Apply Damage richtig einstellen
-	//}
+	if(!GetWorld()) return;
+
+	auto OtherCharacter = CastChecked<APinguCharacter>(GetPawn())->GetOtherCharacter();
+	if(OtherCharacter != nullptr)
+	{
+		if(OtherCharacter->IsA<AAIBossEnemy1>())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Boss Enemy"));
+			BossEnemy = CastChecked<AAIBossEnemy1>(OtherCharacter);
+			BossEnemy->ApplyDamage(1);
+		}
+		if(OtherCharacter->IsA<AAIEnemy1>())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Enemy"));
+			Enemy = CastChecked<AAIEnemy1>(OtherCharacter);
+			Enemy->ApplyDamage(1);
+		}
+	}
 }
 
 void AInputController::HandleNootAttack()
 {
 	//TODO: Animation ausführen
 
-	if( IceSpikes > 0 )
-	{
-		//TODO: Ice Spike abfeuern
-	}
+	//if( PinguCharacter->GetIceSpikes() > 0 )
+	//{
+	//	PinguCharacter->ThrowIceSpikes();
+	//}
 }
 
 void AInputController::HandleSlapAttackComplete()

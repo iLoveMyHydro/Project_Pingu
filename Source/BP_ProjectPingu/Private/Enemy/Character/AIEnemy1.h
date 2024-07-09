@@ -6,6 +6,7 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/Character.h"
 #include "BP_ProjectPingu/Private/DamageSystem/Damagable.h"
+#include "OilBarrel/OilBarrel.h"
 #include "AIEnemy1.generated.h"
 
 UCLASS()
@@ -35,6 +36,7 @@ private:
 	const FString FSM_CONTROLLER_PATH = TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.AIControllerAI1'");
 	const FString PLAYER_CLASS_PATH = TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.PinguCharacter'");
 	const FString BOX_COLLISION_NAME = TEXT("Box Collision");
+	const FString ENEMY_NAME = TEXT("AI Enemy");
 
 	UPROPERTY(EditAnywhere, DisplayName = "Health", Category = "Value", meta = (AllowPrivateAccess = true))
 	int Health = 3;
@@ -43,4 +45,6 @@ private:
 	TObjectPtr<UBoxComponent> CollisionMesh = nullptr;
 
 	TSubclassOf<AActor> playerClass;
+
+	TObjectPtr<AOilBarrel> OilBarrel = nullptr;
 };

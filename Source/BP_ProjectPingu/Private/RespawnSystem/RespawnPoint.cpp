@@ -13,7 +13,8 @@ ARespawnPoint::ARespawnPoint()
 	PrimaryActorTick.bCanEverTick = true;
 
 	CollisionMesh = CreateDefaultSubobject<UBoxComponent>(*BOX_COLLISION_NAME);
-	CollisionMesh->SetGenerateOverlapEvents(false);
+	CollisionMesh->SetGenerateOverlapEvents(true);
+	CollisionMesh->OnComponentBeginOverlap.AddDynamic(this, &ARespawnPoint::OnBoxBeginOverlap);
 	ArrowComponent = CreateDefaultSubobject<UArrowComponent>(*ARROW_NAME);
 }
 
@@ -22,7 +23,6 @@ void ARespawnPoint::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CollisionMesh->OnComponentBeginOverlap.AddDynamic(this, &ARespawnPoint::OnBoxBeginOverlap);
 }
 
 // Called every frame
@@ -35,5 +35,5 @@ void ARespawnPoint::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActo
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	bSpawnPointSet = true;
-	
+	UE_LOG(LogTemp, Warning, TEXT("Collider"));
 }
