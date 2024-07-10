@@ -26,11 +26,11 @@ public:
 
 private:
 
-	//const FString MESH_PATH = TEXT("/Script/Engine.StaticMesh'/Engine/BasicShapes/Cone.Cone'");
-	//const FString MAT_PATH = TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'");
-	//const FString BOX_NAME = TEXT("Box Collision");
+	const FString MESH_PATH = TEXT("/Script/Engine.StaticMesh'/Engine/BasicShapes/Cone.Cone'");
+	const FString MAT_PATH = TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'");
+	const FString BOX_NAME = TEXT("Box Collision");
 
-	//UPROPERTY(EditAnywhere, DisplayName = "Box Collision", Category = "Components", meta = (AllowPrivateAccess = true))
-	//TObjectPtr<UBoxComponent> BoxCollision = nullptr;
+	UPROPERTY(EditAnywhere, DisplayName = "Box Collision", Category = "Components", meta = (AllowPrivateAccess = true))
+	TObjectPtr<UBoxComponent> BoxCollision = nullptr;
 
 };

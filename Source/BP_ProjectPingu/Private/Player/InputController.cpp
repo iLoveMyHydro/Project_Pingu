@@ -127,10 +127,25 @@ void AInputController::HandleNootAttack()
 {
 	//TODO: Animation ausführen
 
-	//if( PinguCharacter->GetIceSpikes() > 0 )
-	//{
-	//	PinguCharacter->ThrowIceSpikes();
-	//}
+	PinguCharacter = GetPawn<APinguCharacter>();
+
+	if (PinguCharacter == nullptr) return;
+
+	auto IceSpikes = PinguCharacter->GetIceSpikes();
+
+	IceSpikes--;
+
+	if(IceSpikes <= 0)
+	{
+		IceSpikes = 0;
+	}
+
+	PinguCharacter->SetIceSpikes(IceSpikes);
+
+	if( PinguCharacter->GetIceSpikes() > 0 )
+	{
+		PinguCharacter->ThrowIceSpikes();
+	}
 }
 
 void AInputController::HandleSlapAttackComplete()

@@ -24,9 +24,8 @@ APinguCharacter::APinguCharacter()
 	CollisionMesh->SetGenerateOverlapEvents(true);
 	CollisionMesh->SetBoxExtent(FVector(32.0f, 60.0f, 32.0f));
 
-	//IceSpikeMat = CreateDefaultSubobject<AIceSpikes>(*ICE_SPIKE_NAME);
-	//IceSpikeMat->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale);
-	//IceSpikeMat = GetWorld()->SpawnActor<AIceSpikes>(FVector::ZeroVector, FRotator::ZeroRotator);
+	IceSpikeMat = CreateDefaultSubobject<AIceSpikes>(*ICE_SPIKE_NAME);
+	IceSpikeMat->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale);
 
 	// Init Camera
 	if (!PinguCameraComponent) PinguCameraComponent = InitCamera();
@@ -61,6 +60,12 @@ int APinguCharacter::GetIceSpikes()
 {
 	return IceSpikes;
 }
+
+void APinguCharacter::SetIceSpikes(int A_IceSpikes)
+{
+	IceSpikes = A_IceSpikes;
+}
+
 
 void APinguCharacter::ThrowIceSpikes()
 {
@@ -128,12 +133,12 @@ void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 	{
 		OtherCharacter = CastChecked<AAIBossEnemy1>(OtherActor);
 	}
-	//else if(OtherActor->IsA<AIceSpikes>())
-	//{
-	//	if(IceSpikes <= IceSpikesMax)
-	//	{
-	//		IceSpikes = IceSpikesMax;
-	//	}
-	//}
+	else if(OtherActor->IsA<AIceSpikes>())
+	{
+		if(IceSpikes <= IceSpikesMax)
+		{
+			IceSpikes = IceSpikesMax;
+		}
+	}
 	IsColliding = true;
 }

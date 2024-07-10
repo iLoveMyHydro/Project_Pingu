@@ -32,6 +32,8 @@ public:
 
 	int GetIceSpikes();
 
+	void SetIceSpikes(int A_IceSpikes);
+
 	void ThrowIceSpikes();
 
 private:
@@ -55,14 +57,14 @@ private:
 
 	const FString MESH_PATH = TEXT("/Script/Engine.SkeletalMesh'/Engine/EngineMeshes/SkeletalCube.SkeletalCube'");
 	const FString MAT_PATH = TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'");
-	//const FString MESH_ICE_SPIKE_PATH = TEXT("");
-	//const FString MAT_ICE_SPIKE_PATH = TEXT("");
+	const FString MESH_ICE_SPIKE_PATH = TEXT("/Script/Engine.StaticMesh'/Engine/BasicShapes/Cone.Cone'");
+	const FString MAT_ICE_SPIKE_PATH = TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'");
 
 	const FString CAMERA_NAME = TEXT("Camera");
 	const FString CAMERA_ARM_NAME = TEXT("CameraBoom");
 	const FString BOX_COLLISION_NAME = TEXT("Box Collision");
 	const FString SCENE_ROOT_NAME = TEXT("Scene Root");
-	//const FString ICE_SPIKE_NAME = TEXT("Ice Spike");
+	const FString ICE_SPIKE_NAME = TEXT("Ice Spike");
 
 	UPROPERTY(EditAnywhere, DIsplayName = "Other Characters", Category = "Other Character", meta = (AllowPrivateAccess = true))
 	ACharacter* OtherCharacter = nullptr;
