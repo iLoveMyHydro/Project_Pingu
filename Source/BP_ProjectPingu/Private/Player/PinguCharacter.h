@@ -64,7 +64,7 @@ private:
 	const FString CAMERA_ARM_NAME = TEXT("CameraBoom");
 	const FString BOX_COLLISION_NAME = TEXT("Box Collision");
 	const FString SCENE_ROOT_NAME = TEXT("Scene Root");
-	const FString ICE_SPIKE_NAME = TEXT("Ice Spike");
+	const FString ICE_SPIKE_PATH = TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.IceSpikes'");
 
 	UPROPERTY(EditAnywhere, DIsplayName = "Other Characters", Category = "Other Character", meta = (AllowPrivateAccess = true))
 	ACharacter* OtherCharacter = nullptr;
@@ -98,6 +98,6 @@ private:
 	UPROPERTY(EditAnywhere, DisplayName = "Ice Spike Speed", Category = "Attack", meta = (AllowPrivateAccess = true))
 	int IceSpikeSpeed = 5;
 
-	UPROPERTY(EditAnywhere, DisplayName = "Ice Spike Material", Category = "Component", meta = (AllowPrivateAccess = true))
-	TObjectPtr<AIceSpikes> IceSpikeMat = nullptr;
+	UPROPERTY(EditAnywhere, DIsplayName = "Ice Spike Actor", Category = "Attack", meta = (AllowPrivateAccess = true));
+	TSubclassOf<class AIceSpikes> IceSpikeActor;
 };

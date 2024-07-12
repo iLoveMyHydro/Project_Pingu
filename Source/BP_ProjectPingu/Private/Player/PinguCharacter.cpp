@@ -2,10 +2,9 @@
 
 #include "Player/PinguCharacter.h"
 #include "Camera/CameraComponent.h"
-#include "DamageSystem/IceSpikes.h"
+#include "DamageSystem/IceSpikeSpawn.h"
 #include "Enemy/Character/AIBossEnemy1.h"
 #include "Enemy/Character/AIEnemy1.h"
-#include "Enemy/Controller/AIControllerAIBoss1.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -24,8 +23,7 @@ APinguCharacter::APinguCharacter()
 	CollisionMesh->SetGenerateOverlapEvents(true);
 	CollisionMesh->SetBoxExtent(FVector(32.0f, 60.0f, 32.0f));
 
-	IceSpikeMat = CreateDefaultSubobject<AIceSpikes>(*ICE_SPIKE_NAME);
-	IceSpikeMat->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale);
+	IceSpikeActor = ConstructorHelpers::FClassFinder<AIceSpikes>(*ICE_SPIKE_PATH).Class;
 
 	// Init Camera
 	if (!PinguCameraComponent) PinguCameraComponent = InitCamera();
@@ -66,11 +64,9 @@ void APinguCharacter::SetIceSpikes(int A_IceSpikes)
 	IceSpikes = A_IceSpikes;
 }
 
-
 void APinguCharacter::ThrowIceSpikes()
 {
-	//DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
-	
+	GetWorld()->SpawnActor<AIceSpikes>(IceSpikeActor, GetActorLocation(), GetActorRotation());
 }
 
 auto APinguCharacter::InitCamera() -> UCameraComponent*
@@ -122,7 +118,6 @@ void APinguCharacter::BeginPlay()
 void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Respawn"));
 	if(!GetWorld()) return;
 	
 	if(OtherActor->IsA<AAIEnemy1>())
@@ -133,7 +128,7 @@ void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 	{
 		OtherCharacter = CastChecked<AAIBossEnemy1>(OtherActor);
 	}
-	else if(OtherActor->IsA<AIceSpikes>())
+	else if(OtherActor->IsA<AIceSpikeSpawn>())
 	{
 		if(IceSpikes <= IceSpikesMax)
 		{
