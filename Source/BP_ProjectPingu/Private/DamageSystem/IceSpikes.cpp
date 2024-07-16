@@ -1,15 +1,20 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "DamageSystem/IceSpikes.h"
+#include "Enemy/Character/AIBossEnemy1.h"
+#include "Enemy/Character/AIEnemy1.h"
 
 // Sets default values
 AIceSpikes::AIceSpikes()
 {
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+
 	auto mesh = ConstructorHelpers::FObjectFinder<UStaticMesh>(*MESH_PATH).Object;
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(*MESH_PATH);
 	MeshComponent->SetStaticMesh(mesh);
 	RootComponent = MeshComponent;
-	MeshComponent->SetRelativeScale3D(FVector(0.05f, 0.05f, 0.4f));
+	MeshComponent->SetRelativeScale3D(FVector(0.1f, 0.1f, 0.1f));
 	MeshComponent->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
 
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(*BOX_NAME);
@@ -19,8 +24,13 @@ AIceSpikes::AIceSpikes()
 	BoxCollision->SetBoxExtent(FVector(5.0f, 5.0f, 5.0f));
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(*PROJECTILE_MOVEMENT_NAME);
-	ProjectileMovement->InitialSpeed = 500.0f;
-	ProjectileMovement->MaxSpeed = 700.0f;
+	ProjectileMovement->UpdatedComponent = BoxCollision;
+	ProjectileMovement->InitialSpeed = 100.f;
+	ProjectileMovement->MaxSpeed = 100.f;
+	ProjectileMovement->bRotationFollowsVelocity = true;
+	ProjectileMovement->bShouldBounce = true;
+
+	InitialLifeSpan = 3.0f;
 }
 
 // Called when the game starts or when spawned
@@ -28,5 +38,31 @@ void AIceSpikes::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+void AIceSpikes::Tick(float A_DeltaTime)
+{
+	Super::Tick(A_DeltaTime);
+
+	SetActorLocation(GetActorLocation() * A_DeltaTime * FVector::ForwardVector * 50.0f);
+}
+
+void AIceSpikes::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	FVector NormalImpulse, const FHitResult& Hit)
+{
+	if(!OtherActor && (OtherActor != this) && !OtherComp)
+	{
+		Destroy();
+		if(OtherActor->IsA<AAIEnemy1>())
+		{
+			Enemy = CastChecked<AAIEnemy1>(OtherActor);
+			Enemy->ApplyDamage(1);
+		}
+		else if(OtherActor->IsA<AAIBossEnemy1>())
+		{
+			BossEnemy = CastChecked<AAIBossEnemy1>(OtherActor);
+			BossEnemy->ApplyDamage(1);
+		}
+	}
 }
 

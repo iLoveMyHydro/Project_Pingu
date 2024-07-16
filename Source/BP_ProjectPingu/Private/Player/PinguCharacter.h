@@ -66,7 +66,8 @@ private:
 	const FString SCENE_ROOT_NAME = TEXT("Scene Root");
 	const FString ICE_SPIKE_PATH = TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.IceSpikes'");
 
-	UPROPERTY(EditAnywhere, DIsplayName = "Other Characters", Category = "Other Character", meta = (AllowPrivateAccess = true))
+
+	UPROPERTY(EditAnywhere, DisplayName = "Other Characters", Category = "Other Character", meta = (AllowPrivateAccess = true))
 	ACharacter* OtherCharacter = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Health", Category = "Value", meta = (AllowPrivateAccess = true))
@@ -98,6 +99,11 @@ private:
 	UPROPERTY(EditAnywhere, DisplayName = "Ice Spike Speed", Category = "Attack", meta = (AllowPrivateAccess = true))
 	int IceSpikeSpeed = 5;
 
-	UPROPERTY(EditAnywhere, DIsplayName = "Ice Spike Actor", Category = "Attack", meta = (AllowPrivateAccess = true));
+	UPROPERTY(EditAnywhere, DisplayName = "Ice Spike Actor", Category = "Attack", meta = (AllowPrivateAccess = true));
 	TSubclassOf<class AIceSpikes> IceSpikeActor;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Ice Spike Offset", Category = "Attack", meta = (AllowPrivateAccess = true))
+	FVector MuzzleOffset;
+
+	APinguCharacter* Character = nullptr;
 };

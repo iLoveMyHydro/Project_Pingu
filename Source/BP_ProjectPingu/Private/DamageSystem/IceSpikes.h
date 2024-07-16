@@ -8,6 +8,9 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "IceSpikes.generated.h"
 
+class AAIEnemy1;
+class AAIBossEnemy1;
+
 UCLASS()
 class AIceSpikes : public AActor
 {
@@ -20,6 +23,12 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+public:
+	virtual void Tick(float A_DeltaTime) override;
+
+private:
+	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 private:
 	
@@ -36,5 +45,8 @@ private:
 
 	UPROPERTY(EditAnywhere, DisplayName = "Projectile Movement", Category = "Components", meta = (AllowPrivateAccess = true))
 	UProjectileMovementComponent* ProjectileMovement = nullptr;
+
+	AAIBossEnemy1* BossEnemy = nullptr;
+	AAIEnemy1* Enemy = nullptr;
 
 };

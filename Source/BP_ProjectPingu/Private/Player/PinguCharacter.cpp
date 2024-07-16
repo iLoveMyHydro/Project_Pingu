@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "Player/PinguCharacter.h"
+
+#include "InputController.h"
 #include "Camera/CameraComponent.h"
 #include "DamageSystem/IceSpikeSpawn.h"
 #include "Enemy/Character/AIBossEnemy1.h"
@@ -8,6 +10,7 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 
 // Sets default values
@@ -30,6 +33,9 @@ APinguCharacter::APinguCharacter()
 
 	// Init Player
 	InitPlayer();
+
+	// Default offset from the character location for projectiles to spawn
+	MuzzleOffset = FVector(100.0f, 0.0f, 200.0f);
 }
 
 void APinguCharacter::ApplyDamage(int A_DamageAmount)
@@ -66,7 +72,27 @@ void APinguCharacter::SetIceSpikes(int A_IceSpikes)
 
 void APinguCharacter::ThrowIceSpikes()
 {
-	GetWorld()->SpawnActor<AIceSpikes>(IceSpikeActor, GetActorLocation(), GetActorRotation());
+
+	if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn())
+	{
+		Character = Cast<APinguCharacter>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn());
+	}
+
+	//Aus FirstPlayer UE Demo
+	UWorld* const World = GetWorld();
+	if (World != nullptr)
+	{
+		AInputController* PlayerController = Cast<AInputController>(Character->GetController());
+		const FRotator SpawnRotation = PlayerController->PlayerCameraManager->GetCameraRotation();
+		// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
+		const FVector SpawnLocation = (GetOwner()->GetActorLocation() + MuzzleOffset) + SpawnRotation.RotateVector(MuzzleOffset);
+
+		//Set Spawn Collision Handling Override
+		FActorSpawnParameters ActorSpawnParams;
+		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+
+		World->SpawnActor<AIceSpikes>(IceSpikeActor, SpawnLocation, SpawnRotation, ActorSpawnParams);
+	}
 }
 
 auto APinguCharacter::InitCamera() -> UCameraComponent*
