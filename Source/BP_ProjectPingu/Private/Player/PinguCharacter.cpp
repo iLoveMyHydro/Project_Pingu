@@ -16,9 +16,10 @@
 // Sets default values
 APinguCharacter::APinguCharacter()
 {
-	Material = ConstructorHelpers::FObjectFinder<UMaterialInterface>(*MAT_PATH).Object;
-	GetMesh()->SetSkeletalMesh(ConstructorHelpers::FObjectFinder<USkeletalMesh>(*MESH_PATH).Object);
-	GetMesh()->SetMaterial(0, Material);
+	Material = ConstructorHelpers::FObjectFinder<UMaterialInstance>(*MAT_PATH).Object;
+	SuperMesh = CreateDefaultSubobject<USkeletalMeshComponent>(*MESH_NAME);
+	SuperMesh->SetSkeletalMesh(ConstructorHelpers::FObjectFinder<USkeletalMesh>(*MESH_PATH).Object);
+	SuperMesh->SetMaterial(0, Material);
 
 	CollisionMesh = CreateDefaultSubobject<UBoxComponent>(*BOX_COLLISION_NAME);
 	CollisionMesh->bDynamicObstacle = true;

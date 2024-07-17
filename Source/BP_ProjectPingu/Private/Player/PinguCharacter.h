@@ -55,17 +55,21 @@ protected:
 
 private:
 
-	const FString MESH_PATH = TEXT("/Script/Engine.SkeletalMesh'/Engine/EngineMeshes/SkeletalCube.SkeletalCube'");
-	const FString MAT_PATH = TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'");
+	const FString MESH_PATH = TEXT("/Script/Engine.SkeletalMesh'/Game/Artist/Jean-Marc/Pingu_Der_Schlächter/FBX/Pinguin_Idle.Pinguin_Idle'");
+	const FString MAT_PATH = TEXT("/Script/Engine.Material'/Game/Artist/Jean-Marc/Pingu_Der_Schlächter/Textures/MAT_Pingu.MAT_Pingu'");
 	const FString MESH_ICE_SPIKE_PATH = TEXT("/Script/Engine.StaticMesh'/Engine/BasicShapes/Cone.Cone'");
 	const FString MAT_ICE_SPIKE_PATH = TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'");
 
+	const FString MESH_NAME = TEXT("Mesh");
 	const FString CAMERA_NAME = TEXT("Camera");
 	const FString CAMERA_ARM_NAME = TEXT("CameraBoom");
 	const FString BOX_COLLISION_NAME = TEXT("Box Collision");
 	const FString SCENE_ROOT_NAME = TEXT("Scene Root");
 	const FString ICE_SPIKE_PATH = TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.IceSpikes'");
 
+
+	UPROPERTY(EditAnywhere, DisplayName = "Static Mesh0", Category = "Components", meta = (AllowPrivateAccess = true))
+	USkeletalMeshComponent* SuperMesh = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Other Characters", Category = "Other Character", meta = (AllowPrivateAccess = true))
 	ACharacter* OtherCharacter = nullptr;
@@ -79,10 +83,8 @@ private:
 	UPROPERTY(EditAnywhere, DisplayName = "BoxCollider", Category = "Components", meta = (AllowPrivateAccess = true))
 	TObjectPtr<UBoxComponent> CollisionMesh = nullptr;
 
-	TObjectPtr<USceneComponent> SceneRoot = nullptr;
-
 	UPROPERTY(EditAnywhere, DisplayName = "Material", Category = "Components", meta = (AllowPrivateAccess = true))
-	TObjectPtr<UMaterialInterface> Material = nullptr;
+	UMaterialInstance* Material = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Camera", Category = "Components", meta = (AllowPrivateAccess = true))
 	TObjectPtr<class UCameraComponent> PinguCameraComponent = nullptr;
