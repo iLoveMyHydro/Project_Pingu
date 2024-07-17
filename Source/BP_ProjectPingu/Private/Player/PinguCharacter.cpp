@@ -35,7 +35,7 @@ APinguCharacter::APinguCharacter()
 	InitPlayer();
 
 	// Default offset from the character location for projectiles to spawn
-	MuzzleOffset = FVector(100.0f, 0.0f, 200.0f);
+	MuzzleOffset = FVector(0.0f, 0.0f, 0.0f);
 }
 
 void APinguCharacter::ApplyDamage(int A_DamageAmount)
@@ -82,10 +82,20 @@ void APinguCharacter::ThrowIceSpikes()
 	UWorld* const World = GetWorld();
 	if (World != nullptr)
 	{
+		GetCharacterMovement()->MovementMode == EMovementMode::MOVE_Flying;
 		AInputController* PlayerController = Cast<AInputController>(Character->GetController());
-		const FRotator SpawnRotation = PlayerController->PlayerCameraManager->GetCameraRotation();
+		FRotator SpawnRotation = GetCharacterMovement()->GetLastUpdateRotation();
+
+		if(SpawnRotation == FRotator(0.0f,0.0f,0.0f))
+		{
+			SpawnRotation = FRotator(0.0f, 0.0f, 0.0f);
+		}
+		else if (SpawnRotation == FRotator(0.0f, 180.0f, 0.0f))
+		{
+			SpawnRotation = FRotator(0.0f, 0.0f, 0.0f);
+		}
 		// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
-		const FVector SpawnLocation = (GetOwner()->GetActorLocation() + MuzzleOffset) + SpawnRotation.RotateVector(MuzzleOffset);
+		const FVector SpawnLocation = (GetOwner()->GetActorLocation()) + SpawnRotation.RotateVector(MuzzleOffset);
 
 		//Set Spawn Collision Handling Override
 		FActorSpawnParameters ActorSpawnParams;

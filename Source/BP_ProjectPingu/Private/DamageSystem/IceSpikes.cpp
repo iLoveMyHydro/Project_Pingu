@@ -7,8 +7,6 @@
 // Sets default values
 AIceSpikes::AIceSpikes()
 {
-	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
 
 	auto mesh = ConstructorHelpers::FObjectFinder<UStaticMesh>(*MESH_PATH).Object;
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(*MESH_PATH);
@@ -38,13 +36,6 @@ void AIceSpikes::BeginPlay()
 {
 	Super::BeginPlay();
 	
-}
-
-void AIceSpikes::Tick(float A_DeltaTime)
-{
-	Super::Tick(A_DeltaTime);
-
-	SetActorLocation(GetActorLocation() * A_DeltaTime * FVector::ForwardVector * 50.0f);
 }
 
 void AIceSpikes::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
