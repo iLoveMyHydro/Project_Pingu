@@ -4,6 +4,7 @@
 
 #include "InputController.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "DamageSystem/IceSpikeSpawn.h"
 #include "Enemy/Character/AIBossEnemy1.h"
 #include "Enemy/Character/AIEnemy1.h"
@@ -16,9 +17,15 @@
 // Sets default values
 APinguCharacter::APinguCharacter()
 {
-	Material = ConstructorHelpers::FObjectFinder<UMaterialInstance>(*MAT_PATH).Object;
+	GetCapsuleComponent()->InitCapsuleSize(32.0f, 90.0f);
+
+	Material = ConstructorHelpers::FObjectFinder<UMaterial>(*MAT_PATH).Object;
 	SuperMesh = CreateDefaultSubobject<USkeletalMeshComponent>(*MESH_NAME);
 	SuperMesh->SetSkeletalMesh(ConstructorHelpers::FObjectFinder<USkeletalMesh>(*MESH_PATH).Object);
+	SuperMesh->SetupAttachment(RootComponent);
+	SuperMesh->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+	SuperMesh->SetRelativeLocation(FVector(0.0f,0.0f,-90.0f));
+	SuperMesh->SetRelativeScale3D(FVector(0.3f, 0.3f, 0.3f));
 	SuperMesh->SetMaterial(0, Material);
 
 	CollisionMesh = CreateDefaultSubobject<UBoxComponent>(*BOX_COLLISION_NAME);
@@ -26,6 +33,7 @@ APinguCharacter::APinguCharacter()
 	CollisionMesh->SetupAttachment(RootComponent);
 	CollisionMesh->SetGenerateOverlapEvents(true);
 	CollisionMesh->SetBoxExtent(FVector(32.0f, 60.0f, 32.0f));
+	CollisionMesh->SetRelativeLocation(FVector());
 
 	IceSpikeActor = ConstructorHelpers::FClassFinder<AIceSpikes>(*ICE_SPIKE_PATH).Class;
 
