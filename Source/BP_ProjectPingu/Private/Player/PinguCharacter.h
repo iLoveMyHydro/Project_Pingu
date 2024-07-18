@@ -59,6 +59,7 @@ private:
 	const FString MAT_PATH = FString(TEXT("/Script/Engine.Material'/Game/Assets/Artist/Jean-Marc/Character/Material/MAT_Pingu.MAT_Pingu'"));
 	const FString MESH_ICE_SPIKE_PATH = FString(TEXT("/Script/Engine.StaticMesh'/Engine/BasicShapes/Cone.Cone'"));
 	const FString MAT_ICE_SPIKE_PATH = FString(TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'"));
+	const FString ANIM_PATH = FString(TEXT("/Script/Engine.AnimBlueprint'/Game/Animation/Player/BP_AnimInstance.BP_AnimInstance_C'"));
 
 	const FString MESH_NAME = FString(TEXT("Mesh"));
 	const FString CAMERA_NAME = FString(TEXT("Camera"));

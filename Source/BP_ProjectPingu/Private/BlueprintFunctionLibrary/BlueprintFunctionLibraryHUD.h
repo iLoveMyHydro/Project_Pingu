@@ -13,5 +13,5 @@ UCLASS()
 class UBlueprintFunctionLibraryHUD : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
-	
+
 };

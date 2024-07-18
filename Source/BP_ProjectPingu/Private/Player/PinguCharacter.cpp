@@ -26,6 +26,7 @@ APinguCharacter::APinguCharacter()
 	SuperMesh->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 	SuperMesh->SetRelativeLocation(FVector(0.0f,0.0f,-90.0f));
 	SuperMesh->SetRelativeScale3D(FVector(0.3f, 0.3f, 0.3f));
+	SuperMesh->SetAnimInstanceClass(ConstructorHelpers::FClassFinder<UAnimInstance>(*ANIM_PATH).Class);
 	SuperMesh->SetMaterial(0, Material);
 
 	CollisionMesh = CreateDefaultSubobject<UBoxComponent>(*BOX_COLLISION_NAME);
@@ -33,7 +34,8 @@ APinguCharacter::APinguCharacter()
 	CollisionMesh->SetupAttachment(RootComponent);
 	CollisionMesh->SetGenerateOverlapEvents(true);
 	CollisionMesh->SetBoxExtent(FVector(32.0f, 60.0f, 32.0f));
-	CollisionMesh->SetRelativeLocation(FVector());
+	CollisionMesh->SetRelativeLocation(FVector(72.0f, 0.0f, 0.0f));
+	CollisionMesh->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
 
 	IceSpikeActor = ConstructorHelpers::FClassFinder<AIceSpikes>(*ICE_SPIKE_PATH).Class;
 
