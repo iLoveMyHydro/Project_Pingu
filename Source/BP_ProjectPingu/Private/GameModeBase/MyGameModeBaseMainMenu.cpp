@@ -3,9 +3,9 @@
 
 #include "GameModeBase/MyGameModeBaseMainMenu.h"
 
-#include "HUD/MainMenuHUD.h"
+#include "GUI/MainMenu.h"
 
 AMyGameModeBaseMainMenu::AMyGameModeBaseMainMenu()
 {
-	HUDClass = AMainMenuHUD::StaticClass();
+	HUDClass = UMainMenu::StaticClass();
 }
