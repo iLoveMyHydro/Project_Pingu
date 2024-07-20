@@ -19,8 +19,14 @@ private:
 
 	UFUNCTION()
 	void PlayButtonClicked();
+
+	UFUNCTION()
 	void OptionButtonClicked();
+
+	UFUNCTION()
 	void CreditsButtonClicked();
+
+	UFUNCTION()
 	void QuitButtonClicked();
 
 	UPROPERTY(meta = (BindWidget))
