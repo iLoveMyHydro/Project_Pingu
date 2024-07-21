@@ -7,6 +7,7 @@
 #include "DamageSystem/Damagable.h"
 #include "DamageSystem/IceSpikes.h"
 #include "GameFramework/Character.h"
+#include "GUI/PlayerHUD.h"
 #include "PinguCharacter.generated.h"
 
 class UCameraComponent;
@@ -60,6 +61,7 @@ private:
 	const FString MESH_ICE_SPIKE_PATH = FString(TEXT("/Script/Engine.StaticMesh'/Engine/BasicShapes/Cone.Cone'"));
 	const FString MAT_ICE_SPIKE_PATH = FString(TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'"));
 	const FString ANIM_PATH = FString(TEXT("/Script/Engine.AnimBlueprint'/Game/Animation/Player/BP_AnimInstance.BP_AnimInstance_C'"));
+	const FString PLAYER_HUD_PATH = FString(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_PlayerHUD_Code'"));
 
 	const FString MESH_NAME = FString(TEXT("Mesh"));
 	const FString CAMERA_NAME = FString(TEXT("Camera"));
@@ -77,6 +79,9 @@ private:
 
 	UPROPERTY(EditAnywhere, DisplayName = "Health", Category = "Value", meta = (AllowPrivateAccess = true))
 	int Health = 3;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Max Health", Category = "Value", meta = (AllowPrivateAccess = true))
+	int MaxHealth = 3;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Is Colliding", Category = "Attack", meta = (AllowPrivateAccess = true))
 	bool IsColliding = false;
@@ -109,4 +114,11 @@ private:
 	FVector MuzzleOffset;
 
 	APinguCharacter* Character = nullptr;
+
+	UPROPERTY()
+	class UPlayerHUD* PlayerHUD = nullptr;
+
+	UPROPERTY()
+	TSubclassOf<class UPlayerHUD> PlayerHUDObject;
+	
 };

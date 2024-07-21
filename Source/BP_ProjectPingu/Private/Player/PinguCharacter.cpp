@@ -47,6 +47,8 @@ APinguCharacter::APinguCharacter()
 
 	// Default offset from the character location for projectiles to spawn
 	MuzzleOffset = FVector(0.0f, 0.0f, 0.0f);
+
+	PlayerHUDObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PLAYER_HUD_PATH).Class;
 }
 
 void APinguCharacter::ApplyDamage(int A_DamageAmount)
@@ -54,6 +56,8 @@ void APinguCharacter::ApplyDamage(int A_DamageAmount)
 	A_DamageAmount -= A_DamageAmount;
 
 	Health += A_DamageAmount;
+
+	PlayerHUD->SetLifeAmount(Health, MaxHealth);
 
 	if (Health <= 0)
 	{
@@ -159,6 +163,19 @@ void APinguCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	CollisionMesh->OnComponentBeginOverlap.AddDynamic(this, &APinguCharacter::OnBoxBeginOverlap);
+
+	if(PlayerHUDObject && IsLocallyControlled())
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("UI"));
+		AInputController* PlayerController = GetController<AInputController>();
+		check(PlayerController);
+
+		PlayerHUD = CreateWidget<UPlayerHUD>(PlayerController, PlayerHUDObject, "Player HUD");
+		check(PlayerHUD);
+
+		PlayerHUD->AddToPlayerScreen();
+		PlayerHUD->SetLifeAmount(MaxHealth, MaxHealth);
+	}
 
 }
 

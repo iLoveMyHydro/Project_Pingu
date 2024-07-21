@@ -35,5 +35,5 @@ void ARespawnPoint::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActo
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	bSpawnPointSet = true;
-	UE_LOG(LogTemp, Warning, TEXT("Collider"));
+
 }

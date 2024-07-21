@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GUI/LifeImage.h"
 #include "Blueprint/UserWidget.h"
 #include "PlayerHUD.generated.h"
 
@@ -20,5 +21,14 @@ public:
 private:
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UHorizontalBox* HorizontalBox = nullptr;
+
+	UPROPERTY()
+	class ULifeImage* LifeImage = nullptr;
+
+	UPROPERTY()
+	TSubclassOf<class ULifeImage> LifeImageObject;
+
+private:
+	const FString PLAYER_HUD_PATH = FString(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_PlayerHUD_Code'"));
 
 };

@@ -17,9 +17,8 @@ void UOptionMenu::NativeConstruct()
 
 	//Binding
 	MainMenuButton->OnClicked.AddDynamic(this, &UOptionMenu::MainMenuButtonClicked);
-	//FullscreenCheckBox->OnCheckStateChanged.AddDynamic(this, &UOptionMenu::FullscreenBoxClicked);
-		//VsyncCheckBox
-		//MusicCheckBox
+	//FullscreenCheckBox->OnCheckStateChanged
+	//VsyncCheckBox->OnCheckStateChanged
 
 }
 

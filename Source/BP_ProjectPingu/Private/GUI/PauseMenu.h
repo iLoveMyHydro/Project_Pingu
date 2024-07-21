@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "MainMenu.generated.h"
+#include "PauseMenu.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class UMainMenu : public UUserWidget
+class UPauseMenu : public UUserWidget
 {
 	GENERATED_BODY()
 
@@ -24,10 +24,13 @@ private:
 	void OptionButtonClicked();
 
 	UFUNCTION()
-	void CreditsButtonClicked();
+	void MainMenuButtonClicked();
 
 	UFUNCTION()
 	void QuitButtonClicked();
+
+	UPROPERTY(meta = (BindWidget))
+	class UButton* MainMenuButton = nullptr;
 
 	UPROPERTY(meta = (BindWidget))
 	class UButton* PlayButton = nullptr;
@@ -36,13 +39,10 @@ private:
 	class UButton* OptionButton = nullptr;
 
 	UPROPERTY(meta = (BindWidget))
-	class UButton* CreditsButton = nullptr;
-
-	UPROPERTY(meta = (BindWidget))
 	class UButton* QuitButton = nullptr;
 
 private:
-	const FName LEVEL_NAME = FName(TEXT("/Script/Engine.World'/Game/Maps/Project_Pingu.Project_Pingu'"));
-	const FName OPTION_LEVEL_NAME = FName(TEXT(""));
-	const FName CREDITS_LEVEL_NAME = FName(TEXT(""));
+	const FName MAIN_MENU_NAME = FName(TEXT("/Script/Engine.World'/Game/Maps/MainMenu_Code.MainMenu_Code'"));
+	const FName OPTION_MENU_NAME = FName(TEXT("/Script/Engine.World'/Game/Maps/OptionMenu_Code.OptionMenu_Code'"));
+
 };

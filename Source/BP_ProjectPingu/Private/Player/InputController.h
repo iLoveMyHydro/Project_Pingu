@@ -35,6 +35,7 @@ protected:
 	void HandleSlapAttack(void);
 	void HandleNootAttack(void);
 	void HandleSlapAttackComplete(void);
+	void HandlePauseAction(void);
 
 private:
 	const FString IA_MOVE_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_Move.IA_Move'");
@@ -43,6 +44,8 @@ private:
 	const FString IA_SLAP_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_Slap.IA_Slap'");
 	const FString IA_NOOT_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_NootNoot.IA_NootNoot'");
 	const FString IMC_PATH = TEXT("/Script/EnhancedInput.InputMappingContext'/Game/Input/IMC_Character.IMC_Character'");
+	const FString IA_PAUSE_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_Pause.IA_Pause'");
+	const FString PAUSE_MENU_PATH = FString(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_PauseMenu_Code.WBP_PauseMenu_Code'"));
 
 	UPROPERTY(EditAnywhere)
 	class AActor* SelectedActor;
@@ -88,9 +91,18 @@ private:
 	UPROPERTY(EditAnywhere, DisplayName = "Noot Noot", Category = "InputAction", meta = (AllowPrivateAccess = true))
 	UInputAction* NootNootAction = nullptr;
 
+	UPROPERTY(EditAnywhere, DisplayName = "Pause Action", Category = "InputAction", meta = (AllowPrivateAccess = true))
+	UInputAction* PauseAction = nullptr;
+
 #pragma endregion
 
 	APinguCharacter* PinguCharacter = nullptr;
 	AAIBossEnemy1* BossEnemy = nullptr;
 	AAIEnemy1* Enemy = nullptr;
+
+	UPROPERTY()
+	class UPauseMenu* PauseMenu = nullptr;
+
+	UPROPERTY()
+	TSubclassOf<class UPauseMenu> PauseMenuObject;
 };

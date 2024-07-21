@@ -10,12 +10,16 @@
 #include "Enemy/Character/AIBossEnemy1.h"
 #include "Enemy/Character/AIEnemy1.h"
 #include "GameFramework/Character.h"
+#include "GUI/PauseMenu.h"
 
 class UEnhancedInputLocalPlayerSubsystem;
 
 AInputController::AInputController()
 {
 	InitInputAction();
+
+	PauseMenuObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PAUSE_MENU_PATH).Class;
+
 }
 
 void AInputController::BeginPlay()
@@ -28,6 +32,16 @@ void AInputController::BeginPlay()
 		Subsystem->AddMappingContext(DefaultMappingContext, 0);
 
 		UE_LOG(LogTemp, Warning, TEXT("BeginPlay"));
+	}
+
+	if (PauseMenuObject)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Pause Menu"));
+
+		PauseMenu = CreateWidget<UPauseMenu>(this, PauseMenuObject, "Pause Menu");
+		check(PauseMenu);
+
+		PauseMenu->AddToPlayerScreen();
 	}
 }
 
@@ -51,6 +65,9 @@ void AInputController::SetupInputComponent()
 
 		//Noot Noot Attack
 		EnhancedInputComponent->BindAction(NootNootAction, ETriggerEvent::Started, this, &AInputController::HandleNootAttack);
+
+		//Pause Menu
+		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Started, this, &AInputController::HandlePauseAction);
 	}
 }
 
@@ -61,6 +78,7 @@ void AInputController::InitInputAction()
 	JumpAction = ConstructorHelpers::FObjectFinder<UInputAction>(*IA_JUMP_PATH).Object;
 	SlapAction = ConstructorHelpers::FObjectFinder<UInputAction>(*IA_SLAP_PATH).Object;
 	NootNootAction = ConstructorHelpers::FObjectFinder<UInputAction>(*IA_NOOT_PATH).Object;
+	PauseAction = ConstructorHelpers::FObjectFinder<UInputAction>(*IA_PAUSE_PATH).Object;
 
 }
 
@@ -151,4 +169,15 @@ void AInputController::HandleNootAttack()
 void AInputController::HandleSlapAttackComplete()
 {
 	IsAttacking = false;
+}
+
+void AInputController::HandlePauseAction()
+{
+	AInputController* const PlayerController = Cast<AInputController>(GEngine->GetFirstLocalPlayerController(GetWorld()));
+	if (PlayerController != nullptr)
+	{
+		PlayerController->bShowMouseCursor = true;
+		PlayerController->SetInputMode(FInputModeUIOnly());
+		PlayerController->SetPause(true);
+	}
 }
