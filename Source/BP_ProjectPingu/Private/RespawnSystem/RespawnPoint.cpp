@@ -4,6 +4,8 @@
 #include "RespawnSystem/RespawnPoint.h"
 
 #include "GameModeBase/GameModeBaseCode.h"
+#include "Kismet/GameplayStatics.h"
+#include "Player/InputController.h"
 #include "Player/PinguCharacter.h"
 
 // Sets default values
@@ -22,7 +24,6 @@ ARespawnPoint::ARespawnPoint()
 void ARespawnPoint::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 
 // Called every frame
@@ -35,5 +36,11 @@ void ARespawnPoint::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActo
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	bSpawnPointSet = true;
+
+	Character = Cast<APinguCharacter>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn());
+	GameMode = Cast<AGameModeBaseCode>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn());
+	InputController = Cast<AInputController>(Character->GetController());
+	FTransform SpawnPoint = Character->GetActorTransform();
+	GameMode->SpawnDefaultPawnAtTransform(InputController , SpawnPoint);
 
 }

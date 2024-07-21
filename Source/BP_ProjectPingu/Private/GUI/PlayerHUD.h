@@ -18,6 +18,8 @@ class UPlayerHUD : public UUserWidget
 public:
 	void SetLifeAmount(int CurrentLife, int MaxLife);
 
+	void SetIceSpikeAmount(int CurrentIceSpike, int MaxIceSpike);
+
 private:
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UHorizontalBox* HorizontalBox = nullptr;
@@ -27,6 +29,13 @@ private:
 
 	UPROPERTY()
 	TSubclassOf<class ULifeImage> LifeImageObject;
+
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	class UImage* IceSpike = nullptr;
+
+
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	class UTextBlock* IceSpikeText = nullptr;
 
 private:
 	const FString PLAYER_HUD_PATH = FString(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_PlayerHUD_Code'"));

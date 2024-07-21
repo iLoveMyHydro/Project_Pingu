@@ -46,6 +46,8 @@ private:
 	const FString IMC_PATH = TEXT("/Script/EnhancedInput.InputMappingContext'/Game/Input/IMC_Character.IMC_Character'");
 	const FString IA_PAUSE_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_Pause.IA_Pause'");
 	const FString PAUSE_MENU_PATH = FString(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_PauseMenu_Code.WBP_PauseMenu_Code'"));
+	const FString PLAYER_HUD_PATH = FString(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_PlayerHUD_Code'"));
+
 
 	UPROPERTY(EditAnywhere)
 	class AActor* SelectedActor;
@@ -105,4 +107,10 @@ private:
 
 	UPROPERTY()
 	TSubclassOf<class UPauseMenu> PauseMenuObject;
+
+	UPROPERTY()
+	class UPlayerHUD* PlayerHUD = nullptr;
+
+	UPROPERTY()
+	TSubclassOf<class UPlayerHUD> PlayerHUDObject;
 };

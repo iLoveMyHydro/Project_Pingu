@@ -175,8 +175,8 @@ void APinguCharacter::BeginPlay()
 
 		PlayerHUD->AddToPlayerScreen();
 		PlayerHUD->SetLifeAmount(MaxHealth, MaxHealth);
+		PlayerHUD->SetIceSpikeAmount(5, 5);
 	}
-
 }
 
 void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,

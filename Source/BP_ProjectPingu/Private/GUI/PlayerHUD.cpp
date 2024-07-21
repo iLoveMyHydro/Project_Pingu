@@ -4,6 +4,7 @@
 #include "GUI/PlayerHUD.h"
 #include "GUI/LifeImage.h"
 #include "Components/HorizontalBox.h"
+#include "Components/TextBlock.h"
 
 void UPlayerHUD::SetLifeAmount(int CurrentLife, int MaxLife)
 {
@@ -24,5 +25,27 @@ void UPlayerHUD::SetLifeAmount(int CurrentLife, int MaxLife)
 	else
 	{
 		//TODO: Set Current Life in Bar
+		for (int i = 0; i < CurrentLife; i++)
+		{
+			//LifeImageObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PLAYER_HUD_PATH).Class;
+
+
+			//LifeImage = CreateWidget<ULifeImage>(HorizontalBox, LifeImageObject, TEXT("Life Image"));
+			//HorizontalBox->AddChild(LifeImage);
+		}
+	}
+}
+
+void UPlayerHUD::SetIceSpikeAmount(int CurrentIceSpike, int MaxIceSpike)
+{
+	if (CurrentIceSpike == MaxIceSpike)
+	{
+		FText currentIceSpike = FText::FromString(FString::FromInt(MaxIceSpike));
+		IceSpikeText->SetText(currentIceSpike);
+	}
+	else
+	{
+		FText currentIceSpike = FText::FromString(FString::FromInt(CurrentIceSpike));
+		IceSpikeText->SetText(currentIceSpike);
 	}
 }

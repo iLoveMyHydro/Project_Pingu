@@ -6,6 +6,9 @@
 #include "Components/ArrowComponent.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
+#include "GameModeBase/GameModeBaseCode.h"
+#include "Player/InputController.h"
+#include "Player/PinguCharacter.h"
 #include "RespawnPoint.generated.h"
 
 UCLASS()
@@ -42,4 +45,10 @@ private:
 
 	UPROPERTY(EditAnywhere, DisplayName = "b Spawn Point", Category = "Component")
 	bool bSpawnPointSet = false;
+
+	APinguCharacter* Character = nullptr;
+
+	AGameModeBaseCode* GameMode = nullptr;
+
+	AInputController* InputController = nullptr;
 };

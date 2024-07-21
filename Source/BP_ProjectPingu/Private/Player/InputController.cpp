@@ -20,6 +20,8 @@ AInputController::AInputController()
 
 	PauseMenuObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PAUSE_MENU_PATH).Class;
 
+	PlayerHUDObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PLAYER_HUD_PATH).Class;
+
 }
 
 void AInputController::BeginPlay()
@@ -42,6 +44,17 @@ void AInputController::BeginPlay()
 		check(PauseMenu);
 
 		PauseMenu->AddToPlayerScreen();
+	}
+
+	if (PlayerHUDObject)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("UI"));
+
+		PlayerHUD = CreateWidget<UPlayerHUD>(this, PlayerHUDObject, "Player HUD");
+		check(PlayerHUD);
+
+		PlayerHUD->AddToPlayerScreen();
+		PlayerHUD->SetIceSpikeAmount(5, 5);
 	}
 }
 
@@ -158,6 +171,7 @@ void AInputController::HandleNootAttack()
 		IceSpikes = 0;
 	}
 
+	PlayerHUD->SetIceSpikeAmount(IceSpikes, 5);
 	PinguCharacter->SetIceSpikes(IceSpikes);
 
 	if( PinguCharacter->GetIceSpikes() > 0 )
