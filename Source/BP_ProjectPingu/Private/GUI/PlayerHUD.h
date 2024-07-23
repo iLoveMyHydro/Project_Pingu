@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GUI/LifeImage.h"
 #include "Blueprint/UserWidget.h"
 #include "PlayerHUD.generated.h"
 
@@ -24,15 +23,17 @@ private:
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UHorizontalBox* HorizontalBox = nullptr;
 
-	UPROPERTY()
-	class ULifeImage* LifeImage = nullptr;
-
-	UPROPERTY()
-	TSubclassOf<class ULifeImage> LifeImageObject;
+	UPROPERTY(EditAnywhere, meta = (BinndWidget))
+	class UImage* LifeImage = nullptr;
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
-	class UImage* IceSpike = nullptr;
+	class UCanvasPanel* HealthOne = nullptr;
 
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	class UCanvasPanel* HealthTwo = nullptr;
+
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	class UCanvasPanel* HealthThree = nullptr;
 
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UTextBlock* IceSpikeText = nullptr;

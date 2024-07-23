@@ -38,9 +38,9 @@ APinguCharacter::APinguCharacter()
 	CollisionMesh->bDynamicObstacle = true;
 	CollisionMesh->SetupAttachment(RootComponent);
 	CollisionMesh->SetGenerateOverlapEvents(true);
-	CollisionMesh->SetBoxExtent(FVector(32.0f, 60.0f, 32.0f));
+	CollisionMesh->SetBoxExtent(FVector(90.0f, 60.0f, 32.0f));
 	CollisionMesh->SetRelativeLocation(FVector(72.0f, 0.0f, 0.0f));
-	CollisionMesh->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
+	CollisionMesh->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f));
 
 	IceSpikeActor = ConstructorHelpers::FClassFinder<AIceSpikes>(*ICE_SPIKE_PATH).Class;
 
@@ -67,6 +67,7 @@ void APinguCharacter::ApplyDamage(int A_DamageAmount)
 	if (Health <= 0)
 	{
 		APinguCharacter::Destroy();
+		//TODO: Respawn Bildschirm einblenden - am RespawnPoint spawnen lassen
 	}
 }
 
@@ -213,11 +214,7 @@ void APinguCharacter::BeginPlay()
 		PlayerHUD->SetIceSpikeAmount(5, 5);
 	}
 
-	SuperMesh->SetAnimationMode(EAnimationMode::AnimationSingleNode);;
-	SuperMesh->PlayAnimation(IdleAnim, true);
-	SuperMesh->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
-	SuperMesh->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
-	SuperMesh->SetRelativeScale3D(FVector(0.3f, 0.3f, 0.3f));
+	//SuperMesh->PlayAnimation(IdleAnim, true);
 }
 
 void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
@@ -238,6 +235,7 @@ void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 		if(IceSpikes <= IceSpikesMax)
 		{
 			IceSpikes = IceSpikesMax;
+			PlayerHUD->SetIceSpikeAmount(IceSpikes, IceSpikesMax);
 		}
 	}
 	IsColliding = true;

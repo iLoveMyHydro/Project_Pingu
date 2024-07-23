@@ -2,37 +2,28 @@
 
 
 #include "GUI/PlayerHUD.h"
-#include "GUI/LifeImage.h"
+
+#include "Components/CanvasPanel.h"
 #include "Components/HorizontalBox.h"
 #include "Components/TextBlock.h"
 
 void UPlayerHUD::SetLifeAmount(int CurrentLife, int MaxLife)
 {
-	//TODO: Set Life
-
-	if(CurrentLife == MaxLife)
+	if(CurrentLife == 2)
 	{
-		//TODO: Set Max Life in Bar
-		for (int i = 0; i < MaxLife; i++)
-		{
-			//LifeImageObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PLAYER_HUD_PATH).Class;
-
-
-			//LifeImage = CreateWidget<ULifeImage>(HorizontalBox, LifeImageObject, TEXT("Life Image"));
-			//HorizontalBox->AddChild(LifeImage);
-		}
+		HealthThree->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 	}
-	else
+	else if (CurrentLife == 1)
 	{
-		//TODO: Set Current Life in Bar
-		for (int i = 0; i < CurrentLife; i++)
-		{
-			//LifeImageObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PLAYER_HUD_PATH).Class;
+		HealthThree->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+		HealthTwo->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+	}
+	else if(CurrentLife == 3)
+	{
+		HealthThree->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+		HealthTwo->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+		HealthOne->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 
-
-			//LifeImage = CreateWidget<ULifeImage>(HorizontalBox, LifeImageObject, TEXT("Life Image"));
-			//HorizontalBox->AddChild(LifeImage);
-		}
 	}
 }
 

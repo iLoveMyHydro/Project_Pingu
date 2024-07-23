@@ -17,27 +17,33 @@ void UOptionMenu::NativeConstruct()
 
 	//Binding
 	MainMenuButton->OnClicked.AddDynamic(this, &UOptionMenu::MainMenuButtonClicked);
-	//FullscreenCheckBox->OnCheckStateChanged
-	//VsyncCheckBox->OnCheckStateChanged
+	FullscreenCheckBox->OnCheckStateChanged.AddDynamic(this, &UOptionMenu::FullscreenBoxClicked);
+	VsyncCheckBox->OnCheckStateChanged.AddDynamic(this, &UOptionMenu::VsyncBoxClicked);
 
 }
 
-void UOptionMenu::FullscreenBoxClicked()
+void UOptionMenu::FullscreenBoxClicked(bool bIsChecked)
 {
-	//UGameUserSettings* Settings = GEngine->GetGameUserSettings();
-	//auto FullscreenMode = clicked ? EWindowMode::Type::Fullscreen : EWindowMode::Type::Windowed;
-	//Settings->SetFullscreenMode(FullscreenMode);
-	//Settings->ApplyResolutionSettings(false);
-	//Settings->SaveSettings();
+	UGameUserSettings* Settings = GEngine->GetGameUserSettings();
+	auto FullscreenMode = bIsChecked ? EWindowMode::Type::Fullscreen : EWindowMode::Type::Windowed;
+	Settings->SetFullscreenMode(FullscreenMode);
+	Settings->ApplyResolutionSettings(false);
+	Settings->SaveSettings();
 }
 
-void UOptionMenu::VsyncBoxClicked()
+void UOptionMenu::VsyncBoxClicked(bool bIsChecked)
 {
-	//UGameUserSettings* Settings = GEngine->GetGameUserSettings();
-	//bool bIsVsyncMode = clicked ? Settings->SetVSyncEnabled(true) : Settings->SetVSyncEnabled(false);
-	//if (bIsVsyncMode) Settings->SetVSyncEnabled(bIsVsyncMode);
-	//if (bIsVsyncMode) Settings->SetFrameRateLimit(60);
-	//Settings->ApplySettings(true);
+	UGameUserSettings* Settings = GEngine->GetGameUserSettings();
+	if(bIsChecked)
+	{
+		Settings->SetVSyncEnabled(true);
+		Settings->SetFrameRateLimit(60);
+	}
+	else
+	{
+		Settings->SetVSyncEnabled(false);
+	}
+	Settings->ApplySettings(true);
 }
 
 void UOptionMenu::MainMenuButtonClicked()

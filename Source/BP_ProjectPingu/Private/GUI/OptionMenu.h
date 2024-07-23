@@ -19,10 +19,10 @@ private:
 	virtual void NativeConstruct() override;
 
 	UFUNCTION()
-	void FullscreenBoxClicked();
+	void FullscreenBoxClicked(bool bIsChecked);
 
 	UFUNCTION()
-	void VsyncBoxClicked();
+	void VsyncBoxClicked(bool bIsChecked);
 
 	UFUNCTION()
 	void MainMenuButtonClicked();
