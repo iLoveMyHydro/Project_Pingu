@@ -40,7 +40,7 @@ void ARespawnPoint::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActo
 	Character = Cast<APinguCharacter>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn());
 	GameMode = Cast<AGameModeBaseCode>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn());
 	InputController = Cast<AInputController>(Character->GetController());
-	FTransform SpawnPoint = Character->GetActorTransform();
-	GameMode->SpawnDefaultPawnAtTransform(InputController , SpawnPoint);
 
+	auto SpawnPoint = OtherActor->GetActorLocation();
+	//GameMode->setplay(InputController , SpawnPoint);
 }

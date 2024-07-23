@@ -54,7 +54,7 @@ void AInputController::BeginPlay()
 		check(PlayerHUD);
 
 		PlayerHUD->AddToPlayerScreen();
-		PlayerHUD->SetIceSpikeAmount(5, 5);
+		PlayerHUD->SetIceSpikeAmount(0, 5);
 	}
 }
 
