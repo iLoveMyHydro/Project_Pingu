@@ -92,7 +92,6 @@ void AInputController::InitInputAction()
 	SlapAction = ConstructorHelpers::FObjectFinder<UInputAction>(*IA_SLAP_PATH).Object;
 	NootNootAction = ConstructorHelpers::FObjectFinder<UInputAction>(*IA_NOOT_PATH).Object;
 	PauseAction = ConstructorHelpers::FObjectFinder<UInputAction>(*IA_PAUSE_PATH).Object;
-
 }
 
 void AInputController::Move(const FInputActionValue& Value)
@@ -101,22 +100,28 @@ void AInputController::Move(const FInputActionValue& Value)
 	FVector InputVector = FVector(InputPlayerMovement, 0);
 
 	GetCharacter()->AddMovementInput(InputVector, Speed, false);
+	PinguCharacter = GetPawn<APinguCharacter>();
+
+	if (PinguCharacter == nullptr) return;
+
+	//PinguCharacter->SetWalkAnimation();
 }
 
 void AInputController::Jump()
 {
-	auto* MyCharacter = GetPawn<ACharacter>();
-	if (!IsValid(MyCharacter))
-		return;
-	MyCharacter->Jump();
+	PinguCharacter = GetPawn<APinguCharacter>();
+	if (PinguCharacter == nullptr) return;
+
+	PinguCharacter->Jump();
+	//PinguCharacter->SetJumpAnimation();
 }
 
 void AInputController::StopJump()
 {
-	auto* MyCharacter = GetPawn<ACharacter>();
-	if (!IsValid(MyCharacter))
-		return;
-	MyCharacter->StopJumping();
+	PinguCharacter = GetPawn<APinguCharacter>();
+	if (PinguCharacter == nullptr) return;
+
+	PinguCharacter->StopJumping();
 }
 
 void AInputController::HandleStopMovement(const FInputActionValue& Value)
@@ -126,13 +131,20 @@ void AInputController::HandleStopMovement(const FInputActionValue& Value)
 	FVector InputVector = FVector(InputPlayerMovement, 0);
 
 	GetCharacter()->AddMovementInput(InputVector, 0, false);
+
+
+
+	//PinguCharacter->SetIdleAnimation();
 }
 
 
 void AInputController::HandleSlapAttack()
 {
-	//TODO: Animation ausführen
-	//TODO: Apply Damage richtig einstellen
+	//PinguCharacter = GetPawn<APinguCharacter>();
+
+	//if (PinguCharacter == nullptr) return;
+
+	//PinguCharacter->SetSlapAnimation();
 
 	if(!GetWorld()) return;
 
@@ -156,11 +168,12 @@ void AInputController::HandleSlapAttack()
 
 void AInputController::HandleNootAttack()
 {
-	//TODO: Animation ausführen
 
-	PinguCharacter = GetPawn<APinguCharacter>();
+	//PinguCharacter = GetPawn<APinguCharacter>();
 
-	if (PinguCharacter == nullptr) return;
+	//if (PinguCharacter == nullptr) return;
+
+	//PinguCharacter->SetNootAnimation();
 
 	auto IceSpikes = PinguCharacter->GetIceSpikes();
 

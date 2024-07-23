@@ -5,6 +5,11 @@
 #include "OptionMenu.h"
 #include "Blueprint/UserWidget.h"
 
+AOptionMenuLevel::AOptionMenuLevel()
+{
+	OptionMenuObject = ConstructorHelpers::FClassFinder<UOptionMenu>(*OBJECT_PATH).Class;
+}
+
 void AOptionMenuLevel::BeginPlay()
 {
 	Super::BeginPlay();

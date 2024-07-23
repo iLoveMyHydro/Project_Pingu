@@ -37,6 +37,14 @@ public:
 
 	void ThrowIceSpikes();
 
+	APinguCharacter& SetIdleAnimation(void);
+	APinguCharacter& SetNootAnimation(void);
+	APinguCharacter& SetWalkAnimation(void);
+	APinguCharacter& SetJumpAnimation(void);
+	APinguCharacter& SetSlapAnimation(void);
+
+
+
 private:
 	auto InitCamera(void) -> class UCameraComponent*;
 
@@ -55,7 +63,6 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-
 	const FString MESH_PATH = FString(TEXT("/Script/Engine.SkeletalMesh'/Game/Assets/Artist/Jean-Marc/Character/FBX/Pinguin_Idle.Pinguin_Idle'"));
 	const FString MAT_PATH = FString(TEXT("/Script/Engine.Material'/Game/Assets/Artist/Jean-Marc/Character/Material/MAT_Pingu.MAT_Pingu'"));
 	const FString MESH_ICE_SPIKE_PATH = FString(TEXT("/Script/Engine.StaticMesh'/Engine/BasicShapes/Cone.Cone'"));
@@ -69,9 +76,15 @@ private:
 	const FString BOX_COLLISION_NAME = FString(TEXT("Box Collision"));
 	const FString SCENE_ROOT_NAME = FString(TEXT("Scene Root"));
 	const FString ICE_SPIKE_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.IceSpikes'"));
+	const FString IDLE_ANIM_PATH = FString(TEXT("AnimSequence'/Game/Assets/Artist/Jean-Marc/Character/FBX/Pinguin_Idle_Anim'"));
+	const FString WALK_ANIM_PATH = FString(TEXT("AnimSequence'/Game/Assets/Artist/Jean-Marc/Character/FBX/Pinguin_Walk_Anim'"));
+	const FString SLAP_ANIM_PATH = FString(TEXT("AnimSequence'/Game/Assets/Artist/Jean-Marc/Character/FBX/Pinguin_Bitch_Slap_Anim'"));
+	const FString NOOT_ANIM_PATH = FString(TEXT("AnimSequence'/Game/Assets/Artist/Jean-Marc/Character/FBX/Pinguin_Noot_Noot_Anim'"));
+	const FString JUMP_ANIM_PATH = FString(TEXT("AnimSequence'/Game/Assets/Artist/Jean-Marc/Character/FBX/Pinguin_Jump1_Anim'"));
 
 
-	UPROPERTY(EditAnywhere, DisplayName = "Static Mesh0", Category = "Components", meta = (AllowPrivateAccess = true))
+	//AllowPrivateAccess nur nötig wenn Blueprint Access !
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "Static Mesh0", Category = "Components", meta = (AllowPrivateAccess = true))
 	USkeletalMeshComponent* SuperMesh = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Other Characters", Category = "Other Character", meta = (AllowPrivateAccess = true))
@@ -120,5 +133,19 @@ private:
 
 	UPROPERTY()
 	TSubclassOf<class UPlayerHUD> PlayerHUDObject;
-	
+
+	UPROPERTY(EditAnywhere, DisplayName = "Animation Idle", Category = "Animation")
+	UAnimSequence* IdleAnim;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Animation Walk", Category = "Animation")
+	UAnimSequence* WalkAnim;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Animation Noot", Category = "Animation")
+	UAnimSequence* NootAnim;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Animation Jump", Category = "Animation")
+	UAnimSequence* JumpAnim;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Animation Slap", Category = "Animation")
+	UAnimSequence* SlapAnim;
 };

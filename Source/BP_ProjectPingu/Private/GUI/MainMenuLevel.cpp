@@ -5,6 +5,11 @@
 #include "MainMenu.h"
 #include "Blueprint/UserWidget.h"
 
+AMainMenuLevel::AMainMenuLevel()
+{
+	MainMenuObject = ConstructorHelpers::FClassFinder<UMainMenu>(*OBJECT_PATH).Class;
+}
+
 void AMainMenuLevel::BeginPlay()
 {
 	Super::BeginPlay();
@@ -16,5 +21,14 @@ void AMainMenuLevel::BeginPlay()
 		{
 			MainMenu->AddToViewport();
 		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("No Menu Loaded!"));
+
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No Object Loaded!"));
 	}
 }

@@ -14,6 +14,9 @@ class AOptionMenuLevel : public ALevelScriptActor
 {
 	GENERATED_BODY()
 
+public:
+	AOptionMenuLevel();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -22,4 +25,9 @@ protected:
 
 	UPROPERTY()
 	class UOptionMenu* OptionMenu;
+
+private:
+	const FString OBJECT_PATH = FString(TEXT("WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_OptionsMenu_Code'"));
+
+
 };

@@ -14,6 +14,8 @@ class AMainMenuLevel : public ALevelScriptActor
 {
 	GENERATED_BODY()
 
+	AMainMenuLevel();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -22,5 +24,9 @@ protected:
 
 	UPROPERTY()
 	class UMainMenu* MainMenu;
+
+
+private:
+	const FString OBJECT_PATH = FString(TEXT("WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_MainMenu_Code'"));
 
 };

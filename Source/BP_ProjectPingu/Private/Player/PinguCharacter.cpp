@@ -26,8 +26,13 @@ APinguCharacter::APinguCharacter()
 	SuperMesh->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 	SuperMesh->SetRelativeLocation(FVector(0.0f,0.0f,-90.0f));
 	SuperMesh->SetRelativeScale3D(FVector(0.3f, 0.3f, 0.3f));
-	SuperMesh->SetAnimInstanceClass(ConstructorHelpers::FClassFinder<UAnimInstance>(*ANIM_PATH).Class);
 	SuperMesh->SetMaterial(0, Material);
+
+	IdleAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*IDLE_ANIM_PATH).Object;
+	WalkAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*WALK_ANIM_PATH).Object;
+	NootAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*NOOT_ANIM_PATH).Object;
+	JumpAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*JUMP_ANIM_PATH).Object;
+	SlapAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*SLAP_ANIM_PATH).Object;
 
 	CollisionMesh = CreateDefaultSubobject<UBoxComponent>(*BOX_COLLISION_NAME);
 	CollisionMesh->bDynamicObstacle = true;
@@ -120,6 +125,36 @@ void APinguCharacter::ThrowIceSpikes()
 	}
 }
 
+APinguCharacter& APinguCharacter::SetIdleAnimation()
+{
+	SuperMesh->PlayAnimation(IdleAnim, true);
+	return *this;
+}
+
+APinguCharacter& APinguCharacter::SetNootAnimation()
+{
+	SuperMesh->PlayAnimation(NootAnim, false);
+	return *this;
+}
+
+APinguCharacter& APinguCharacter::SetWalkAnimation()
+{
+	SuperMesh->PlayAnimation(WalkAnim, true);
+	return *this;
+}
+
+APinguCharacter& APinguCharacter::SetJumpAnimation()
+{
+	SuperMesh->PlayAnimation(JumpAnim, false);
+	return *this;
+}
+
+APinguCharacter& APinguCharacter::SetSlapAnimation()
+{
+	SuperMesh->PlayAnimation(SlapAnim, false);
+	return *this;
+}
+
 auto APinguCharacter::InitCamera() -> UCameraComponent*
 {
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(*CAMERA_ARM_NAME);
@@ -177,6 +212,12 @@ void APinguCharacter::BeginPlay()
 		PlayerHUD->SetLifeAmount(MaxHealth, MaxHealth);
 		PlayerHUD->SetIceSpikeAmount(5, 5);
 	}
+
+	SuperMesh->SetAnimationMode(EAnimationMode::AnimationSingleNode);;
+	SuperMesh->PlayAnimation(IdleAnim, true);
+	SuperMesh->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+	SuperMesh->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
+	SuperMesh->SetRelativeScale3D(FVector(0.3f, 0.3f, 0.3f));
 }
 
 void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
