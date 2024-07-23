@@ -104,7 +104,7 @@ void AInputController::Move(const FInputActionValue& Value)
 
 	if (PinguCharacter == nullptr) return;
 
-	//PinguCharacter->SetWalkAnimation();
+	PinguCharacter->SetWalkAnimation();
 }
 
 void AInputController::Jump()
@@ -131,10 +131,6 @@ void AInputController::HandleStopMovement(const FInputActionValue& Value)
 	FVector InputVector = FVector(InputPlayerMovement, 0);
 
 	GetCharacter()->AddMovementInput(InputVector, 0, false);
-
-
-
-	//PinguCharacter->SetIdleAnimation();
 }
 
 

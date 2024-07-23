@@ -7,7 +7,7 @@
 #include "DamageSystem/Damagable.h"
 #include "DamageSystem/IceSpikes.h"
 #include "GameFramework/Character.h"
-#include "GUI/PlayerHUD.h"
+#include "HUD/PlayerHUD.h"
 #include "PinguCharacter.generated.h"
 
 class UCameraComponent;

@@ -25,8 +25,10 @@ APinguCharacter::APinguCharacter()
 	SuperMesh->SetupAttachment(RootComponent);
 	SuperMesh->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 	SuperMesh->SetRelativeLocation(FVector(0.0f,0.0f,-90.0f));
-	//SuperMesh->SetRelativeScale3D(FVector(0.3f, 0.3f, 0.3f));
+	SuperMesh->SetRelativeScale3D(FVector(0.3f, 0.3f, 0.3f));
 	SuperMesh->SetMaterial(0, Material);
+
+	SuperMesh->PlayAnimation(IdleAnim, true);
 
 	IdleAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*IDLE_ANIM_PATH).Object;
 	WalkAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*WALK_ANIM_PATH).Object;
@@ -213,8 +215,6 @@ void APinguCharacter::BeginPlay()
 		PlayerHUD->SetLifeAmount(MaxHealth, MaxHealth);
 		PlayerHUD->SetIceSpikeAmount(5, 5);
 	}
-
-	SuperMesh->PlayAnimation(IdleAnim, true);
 }
 
 void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
