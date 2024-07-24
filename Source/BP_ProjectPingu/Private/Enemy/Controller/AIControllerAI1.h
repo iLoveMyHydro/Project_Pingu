@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "Perception/AIPerceptionTypes.h"
 #include "AIControllerAI1.generated.h"
 
 class FiniteStateMachineAI1;
@@ -16,11 +17,18 @@ class AAIControllerAI1 : public AAIController
 {
 	GENERATED_BODY()
 
+public:
+
+	AAIControllerAI1();
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+
 public:
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -30,7 +38,15 @@ public:
 	void SetCharacter(class AAIEnemy1* A_Character) { Character = A_Character; }
 
 private:
+
+	UFUNCTION()
+	void AttackPlayer(AActor* OtherActor, FAIStimulus Stimulus);
+
+	const FString PERCEPTION_NAME = FString(TEXT("Perception Component"));
+
+	
 	FiniteStateMachineAI1* Fsm = nullptr;
 	AActor* Player = nullptr;
 	class AAIEnemy1* Character = nullptr;
+	UAIPerceptionComponent* PerceptionComponent = nullptr;
 };

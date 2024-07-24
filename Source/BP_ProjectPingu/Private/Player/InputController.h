@@ -36,6 +36,7 @@ protected:
 	void HandleNootAttack(void);
 	void HandleSlapAttackComplete(void);
 	void HandlePauseAction(void);
+	void HandleStartedMovement();
 
 private:
 	const FString IA_MOVE_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_Move.IA_Move'");

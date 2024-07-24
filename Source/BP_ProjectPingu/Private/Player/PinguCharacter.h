@@ -8,6 +8,7 @@
 #include "DamageSystem/IceSpikes.h"
 #include "GameFramework/Character.h"
 #include "HUD/PlayerHUD.h"
+#include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "PinguCharacter.generated.h"
 
 class UCameraComponent;
@@ -70,6 +71,7 @@ private:
 	const FString ANIM_PATH = FString(TEXT("/Script/Engine.AnimBlueprint'/Game/Animation/Player/BP_AnimInstance.BP_AnimInstance_C'"));
 	const FString PLAYER_HUD_PATH = FString(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_PlayerHUD_Code'"));
 
+	const FString STIMULI_NAME = FString(TEXT("Stimuli"));
 	const FString MESH_NAME = FString(TEXT("Mesh"));
 	const FString CAMERA_NAME = FString(TEXT("Camera"));
 	const FString CAMERA_ARM_NAME = FString(TEXT("CameraBoom"));
@@ -81,11 +83,6 @@ private:
 	const FString SLAP_ANIM_PATH = FString(TEXT("AnimSequence'/Game/Assets/Artist/Jean-Marc/Character/FBX/Pinguin_Bitch_Slap_Anim'"));
 	const FString NOOT_ANIM_PATH = FString(TEXT("AnimSequence'/Game/Assets/Artist/Jean-Marc/Character/FBX/Pinguin_Noot_Noot_Anim'"));
 	const FString JUMP_ANIM_PATH = FString(TEXT("AnimSequence'/Game/Assets/Artist/Jean-Marc/Character/FBX/Pinguin_Jump1_Anim'"));
-
-
-	//AllowPrivateAccess nur nötig wenn Blueprint Access !
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, DisplayName = "Static Mesh0", Category = "Components", meta = (AllowPrivateAccess = true))
-	USkeletalMeshComponent* SuperMesh = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Other Characters", Category = "Other Character", meta = (AllowPrivateAccess = true))
 	ACharacter* OtherCharacter = nullptr;
@@ -148,4 +145,7 @@ private:
 
 	UPROPERTY(EditAnywhere, DisplayName = "Animation Slap", Category = "Animation")
 	UAnimSequence* SlapAnim;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Stimuli Source", Category = "AI")
+	UAIPerceptionStimuliSourceComponent* StimuliSource = nullptr;
 };

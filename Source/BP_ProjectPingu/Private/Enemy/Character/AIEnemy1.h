@@ -47,4 +47,6 @@ private:
 	TSubclassOf<AActor> playerClass;
 
 	TObjectPtr<AOilBarrel> OilBarrel = nullptr;
+
+	TObjectPtr<USceneComponent> SpawnPoint = nullptr;
 };

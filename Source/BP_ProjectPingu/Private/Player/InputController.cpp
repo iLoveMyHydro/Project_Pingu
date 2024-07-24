@@ -66,6 +66,7 @@ void AInputController::SetupInputComponent()
 	{
 		//Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AInputController::Move);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Started, this, &AInputController::HandleStartedMovement);
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Completed, this, &AInputController::HandleStopMovement);
 
 		//Jumping
@@ -100,11 +101,6 @@ void AInputController::Move(const FInputActionValue& Value)
 	FVector InputVector = FVector(InputPlayerMovement, 0);
 
 	GetCharacter()->AddMovementInput(InputVector, Speed, false);
-	PinguCharacter = GetPawn<APinguCharacter>();
-
-	if (PinguCharacter == nullptr) return;
-
-	PinguCharacter->SetWalkAnimation();
 }
 
 void AInputController::Jump()
@@ -113,7 +109,7 @@ void AInputController::Jump()
 	if (PinguCharacter == nullptr) return;
 
 	PinguCharacter->Jump();
-	//PinguCharacter->SetJumpAnimation();
+	PinguCharacter->SetJumpAnimation();
 }
 
 void AInputController::StopJump()
@@ -131,6 +127,8 @@ void AInputController::HandleStopMovement(const FInputActionValue& Value)
 	FVector InputVector = FVector(InputPlayerMovement, 0);
 
 	GetCharacter()->AddMovementInput(InputVector, 0, false);
+
+	PinguCharacter->SetIdleAnimation();
 }
 
 
@@ -203,4 +201,11 @@ void AInputController::HandlePauseAction()
 		PlayerController->SetInputMode(FInputModeUIOnly());
 		PlayerController->SetPause(true);
 	}
+}
+
+void AInputController::HandleStartedMovement()
+{
+	PinguCharacter = Cast<APinguCharacter>(GetPawn());
+
+	PinguCharacter->SetWalkAnimation();
 }

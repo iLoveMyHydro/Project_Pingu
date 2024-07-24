@@ -13,14 +13,10 @@ AAIEnemy1::AAIEnemy1()
 	PrimaryActorTick.bCanEverTick = true;
 
 	GetMesh()->SetSkeletalMesh(ConstructorHelpers::FObjectFinder<USkeletalMesh>(*MESH_PATH).Object);
-	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
+	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
-	//OilBarrel = GetWorld()->SpawnActor<AOilBarrel>(FVector::ZeroVector, FRotator::ZeroRotator);
-	//if(OilBarrel != nullptr)
-	//{
-	//	OilBarrel->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetIncludingScale);
-	//}
+	//Todo: Add Scene Component -> Als Spawn Point
 
 	CollisionMesh = CreateDefaultSubobject<UBoxComponent>(*BOX_COLLISION_NAME);
 	CollisionMesh->bDynamicObstacle = true;

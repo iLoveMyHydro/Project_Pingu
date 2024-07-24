@@ -2,6 +2,7 @@
 
 #include "FiniteStateMachine/State/States/WaitStateAI1.h"
 #include "BP_ProjectPingu/Private/FiniteStateMachine/State/StateAI1.h"
+#include "Runtime/Engine/Classes/Engine/World.h"
 
 WaitStateAI1::WaitStateAI1(FString A_Name, FiniteStateMachineAI1* A_Machine)
 {
@@ -12,13 +13,4 @@ WaitStateAI1::WaitStateAI1(FString A_Name, FiniteStateMachineAI1* A_Machine)
 void WaitStateAI1::Tick(float DeltaTime)
 {
 	StateAI1::Tick(DeltaTime);
-
-	if(WaitTime == 0)
-	{
-		WaitTime = 2;
-	}
-	else
-	{
-		WaitTime--;
-	}
 }
