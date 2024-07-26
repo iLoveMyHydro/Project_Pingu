@@ -21,7 +21,6 @@ AInputController::AInputController()
 	PauseMenuObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PAUSE_MENU_PATH).Class;
 
 	PlayerHUDObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PLAYER_HUD_PATH).Class;
-
 }
 
 void AInputController::BeginPlay()
@@ -54,7 +53,12 @@ void AInputController::BeginPlay()
 		check(PlayerHUD);
 
 		PlayerHUD->AddToPlayerScreen();
-		PlayerHUD->SetIceSpikeAmount(0, 5);
+
+		PinguCharacter = GetPawn<APinguCharacter>();
+		if (PinguCharacter == nullptr) return;
+
+
+		PlayerHUD->SetIceSpikeAmount(PinguCharacter->GetIceSpikes(), 5);
 	}
 }
 
@@ -127,18 +131,17 @@ void AInputController::HandleStopMovement(const FInputActionValue& Value)
 	FVector InputVector = FVector(InputPlayerMovement, 0);
 
 	GetCharacter()->AddMovementInput(InputVector, 0, false);
-
 	PinguCharacter->SetIdleAnimation();
+
 }
 
 
 void AInputController::HandleSlapAttack()
 {
-	//PinguCharacter = GetPawn<APinguCharacter>();
+	PinguCharacter = GetPawn<APinguCharacter>();
+	if (PinguCharacter == nullptr) return;
 
-	//if (PinguCharacter == nullptr) return;
-
-	//PinguCharacter->SetSlapAnimation();
+	PinguCharacter->SetSlapAnimation();
 
 	if(!GetWorld()) return;
 
@@ -162,12 +165,8 @@ void AInputController::HandleSlapAttack()
 
 void AInputController::HandleNootAttack()
 {
-
-	//PinguCharacter = GetPawn<APinguCharacter>();
-
-	//if (PinguCharacter == nullptr) return;
-
-	//PinguCharacter->SetNootAnimation();
+	PinguCharacter = GetPawn<APinguCharacter>();
+	if (PinguCharacter == nullptr) return;
 
 	auto IceSpikes = PinguCharacter->GetIceSpikes();
 
@@ -184,6 +183,7 @@ void AInputController::HandleNootAttack()
 	if( PinguCharacter->GetIceSpikes() > 0 )
 	{
 		PinguCharacter->ThrowIceSpikes();
+		PinguCharacter->SetNootAnimation();
 	}
 }
 
@@ -206,6 +206,7 @@ void AInputController::HandlePauseAction()
 void AInputController::HandleStartedMovement()
 {
 	PinguCharacter = Cast<APinguCharacter>(GetPawn());
+	if (PinguCharacter == nullptr) return;
 
 	PinguCharacter->SetWalkAnimation();
 }

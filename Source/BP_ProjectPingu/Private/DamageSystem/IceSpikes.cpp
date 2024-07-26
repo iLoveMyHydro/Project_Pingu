@@ -10,8 +10,7 @@ AIceSpikes::AIceSpikes()
 
 	auto mesh = ConstructorHelpers::FObjectFinder<UStaticMesh>(*MESH_PATH).Object;
 	MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(*MESH_PATH);
-	MeshComponent->SetStaticMesh(mesh);
-	RootComponent = MeshComponent;
+	MeshComponent->SetupAttachment(RootComponent);
 	MeshComponent->SetRelativeScale3D(FVector(0.1f, 0.1f, 0.1f));
 	MeshComponent->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
 
@@ -56,4 +55,3 @@ void AIceSpikes::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimit
 		}
 	}
 }
-
