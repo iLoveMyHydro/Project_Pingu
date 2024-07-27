@@ -14,6 +14,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "DamageSystem/MyProject3Projectile.h"
 
+//Audio Hubsi here again
+#include "Components/AudioComponent.h"
+
 
 // Sets default values
 APinguCharacter::APinguCharacter()
@@ -70,6 +73,23 @@ APinguCharacter::APinguCharacter()
 	SpawnLocationIceSpike = CreateDefaultSubobject<USceneComponent>(*SPAWNLOCATION_ICE_SPIKE_NAME);
 	SpawnLocationIceSpike->SetRelativeLocation(FVector(40.0f, 0.0f, 50.0f));
 	SpawnLocationIceSpike->SetupAttachment(RootComponent);
+
+	//Set up Audio Components (Hubsi-code)
+	AttackSFXComponent = CreateDefaultSubobject<UAudioComponent>(*ATTACK_SFX_NAME);
+	DamageSFXComponent = CreateDefaultSubobject<UAudioComponent>(*DAMAGE_SFX_NAME);
+	FootstepSFXComponent = CreateDefaultSubobject<UAudioComponent>(*FOOTSTEPS_SFX_NAME);
+
+	AttackSFXComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*ATTACK_SFX_PATH).Object);
+	DamageSFXComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*DAMAGE_SFX_PATH).Object);
+	FootstepSFXComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*FOOTSTEPS_SFX_PATH).Object);
+
+	AttackSFXComponent->SetAutoActivate(bAutoActivate);
+	DamageSFXComponent->SetAutoActivate(bAutoActivate);
+	FootstepSFXComponent->SetAutoActivate(bAutoActivate);
+
+	AttackSFXComponent->SetupAttachment(RootComponent);
+	DamageSFXComponent->SetupAttachment(RootComponent);
+	FootstepSFXComponent->SetupAttachment(RootComponent);
 }
 
 void APinguCharacter::ApplyDamage(int A_DamageAmount)
@@ -79,6 +99,8 @@ void APinguCharacter::ApplyDamage(int A_DamageAmount)
 	Health += A_DamageAmount;
 
 	PlayerHUD->SetLifeAmount(Health, MaxHealth);
+
+	PlayDamageSound(); //Hubsi strikes again
 
 	if (Health <= 0)
 	{
@@ -161,6 +183,7 @@ APinguCharacter& APinguCharacter::SetJumpAnimation()
 APinguCharacter& APinguCharacter::SetSlapAnimation()
 {
 	GetMesh()->PlayAnimation(SlapAnim, false);
+	PlayAttackSound(); //Hubsi Test
 	return *this;
 }
 
@@ -247,4 +270,28 @@ void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 		}
 	}
 	IsColliding = true;
+}
+
+//audio methods from header file, you guessed it, Hubsi did this
+
+void APinguCharacter::PlayAttackSound()
+{
+	if (!AttackSFXComponent) return;
+	if (!AttackSFXComponent->GetSound()) return;
+
+	if (AttackSFXComponent->IsActive() == false) AttackSFXComponent->SetActive(true);
+	if (AttackSFXComponent->IsPlaying() == false) AttackSFXComponent->Play();
+
+	AttackSFXComponent->SetTriggerParameter(*MELEE_ATTACK_TRIGGER_NAME);
+}
+
+void APinguCharacter::PlayDamageSound()
+{
+	if (!DamageSFXComponent) return;
+	if (!DamageSFXComponent->GetSound()) return;
+
+	if (DamageSFXComponent->IsActive() == false) DamageSFXComponent->SetActive(true);
+	if (DamageSFXComponent->IsPlaying() == false) DamageSFXComponent->Play();
+
+	DamageSFXComponent->SetTriggerParameter(*DAMAGE_TRIGGER_NAME);
 }

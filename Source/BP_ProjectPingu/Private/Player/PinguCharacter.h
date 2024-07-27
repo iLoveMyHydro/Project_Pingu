@@ -59,6 +59,11 @@ private:
 
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
+	//Audio methods from Hubsi
+	void PlayAttackSound();
+	void PlayDamageSound();
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -84,6 +89,19 @@ private:
 	const FString SLAP_ANIM_PATH = FString(TEXT("AnimSequence'/Game/Assets/Artist/Jean-Marc/Character/FBX/Pinguin_Bitch_Slap_Anim'"));
 	const FString NOOT_ANIM_PATH = FString(TEXT("AnimSequence'/Game/Assets/Artist/Jean-Marc/Character/FBX/Pinguin_Noot_Noot_Anim'"));
 	const FString JUMP_ANIM_PATH = FString(TEXT("AnimSequence'/Game/Assets/Artist/Jean-Marc/Character/FBX/Pinguin_Jump1_Anim'"));
+
+	//Audio Stuff (Coded by Hubsi)
+	const FString ATTACK_SFX_NAME = FString(TEXT("AttackSFX"));
+	const FString DAMAGE_SFX_NAME = FString(TEXT("DamageSFX"));
+	const FString FOOTSTEPS_SFX_NAME = FString(TEXT("FootstepSFX"));
+	const FString ATTACK_SFX_PATH = FString(TEXT("/Script/MetasoundEngine.MetaSoundSource'/Game/Audio/MetaSounds/META_Attack.META_Attack'"));
+	const FString DAMAGE_SFX_PATH = FString(TEXT("/Script/MetasoundEngine.MetaSoundSource'/Game/Audio/MetaSounds/META_Damage.META_Damage'"));
+	const FString FOOTSTEPS_SFX_PATH = FString(TEXT("/Script/MetasoundEngine.MetaSoundSource'/Game/Audio/MetaSounds/META_Footsteps.META_Footsteps'"));
+
+	const FString MELEE_ATTACK_TRIGGER_NAME = FString(TEXT("PlayMeleeAttack"));
+	const FString RANGED_ATTACK_TRIGGER_NAME = FString(TEXT("PlayRangedAttack"));
+	const FString DAMAGE_TRIGGER_NAME = FString(TEXT("PlayDamage"));
+	//Audio Stuff End
 
 	UPROPERTY(EditAnywhere, DisplayName = "Other Characters", Category = "Other Character", meta = (AllowPrivateAccess = true))
 	ACharacter* OtherCharacter = nullptr;
@@ -155,4 +173,26 @@ private:
 
 	UPROPERTY(EditAnywhere, DisplayName = "Spawnlocation Ice Spike", Category = "Attack")
 	USceneComponent* SpawnLocationIceSpike = nullptr;
+
+	//More Audio Stuff (by Hubsi)
+	UPROPERTY(EditAnywhere, DisplayName = "Attack SFX", Category = "Components", meta = (AllowPrivateAccess = true))
+	TObjectPtr<class UAudioComponent> AttackSFXComponent = nullptr;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Damage SFX", Category = "Components", meta = (AllowPrivateAccess = true))
+	TObjectPtr<class UAudioComponent> DamageSFXComponent = nullptr;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Footstep SFX", Category = "Components", meta = (AllowPrivateAccess = true))
+	TObjectPtr<class UAudioComponent> FootstepSFXComponent = nullptr;
+
+	UPROPERTY(VisibleAnywhere, DisplayName = "Audio Component Auto Activation", Category = "Components")
+	bool bAutoActivate = false;
+
+	// UPROPERTY(EditAnywhere, DisplayName = "Attack Sound", Category = "Audio")
+	// class UMetaSoundSource* AttackSFX;
+
+	// UPROPERTY(EditAnywhere, DisplayName = "Damage Sound", Category = "Audio")
+	// class UMetaSoundSource* DamageSFX;
+
+	// UPROPERTY(EditAnywhere, DisplayName = "Footstep Sound", Category = "Audio")
+	// class UMetaSoundSource* FootstepSFX;
 };
