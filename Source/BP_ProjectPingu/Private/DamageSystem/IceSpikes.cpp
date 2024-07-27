@@ -43,16 +43,18 @@ void AIceSpikes::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimit
 {
 	if((OtherActor != nullptr) && (OtherActor != this))
 	{
-		//Destroy();
+
 		if(OtherActor->IsA<AAIEnemy1>())
 		{
 			Enemy = CastChecked<AAIEnemy1>(OtherActor);
 			Enemy->ApplyDamage(1);
+			Destroy();
 		}
 		else if(OtherActor->IsA<AAIBossEnemy1>())
 		{
 			BossEnemy = CastChecked<AAIBossEnemy1>(OtherActor);
 			BossEnemy->ApplyDamage(1);
+			Destroy();
 		}
 	}
 }

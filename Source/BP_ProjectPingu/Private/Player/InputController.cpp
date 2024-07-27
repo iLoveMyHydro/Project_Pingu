@@ -180,7 +180,7 @@ void AInputController::HandleNootAttack()
 	PlayerHUD->SetIceSpikeAmount(IceSpikes, 5);
 	PinguCharacter->SetIceSpikes(IceSpikes);
 
-	if( PinguCharacter->GetIceSpikes() > 0 )
+	if( PinguCharacter->GetIceSpikes() >= 0 )
 	{
 		PinguCharacter->ThrowIceSpikes();
 		PinguCharacter->SetNootAnimation();
