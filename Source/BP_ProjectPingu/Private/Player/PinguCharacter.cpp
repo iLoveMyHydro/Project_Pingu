@@ -12,6 +12,7 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "DamageSystem/MyProject3Projectile.h"
 
 
 // Sets default values
@@ -19,6 +20,7 @@ APinguCharacter::APinguCharacter()
 {
 	GetCapsuleComponent()->InitCapsuleSize(32.0f, 90.0f);
 
+	//Create Material and Mesh
 	Material = ConstructorHelpers::FObjectFinder<UMaterial>(*MAT_PATH).Object;
 	GetMesh()->SetSkeletalMesh(ConstructorHelpers::FObjectFinder<USkeletalMesh>(*MESH_PATH).Object);
 	GetMesh()->SetupAttachment(RootComponent);
@@ -27,14 +29,17 @@ APinguCharacter::APinguCharacter()
 	GetMesh()->SetRelativeScale3D(FVector(0.3f, 0.3f, 0.3f));
 	GetMesh()->SetMaterial(0, Material);
 
-	GetMesh()->PlayAnimation(IdleAnim, true);
-
+	//Get the Animations
 	IdleAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*IDLE_ANIM_PATH).Object;
 	WalkAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*WALK_ANIM_PATH).Object;
 	NootAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*NOOT_ANIM_PATH).Object;
 	JumpAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*JUMP_ANIM_PATH).Object;
 	SlapAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*SLAP_ANIM_PATH).Object;
 
+	//Start Idle Animation
+	GetMesh()->PlayAnimation(IdleAnim, true);
+
+	//Get the Collision Box
 	CollisionMesh = CreateDefaultSubobject<UBoxComponent>(*BOX_COLLISION_NAME);
 	CollisionMesh->bDynamicObstacle = true;
 	CollisionMesh->SetupAttachment(RootComponent);
@@ -43,7 +48,8 @@ APinguCharacter::APinguCharacter()
 	CollisionMesh->SetRelativeLocation(FVector(72.0f, 0.0f, 0.0f));
 	CollisionMesh->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f));
 
-	IceSpikeActor = ConstructorHelpers::FClassFinder<AIceSpikes>(*ICE_SPIKE_PATH).Class;
+	//Get IceSpikes
+	IceSpikeProjectile = ConstructorHelpers::FClassFinder<AIceSpikes>(*ICE_SPIKE_PATH).Class;
 
 	// Init Camera
 	if (!PinguCameraComponent) PinguCameraComponent = InitCamera();
@@ -54,11 +60,16 @@ APinguCharacter::APinguCharacter()
 	// Default offset from the character location for projectiles to spawn
 	MuzzleOffset = FVector(0.0f, 0.0f, 0.0f);
 
+	//Get HUD Object
 	PlayerHUDObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PLAYER_HUD_PATH).Class;
 
-
+	//Get Stimuli Source for AI
 	StimuliSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(*STIMULI_NAME);
 	StimuliSource->bAutoRegister = true;
+
+	SpawnLocationIceSpike = CreateDefaultSubobject<USceneComponent>(*SPAWNLOCATION_ICE_SPIKE_NAME);
+	SpawnLocationIceSpike->SetRelativeLocation(FVector(40.0f, 0.0f, 50.0f));
+	SpawnLocationIceSpike->SetupAttachment(RootComponent);
 }
 
 void APinguCharacter::ApplyDamage(int A_DamageAmount)
@@ -104,30 +115,22 @@ void APinguCharacter::ThrowIceSpikes()
 		Character = Cast<APinguCharacter>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn());
 	}
 
-	//Aus FirstPlayer UE Demo
-	UWorld* const World = GetWorld();
-	if (World != nullptr)
+	if(ProjectileClass != nullptr)
 	{
-		GetCharacterMovement()->MovementMode == EMovementMode::MOVE_Flying;
-		AInputController* PlayerController = Cast<AInputController>(Character->GetController());
-		FRotator SpawnRotation = GetCharacterMovement()->GetLastUpdateRotation();
+		//Aus FirstPlayer UE Demo
+		UWorld* const World = GetWorld();
+		if (World != nullptr)
+		{
+			//Set Spawn Collision Handling Override
+			FActorSpawnParameters ActorSpawnParams;
+			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
-		//if(SpawnRotation == FRotator(0.0f,0.0f,0.0f))
-		//{
-		//	SpawnRotation = FRotator(0.0f, 0.0f, 0.0f);
-		//}
-		//else if (SpawnRotation == FRotator(0.0f, 180.0f, 0.0f))
-		//{
-		//	SpawnRotation = FRotator(0.0f, 0.0f, 0.0f);
-		//}
-		// MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
-		const FVector SpawnLocation = (GetOwner()->GetActorLocation()) + SpawnRotation.RotateVector(MuzzleOffset);
-
-		//Set Spawn Collision Handling Override
-		FActorSpawnParameters ActorSpawnParams;
-		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-
-		World->SpawnActor<AIceSpikes>(IceSpikeActor, SpawnLocation, SpawnRotation, ActorSpawnParams);
+			World->SpawnActor<AMyProject3Projectile>(ProjectileClass, Character->GetActorLocation() + FVector(-60.0f, 0.0f, 50.0f), Character->GetViewRotation(), ActorSpawnParams);
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("No Projectile"));
 	}
 }
 
@@ -216,7 +219,7 @@ void APinguCharacter::BeginPlay()
 
 		PlayerHUD->AddToPlayerScreen();
 		PlayerHUD->SetLifeAmount(MaxHealth, MaxHealth);
-		PlayerHUD->SetIceSpikeAmount(5, 5);
+		PlayerHUD->SetIceSpikeAmount(0, 5);
 	}
 
 	SetIdleAnimation();

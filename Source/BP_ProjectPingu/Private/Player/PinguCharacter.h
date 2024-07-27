@@ -77,6 +77,7 @@ private:
 	const FString CAMERA_ARM_NAME = FString(TEXT("CameraBoom"));
 	const FString BOX_COLLISION_NAME = FString(TEXT("Box Collision"));
 	const FString SCENE_ROOT_NAME = FString(TEXT("Scene Root"));
+	const FString SPAWNLOCATION_ICE_SPIKE_NAME = FString(TEXT("Ice Spike Spawn Location"));
 	const FString ICE_SPIKE_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.IceSpikes'"));
 	const FString IDLE_ANIM_PATH = FString(TEXT("AnimSequence'/Game/Assets/Artist/Jean-Marc/Character/FBX/Pinguin_Idle_Anim'"));
 	const FString WALK_ANIM_PATH = FString(TEXT("AnimSequence'/Game/Assets/Artist/Jean-Marc/Character/FBX/Pinguin_Walk_Anim'"));
@@ -118,7 +119,10 @@ private:
 	int IceSpikeSpeed = 5;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Ice Spike Actor", Category = "Attack", meta = (AllowPrivateAccess = true));
-	TSubclassOf<class AIceSpikes> IceSpikeActor;
+	TSubclassOf<class AIceSpikes> IceSpikeProjectile;
+
+	UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	TSubclassOf<class AMyProject3Projectile> ProjectileClass;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Ice Spike Offset", Category = "Attack", meta = (AllowPrivateAccess = true))
 	FVector MuzzleOffset;
@@ -148,4 +152,7 @@ private:
 
 	UPROPERTY(EditAnywhere, DisplayName = "Stimuli Source", Category = "AI")
 	UAIPerceptionStimuliSourceComponent* StimuliSource = nullptr;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Spawnlocation Ice Spike", Category = "Attack")
+	USceneComponent* SpawnLocationIceSpike = nullptr;
 };
