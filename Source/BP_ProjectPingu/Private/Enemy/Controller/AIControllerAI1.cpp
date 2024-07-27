@@ -51,7 +51,7 @@ void AAIControllerAI1::Tick(float DeltaTime)
 
 void AAIControllerAI1::AttackPlayer(AActor* OtherActor, FAIStimulus Stimulus)
 {
-	UE_LOG(LogTemp, Warning, TEXT("Player"));
+	//UE_LOG(LogTemp, Warning, TEXT("Player"));
 }
 
 void AAIControllerAI1::EndPlay(const EEndPlayReason::Type EndPlayReason)

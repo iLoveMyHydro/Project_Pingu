@@ -44,6 +44,8 @@ public:
 	APinguCharacter& SetJumpAnimation(void);
 	APinguCharacter& SetSlapAnimation(void);
 
+	void Respawn();
+
 
 
 private:
@@ -85,6 +87,15 @@ private:
 	const FString NOOT_ANIM_PATH = FString(TEXT("AnimSequence'/Game/Assets/Artist/Jean-Marc/Character/FBX/Pinguin_Noot_Noot_Anim'"));
 	const FString JUMP_ANIM_PATH = FString(TEXT("AnimSequence'/Game/Assets/Artist/Jean-Marc/Character/FBX/Pinguin_Jump1_Anim'"));
 
+	UPROPERTY(EditAnywhere, DisplayName = "Spawn Location", Category = "Respawn")
+	FVector SpawnLocation;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Respawn Delay", Category = "Respawn")
+	float RespawnDelay = 0;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Respawn Timer Handle", Category = "Respawn")
+	FTimerHandle RespawnTimerHandle;
+
 	UPROPERTY(EditAnywhere, DisplayName = "Other Characters", Category = "Other Character", meta = (AllowPrivateAccess = true))
 	ACharacter* OtherCharacter = nullptr;
 
@@ -121,8 +132,8 @@ private:
 	UPROPERTY(EditAnywhere, DisplayName = "Ice Spike Actor", Category = "Attack", meta = (AllowPrivateAccess = true));
 	TSubclassOf<class AIceSpikes> IceSpikeProjectile;
 
-	UPROPERTY(EditDefaultsOnly, Category = Projectile)
-	TSubclassOf<class AMyProject3Projectile> ProjectileClass;
+	//UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	//TSubclassOf<class AMyProject3Projectile> ProjectileClass;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Ice Spike Offset", Category = "Attack", meta = (AllowPrivateAccess = true))
 	FVector MuzzleOffset;
