@@ -88,7 +88,7 @@ private:
 	const FString JUMP_ANIM_PATH = FString(TEXT("AnimSequence'/Game/Assets/Artist/Jean-Marc/Character/FBX/Pinguin_Jump1_Anim'"));
 
 	UPROPERTY(EditAnywhere, DisplayName = "Spawn Location", Category = "Respawn")
-	FVector SpawnLocation;
+	FVector SpawnLocation = FVector(-7250.548968, -3290.544749, 420.834087);
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Delay", Category = "Respawn")
 	float RespawnDelay = 2;

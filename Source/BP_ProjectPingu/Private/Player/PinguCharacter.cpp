@@ -81,9 +81,14 @@ void APinguCharacter::ApplyDamage(int A_DamageAmount)
 
 	if (Health <= 0)
 	{
-		GetMesh()->Stop();
-		GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, this, &APinguCharacter::Respawn, RespawnDelay, false);
-		PlayerHUD->SetLifeAmount(MaxHealth, MaxHealth);
+		AInputController* const PlayerController = Cast<AInputController>(GEngine->GetFirstLocalPlayerController(GetWorld()));
+		if (PlayerController != nullptr)
+		{
+			PlayerController->SetPause(true);
+			GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, this, &APinguCharacter::Respawn, RespawnDelay, false);
+			PlayerHUD->SetLifeAmount(MaxHealth, MaxHealth);
+			PlayerController->SetPause(false);
+		}
 	}
 }
 
