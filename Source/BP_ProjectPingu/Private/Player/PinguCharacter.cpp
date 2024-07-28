@@ -244,6 +244,8 @@ void APinguCharacter::BeginPlay()
 	}
 
 	SetIdleAnimation();
+
+	SpawnLocation = GetActorLocation();
 }
 
 void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
