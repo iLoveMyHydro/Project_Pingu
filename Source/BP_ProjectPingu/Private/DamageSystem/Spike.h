@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Spike.generated.h"
 
+class UBoxComponent;
+
 UCLASS()
 class ASpike : public AActor
 {
@@ -23,11 +25,15 @@ private:
 	const FString MESH_NAME = FString(TEXT("Mesh"));
 	const FString MESH_PATH = FString(TEXT("/Script/Engine.StaticMesh'/Game/Assets/Artist/Stephan/Spikes.Spikes'"));
 	const FString MAT_PATH = FString(TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'"));
+	const FString BOX_COLLISION_NAME = FString(TEXT("Box Collision"));
 
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Material", Category = "Components"))
 	TObjectPtr<UMaterialInterface> Material = nullptr;
 
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Mesh", Category = "Components"))
 	TObjectPtr<UStaticMeshComponent> Mesh = nullptr;
+
+	UPROPERTY(EditAnywhere, DisplayName = "BoxCollider", Category = "Components", meta = (AllowPrivateAccess = true))
+	TObjectPtr<UBoxComponent> CollisionMesh = nullptr;
 
 };

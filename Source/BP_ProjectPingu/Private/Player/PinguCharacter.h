@@ -91,7 +91,7 @@ private:
 	FVector SpawnLocation;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Delay", Category = "Respawn")
-	float RespawnDelay = 0;
+	float RespawnDelay = 2;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Timer Handle", Category = "Respawn")
 	FTimerHandle RespawnTimerHandle;

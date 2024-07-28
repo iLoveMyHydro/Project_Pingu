@@ -10,12 +10,12 @@ void UPlayerHUD::SetLifeAmount(int CurrentLife, int MaxLife)
 {
 	if(CurrentLife == 2)
 	{
-		HealthThree->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+		HealthThree->SetVisibility(ESlateVisibility::Hidden);
 	}
 	else if (CurrentLife == 1)
 	{
-		HealthThree->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
-		HealthTwo->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+		HealthThree->SetVisibility(ESlateVisibility::Hidden);
+		HealthTwo->SetVisibility(ESlateVisibility::Hidden);
 	}
 	else if(CurrentLife == 3)
 	{

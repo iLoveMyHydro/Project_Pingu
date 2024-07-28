@@ -12,7 +12,6 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "DamageSystem/MyProject3Projectile.h"
 #include "DamageSystem/Spike.h"
 #include "RespawnSystem/RespawnPoint.h"
 
@@ -46,9 +45,9 @@ APinguCharacter::APinguCharacter()
 	CollisionMesh->bDynamicObstacle = true;
 	CollisionMesh->SetupAttachment(RootComponent);
 	CollisionMesh->SetGenerateOverlapEvents(true);
-	CollisionMesh->SetBoxExtent(FVector(90.0f, 60.0f, 32.0f));
-	CollisionMesh->SetRelativeLocation(FVector(72.0f, 0.0f, 0.0f));
-	CollisionMesh->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f));
+	CollisionMesh->SetBoxExtent(FVector(100.0f, 60.0f, 100.0f));
+	CollisionMesh->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+	CollisionMesh->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
 
 	//Get IceSpikes
 	IceSpikeProjectile = ConstructorHelpers::FClassFinder<AIceSpikes>(*ICE_SPIKE_PATH).Class;
@@ -76,15 +75,15 @@ APinguCharacter::APinguCharacter()
 
 void APinguCharacter::ApplyDamage(int A_DamageAmount)
 {
-	A_DamageAmount -= A_DamageAmount;
-
-	Health += A_DamageAmount;
+	Health -= A_DamageAmount;
 
 	PlayerHUD->SetLifeAmount(Health, MaxHealth);
 
 	if (Health <= 0)
 	{
+		GetMesh()->Stop();
 		GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, this, &APinguCharacter::Respawn, RespawnDelay, false);
+		PlayerHUD->SetLifeAmount(MaxHealth, MaxHealth);
 	}
 }
 
@@ -203,7 +202,7 @@ auto APinguCharacter::InitCamera() -> UCameraComponent*
 void APinguCharacter::InitPlayer()
 {
 	ACharacter::JumpMaxCount = 2;
-	GetCharacterMovement()->JumpZVelocity = 300.0f;
+	GetCharacterMovement()->JumpZVelocity = 500.0f;
 	GetCharacterMovement()->AirControl = 0.8f;
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 	GetCharacterMovement()->GravityScale = 2.0f;
