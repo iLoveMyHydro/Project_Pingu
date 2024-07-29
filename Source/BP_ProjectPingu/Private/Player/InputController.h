@@ -49,6 +49,21 @@ private:
 	const FString PAUSE_MENU_PATH = FString(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_PauseMenu_Code.WBP_PauseMenu_Code'"));
 	const FString PLAYER_HUD_PATH = FString(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_PlayerHUD_Code'"));
 
+	//Audio Stuff by Hubsi
+	const FString MUSIC_PATH = FString(TEXT("/Script/MetasoundEngine.MetaSoundSource'/Game/Audio/MetaSounds/META_Music.META_Music'"));
+	const FString MUSIC_NAME = FString(TEXT("Music"));
+	const FString MUSIC_TRIGGER_NAME = FString(TEXT("PlayLevelTheme"));
+	const FString PAUSE_MUSIC_TRIGGER_NAME = FString(TEXT("PauseLevelTheme"));
+
+	UPROPERTY(VisibleAnywhere, DisplayName = "Music", Category = "Components")
+	TObjectPtr<class UAudioComponent> MusicComponent = nullptr;
+
+	UPROPERTY(VisibleAnywhere, DisplayName = "Audio Component Auto Activation", Category = "Components")
+	bool bAutoActivate = false;
+
+	void PlayLevelTheme();
+	void PauseLevelTheme();
+	//Audio Stuff End
 
 	UPROPERTY(EditAnywhere)
 	class AActor* SelectedActor;

@@ -12,6 +12,9 @@
 #include "GameFramework/Character.h"
 #include "GUI/PauseMenu.h"
 
+//Audio Hubsi here again
+#include "Components/AudioComponent.h"
+
 class UEnhancedInputLocalPlayerSubsystem;
 
 AInputController::AInputController()
@@ -21,11 +24,20 @@ AInputController::AInputController()
 	PauseMenuObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PAUSE_MENU_PATH).Class;
 
 	PlayerHUDObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PLAYER_HUD_PATH).Class;
+
+	//Audio Code by Hubsi
+	MusicComponent = CreateDefaultSubobject<UAudioComponent>(*MUSIC_NAME);
+	MusicComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*MUSIC_PATH).Object);
+	MusicComponent->SetAutoActivate(bAutoActivate);
+	MusicComponent->SetupAttachment(RootComponent);
 }
 
 void AInputController::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//Hubsi
+	PlayLevelTheme();
 
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
 	{
@@ -203,6 +215,7 @@ void AInputController::HandlePauseAction()
 		PlayerController->bShowMouseCursor = true;
 		PlayerController->SetInputMode(FInputModeUIOnly());
 		PlayerController->SetPause(true);
+		PauseLevelTheme();
 	}
 }
 
@@ -212,4 +225,26 @@ void AInputController::HandleStartedMovement()
 	if (PinguCharacter == nullptr) return;
 
 	PinguCharacter->SetWalkAnimation();
+}
+
+void AInputController::PlayLevelTheme()
+{
+	if (!MusicComponent) return;
+	if (!MusicComponent->GetSound()) return;
+
+	if (MusicComponent->IsActive() == false) MusicComponent->SetActive(true);
+	if (MusicComponent->IsPlaying() == false) MusicComponent->Play();
+
+	MusicComponent->SetTriggerParameter(*MUSIC_TRIGGER_NAME);
+}
+
+void AInputController::PauseLevelTheme()
+{
+	if (!MusicComponent) return;
+	if (!MusicComponent->GetSound()) return;
+
+	if (MusicComponent->IsActive() == false) MusicComponent->SetActive(true);
+	if (MusicComponent->IsPlaying() == false) MusicComponent->Play();
+
+	MusicComponent->SetTriggerParameter(*PAUSE_MUSIC_TRIGGER_NAME);
 }
