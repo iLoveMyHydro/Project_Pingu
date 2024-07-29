@@ -46,7 +46,11 @@ public:
 
 	void Respawn();
 
-
+	//Audio methods from Hubsi
+	void PlaySlapSound();
+	void PlayNootNootSound();
+	void PlayDamageSound();
+	void PlayFootstepSound();
 
 private:
 	auto InitCamera(void) -> class UCameraComponent*;
@@ -60,10 +64,6 @@ private:
 	FORCEINLINE class UCameraComponent* Get2DCameraComponent() const { return PinguCameraComponent; }
 
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
-
-	//Audio methods from Hubsi
-	void PlayAttackSound();
-	void PlayDamageSound();
 
 
 protected:
@@ -103,6 +103,7 @@ private:
 	const FString MELEE_ATTACK_TRIGGER_NAME = FString(TEXT("PlayMeleeAttack"));
 	const FString RANGED_ATTACK_TRIGGER_NAME = FString(TEXT("PlayRangedAttack"));
 	const FString DAMAGE_TRIGGER_NAME = FString(TEXT("PlayDamage"));
+	const FString FOOTSTEP_TRIGGER_NAME = FString(TEXT("PlayFootstep"));
 	//Audio Stuff End
 
 	UPROPERTY(EditAnywhere, DisplayName = "Spawn Location", Category = "Respawn")

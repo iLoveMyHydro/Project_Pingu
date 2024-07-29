@@ -160,6 +160,7 @@ void AInputController::HandleSlapAttack()
 			Enemy = CastChecked<AAIEnemy1>(OtherCharacter);
 			Enemy->ApplyDamage(1);
 		}
+		PinguCharacter->PlaySlapSound(); //This code has been brought to you by Hubsi
 	}
 }
 

@@ -162,6 +162,7 @@ void APinguCharacter::ThrowIceSpikes()
 			{
 				World->SpawnActor<AIceSpikes>(IceSpikeProjectile, Character->GetActorLocation() + FVector(70.0f, 0.0f, 50.0f), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
 			}
+			PlayNootNootSound();
 		}
 	}
 	else
@@ -197,7 +198,6 @@ APinguCharacter& APinguCharacter::SetJumpAnimation()
 APinguCharacter& APinguCharacter::SetSlapAnimation()
 {
 	GetMesh()->PlayAnimation(SlapAnim, false);
-	PlayAttackSound(); //Hubsi Test
 	return *this;
 }
 
@@ -306,7 +306,7 @@ void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 
 //audio methods from header file, you guessed it, Hubsi did this
 
-void APinguCharacter::PlayAttackSound()
+void APinguCharacter::PlaySlapSound()
 {
 	if (!AttackSFXComponent) return;
 	if (!AttackSFXComponent->GetSound()) return;
@@ -315,6 +315,17 @@ void APinguCharacter::PlayAttackSound()
 	if (AttackSFXComponent->IsPlaying() == false) AttackSFXComponent->Play();
 
 	AttackSFXComponent->SetTriggerParameter(*MELEE_ATTACK_TRIGGER_NAME);
+}
+
+void APinguCharacter::PlayNootNootSound()
+{
+	if (!AttackSFXComponent) return;
+	if (!AttackSFXComponent->GetSound()) return;
+
+	if (AttackSFXComponent->IsActive() == false) AttackSFXComponent->SetActive(true);
+	if (AttackSFXComponent->IsPlaying() == false) AttackSFXComponent->Play();
+
+	AttackSFXComponent->SetTriggerParameter(*RANGED_ATTACK_TRIGGER_NAME);
 }
 
 void APinguCharacter::PlayDamageSound()
@@ -326,4 +337,15 @@ void APinguCharacter::PlayDamageSound()
 	if (DamageSFXComponent->IsPlaying() == false) DamageSFXComponent->Play();
 
 	DamageSFXComponent->SetTriggerParameter(*DAMAGE_TRIGGER_NAME);
+}
+
+void APinguCharacter::PlayFootstepSound()
+{
+	if (!FootstepSFXComponent) return;
+	if (!FootstepSFXComponent->GetSound()) return;
+
+	if (FootstepSFXComponent->IsActive() == false) FootstepSFXComponent->SetActive(true);
+	if (FootstepSFXComponent->IsPlaying() == false) FootstepSFXComponent->Play();
+
+	FootstepSFXComponent->SetTriggerParameter(*FOOTSTEP_TRIGGER_NAME);
 }
