@@ -12,7 +12,8 @@
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "DamageSystem/MyProject3Projectile.h"
+#include "DamageSystem/Spike.h"
+#include "RespawnSystem/RespawnPoint.h"
 
 //Audio Hubsi here again
 #include "Components/AudioComponent.h"
@@ -47,9 +48,9 @@ APinguCharacter::APinguCharacter()
 	CollisionMesh->bDynamicObstacle = true;
 	CollisionMesh->SetupAttachment(RootComponent);
 	CollisionMesh->SetGenerateOverlapEvents(true);
-	CollisionMesh->SetBoxExtent(FVector(90.0f, 60.0f, 32.0f));
-	CollisionMesh->SetRelativeLocation(FVector(72.0f, 0.0f, 0.0f));
-	CollisionMesh->SetRelativeRotation(FRotator(90.0f, 0.0f, 0.0f));
+	CollisionMesh->SetBoxExtent(FVector(100.0f, 60.0f, 100.0f));
+	CollisionMesh->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+	CollisionMesh->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
 
 	//Get IceSpikes
 	IceSpikeProjectile = ConstructorHelpers::FClassFinder<AIceSpikes>(*ICE_SPIKE_PATH).Class;
@@ -94,9 +95,7 @@ APinguCharacter::APinguCharacter()
 
 void APinguCharacter::ApplyDamage(int A_DamageAmount)
 {
-	A_DamageAmount -= A_DamageAmount;
-
-	Health += A_DamageAmount;
+	Health -= A_DamageAmount;
 
 	PlayerHUD->SetLifeAmount(Health, MaxHealth);
 
@@ -104,8 +103,14 @@ void APinguCharacter::ApplyDamage(int A_DamageAmount)
 
 	if (Health <= 0)
 	{
-		APinguCharacter::Destroy();
-		//TODO: Respawn Bildschirm einblenden - am RespawnPoint spawnen lassen
+		AInputController* const PlayerController = Cast<AInputController>(GEngine->GetFirstLocalPlayerController(GetWorld()));
+		if (PlayerController != nullptr)
+		{
+			PlayerController->SetPause(true);
+			GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, this, &APinguCharacter::Respawn, RespawnDelay, false);
+			PlayerHUD->SetLifeAmount(MaxHealth, MaxHealth);
+			PlayerController->SetPause(false);
+		}
 	}
 }
 
@@ -137,7 +142,7 @@ void APinguCharacter::ThrowIceSpikes()
 		Character = Cast<APinguCharacter>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn());
 	}
 
-	if(ProjectileClass != nullptr)
+	if(IceSpikeProjectile != nullptr)
 	{
 		//Aus FirstPlayer UE Demo
 		UWorld* const World = GetWorld();
@@ -147,7 +152,16 @@ void APinguCharacter::ThrowIceSpikes()
 			FActorSpawnParameters ActorSpawnParams;
 			ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 
-			World->SpawnActor<AMyProject3Projectile>(ProjectileClass, Character->GetActorLocation() + FVector(-60.0f, 0.0f, 50.0f), Character->GetViewRotation(), ActorSpawnParams);
+			FRotator Rotator = GetActorRotation();
+
+			if(Rotator.Yaw >= 90.0f)
+			{
+				World->SpawnActor<AIceSpikes>(IceSpikeProjectile, Character->GetActorLocation() + FVector(-70.0f, 0.0f, 50.0f), FRotator(0.0f, 90.0f, 0.0f), ActorSpawnParams);
+			}
+			else
+			{
+				World->SpawnActor<AIceSpikes>(IceSpikeProjectile, Character->GetActorLocation() + FVector(70.0f, 0.0f, 50.0f), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
+			}
 		}
 	}
 	else
@@ -187,12 +201,18 @@ APinguCharacter& APinguCharacter::SetSlapAnimation()
 	return *this;
 }
 
+void APinguCharacter::Respawn()
+{
+	SetActorLocation(SpawnLocation);
+	Health = 3;
+}
+
 auto APinguCharacter::InitCamera() -> UCameraComponent*
 {
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(*CAMERA_ARM_NAME);
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->SetUsingAbsoluteRotation(true); //No Rotation when Character does
-	CameraBoom->TargetArmLength = 500.0f;
+	CameraBoom->TargetArmLength = 800.0f;
 	CameraBoom->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
 	CameraBoom->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 	CameraBoom->bDoCollisionTest = false;
@@ -210,7 +230,7 @@ auto APinguCharacter::InitCamera() -> UCameraComponent*
 void APinguCharacter::InitPlayer()
 {
 	ACharacter::JumpMaxCount = 2;
-	GetCharacterMovement()->JumpZVelocity = 300.0f;
+	GetCharacterMovement()->JumpZVelocity = 500.0f;
 	GetCharacterMovement()->AirControl = 0.8f;
 	GetCharacterMovement()->MaxWalkSpeed = 300.0f;
 	GetCharacterMovement()->GravityScale = 2.0f;
@@ -222,6 +242,7 @@ void APinguCharacter::InitPlayer()
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
+	SpawnLocation = FVector(0.0f, 0.0f, 0.0f);
 }
 
 //Called when the game starts or when spawned
@@ -246,6 +267,8 @@ void APinguCharacter::BeginPlay()
 	}
 
 	SetIdleAnimation();
+
+	SpawnLocation = GetActorLocation();
 }
 
 void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
@@ -268,6 +291,15 @@ void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 			IceSpikes = IceSpikesMax;
 			PlayerHUD->SetIceSpikeAmount(IceSpikes, IceSpikesMax);
 		}
+	}
+	else if(OtherActor->IsA<ARespawnPoint>())
+	{
+		SpawnLocation = GetActorLocation();
+		UE_LOG(LogTemp, Warning, TEXT("Neuer SpawnPoint"));
+	}
+	else if(OtherActor->IsA<ASpike>())
+	{
+		ApplyDamage(1);
 	}
 	IsColliding = true;
 }

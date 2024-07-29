@@ -168,6 +168,12 @@ void AInputController::HandleNootAttack()
 	PinguCharacter = GetPawn<APinguCharacter>();
 	if (PinguCharacter == nullptr) return;
 
+	if (PinguCharacter->GetIceSpikes() > 0)
+	{
+		PinguCharacter->ThrowIceSpikes();
+		PinguCharacter->SetNootAnimation();
+	}
+
 	auto IceSpikes = PinguCharacter->GetIceSpikes();
 
 	IceSpikes--;
@@ -180,11 +186,7 @@ void AInputController::HandleNootAttack()
 	PlayerHUD->SetIceSpikeAmount(IceSpikes, 5);
 	PinguCharacter->SetIceSpikes(IceSpikes);
 
-	if( PinguCharacter->GetIceSpikes() > 0 )
-	{
-		PinguCharacter->ThrowIceSpikes();
-		PinguCharacter->SetNootAnimation();
-	}
+
 }
 
 void AInputController::HandleSlapAttackComplete()

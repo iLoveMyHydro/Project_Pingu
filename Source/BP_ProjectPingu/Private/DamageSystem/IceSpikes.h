@@ -8,6 +8,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "IceSpikes.generated.h"
 
+class USphereComponent;
 class AAIEnemy1;
 class AAIBossEnemy1;
 
@@ -20,11 +21,19 @@ public:
 	// Sets default values for this actor's properties
 	AIceSpikes();
 
+	///** Returns CollisionComp subobject **/
+	//USphereComponent* GetCollisionComp() const { return Sphere; }
+	/** Returns ProjectileMovement subobject **/
+	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
+
+
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
+	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 private:
@@ -34,11 +43,11 @@ private:
 	const FString BOX_NAME = TEXT("Box Collision");
 	const FString PROJECTILE_MOVEMENT_NAME = TEXT("Projectile Movement");
 
-	UPROPERTY(EditAnywhere, DisplayName = "Mesh", Category = "Components", meta = (AllowPrivateAccess = true))
-	class UStaticMeshComponent* MeshComponent = nullptr;
+	UPROPERTY(EditAnywhere, meta = (DisplayName = "Material", Category = "Components"))
+	UMaterialInterface* Material = nullptr;
 
-	UPROPERTY(EditAnywhere, DisplayName = "Box Collision", Category = "Components", meta = (AllowPrivateAccess = true))
-	TObjectPtr<UBoxComponent> BoxCollision = nullptr;
+	UPROPERTY(EditAnywhere, meta = (DisplayName = "Mesh", Category = "Components"))
+	UStaticMeshComponent* Mesh = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Projectile Movement", Category = "Components", meta = (AllowPrivateAccess = true))
 	UProjectileMovementComponent* ProjectileMovement = nullptr;

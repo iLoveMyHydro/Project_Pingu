@@ -44,6 +44,8 @@ public:
 	APinguCharacter& SetJumpAnimation(void);
 	APinguCharacter& SetSlapAnimation(void);
 
+	void Respawn();
+
 
 
 private:
@@ -103,6 +105,15 @@ private:
 	const FString DAMAGE_TRIGGER_NAME = FString(TEXT("PlayDamage"));
 	//Audio Stuff End
 
+	UPROPERTY(EditAnywhere, DisplayName = "Spawn Location", Category = "Respawn")
+	FVector SpawnLocation = FVector(-7250.548968, -3290.544749, 420.834087);
+
+	UPROPERTY(EditAnywhere, DisplayName = "Respawn Delay", Category = "Respawn")
+	float RespawnDelay = 2;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Respawn Timer Handle", Category = "Respawn")
+	FTimerHandle RespawnTimerHandle;
+
 	UPROPERTY(EditAnywhere, DisplayName = "Other Characters", Category = "Other Character", meta = (AllowPrivateAccess = true))
 	ACharacter* OtherCharacter = nullptr;
 
@@ -139,8 +150,8 @@ private:
 	UPROPERTY(EditAnywhere, DisplayName = "Ice Spike Actor", Category = "Attack", meta = (AllowPrivateAccess = true));
 	TSubclassOf<class AIceSpikes> IceSpikeProjectile;
 
-	UPROPERTY(EditDefaultsOnly, Category = Projectile)
-	TSubclassOf<class AMyProject3Projectile> ProjectileClass;
+	//UPROPERTY(EditDefaultsOnly, Category = Projectile)
+	//TSubclassOf<class AMyProject3Projectile> ProjectileClass;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Ice Spike Offset", Category = "Attack", meta = (AllowPrivateAccess = true))
 	FVector MuzzleOffset;

@@ -41,7 +41,7 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* QuitButton = nullptr;
 
-	const FName LEVEL_NAME = FName(TEXT("/Script/Engine.World'/Game/Maps/Project_Pingu.Project_Pingu'"));
-	const FName OPTION_LEVEL_NAME = FName(TEXT(""));
+	const FName LEVEL_NAME = FName(TEXT("/Game/IcePropsContent/Maps/Demo_Map"));
+	const FName OPTION_LEVEL_NAME = FName(TEXT("/Game/Maps/OptionMenu_Code"));
 	const FName CREDITS_LEVEL_NAME = FName(TEXT(""));
 };
