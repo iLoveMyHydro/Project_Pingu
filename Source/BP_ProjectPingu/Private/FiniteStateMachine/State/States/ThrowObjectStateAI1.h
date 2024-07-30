@@ -3,9 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Enemy/Character/OilBarrel/OilBarrel.h"
 #include "FiniteStateMachine/FSM/FiniteStateMachineAI1.h"
 #include "FiniteStateMachine/State/StateAI1.h"
+
+class AAIEnemy1;
 
 /**
  * 
@@ -17,12 +18,9 @@ public:
 	virtual ~ThrowObjectStateAI1() override {};
 
 	virtual void Enter(void) override;
-	virtual void Tick(float a_deltaTime) override;
 
 private:
 	void ThrowObject(void);
 
-
-	UPROPERTY()
-	TObjectPtr<AOilBarrel> OilBarrel = nullptr;
+	class AAIEnemy1* Character = nullptr;
 };

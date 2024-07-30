@@ -4,10 +4,10 @@
 
 #include "CoreMinimal.h"
 #include "FiniteStateMachine/FSM/FiniteStateMachineAI1.h"
-#include "FiniteStateMachine/State/StateAI1.h"
-#include "FiniteStateMachine/State/StateBossAI1.h"
+#include "BP_ProjectPingu/Private/FiniteStateMachine/State/StateAI1.h"
 
 class AIControllerAI1;
+class AAIEnemy1;
 
 /**
  * 
@@ -20,5 +20,8 @@ public:
 
 	virtual void Tick(float A_DeltaTime) override;
 
-	static void SearchPlayer(AActor* A_Player);
+	void SearchPlayer(AActor* A_Player);
+
+	class AAIEnemy1* Character = nullptr;
+
 };

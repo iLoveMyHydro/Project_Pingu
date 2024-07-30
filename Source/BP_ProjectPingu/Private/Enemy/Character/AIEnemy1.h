@@ -31,12 +31,19 @@ public:
 
 	virtual void ApplyDamage(int A_DamageAmount) override;
 
+	void ThrowOilBarrel();
+
 private:
-	const FString MESH_PATH = TEXT("/Script/Engine.SkeletalMesh'/Engine/EditorMeshes/SkeletalMesh/DefaultSkeletalMesh.DefaultSkeletalMesh'");
-	const FString FSM_CONTROLLER_PATH = TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.AIControllerAI1'");
-	const FString PLAYER_CLASS_PATH = TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.PinguCharacter'");
-	const FString BOX_COLLISION_NAME = TEXT("Box Collision");
-	const FString ENEMY_NAME = TEXT("AI Enemy");
+	const FString MESH_PATH = FString(TEXT("/Script/Engine.SkeletalMesh'/Engine/EditorMeshes/SkeletalMesh/DefaultSkeletalMesh.DefaultSkeletalMesh'"));
+	const FString FSM_CONTROLLER_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.AIControllerAI1'"));
+	const FString PLAYER_CLASS_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.PinguCharacter'"));
+	const FString OIL_BARREL_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.OilBarrel'"));
+	const FString BOX_COLLISION_NAME = FString(TEXT("Box Collision"));
+	const FString ENEMY_NAME = FString(TEXT("AI Enemy"));
+	const FString SPAWNLOCATION_OIL_BARREL_NAME = FString(TEXT("Ice Spike Spawn Location"));
+
+	UPROPERTY(EditAnywhere, DisplayName = "Spawnlocation Ice Spike", Category = "Attack")
+	USceneComponent* SpawnLocationIceSpike = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Health", Category = "Value", meta = (AllowPrivateAccess = true))
 	int Health = 3;
@@ -44,9 +51,14 @@ private:
 	UPROPERTY(EditAnywhere, DisplayName = "BoxCollider", Category = "Components", meta = (AllowPrivateAccess = true))
 	TObjectPtr<UBoxComponent> CollisionMesh = nullptr;
 
-	TSubclassOf<AActor> playerClass;
+	UPROPERTY(EditAnywhere, DisplayName = "Ice Spike Actor", Category = "Attack", meta = (AllowPrivateAccess = true));
+	TSubclassOf<class AOilBarrel> OilBarrelProjectile;
+
+	TSubclassOf<AActor> PlayerClass;
 
 	TObjectPtr<AOilBarrel> OilBarrel = nullptr;
 
 	TObjectPtr<USceneComponent> SpawnPoint = nullptr;
+
+	AAIEnemy1* Character = nullptr;
 };

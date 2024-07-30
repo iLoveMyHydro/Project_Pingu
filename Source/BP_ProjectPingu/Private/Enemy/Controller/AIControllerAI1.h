@@ -44,7 +44,13 @@ private:
 
 	const FString PERCEPTION_NAME = FString(TEXT("Perception Component"));
 
-	
+
+	UPROPERTY(EditAnywhere, DisplayName = "Respawn Delay", Category = "Respawn")
+	float RespawnDelay = 2;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Respawn Timer Handle", Category = "Respawn")
+	FTimerHandle RespawnTimerHandle;
+
 	FiniteStateMachineAI1* Fsm = nullptr;
 	AActor* Player = nullptr;
 	class AAIEnemy1* Character = nullptr;

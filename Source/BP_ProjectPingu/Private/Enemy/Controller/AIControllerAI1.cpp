@@ -4,16 +4,16 @@
 #include "Enemy/Controller/AIControllerAI1.h"
 #include "FiniteStateMachine/Machines/SimpleFSMAI1.h"
 #include "Kismet/GameplayStatics.h"
-#include "BP_ProjectPingu/Private/Enemy/Character/AIEnemy1.h"
 #include "Perception/AIPerceptionComponent.h"
 #include "Perception/AISenseConfig_Sight.h"
+#include "BP_ProjectPingu/Private/Player/PinguCharacter.h"
 
 AAIControllerAI1::AAIControllerAI1()
 {
 	PerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(*PERCEPTION_NAME);
 	UAISenseConfig_Sight* SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight"));
-	SightConfig->LoseSightRadius = 1000;
-	SightConfig->SightRadius = 2500;
+	SightConfig->LoseSightRadius = 400;
+	SightConfig->SightRadius = 450;
 	SightConfig->PeripheralVisionAngleDegrees = 45.0f;
 	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
 	SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
@@ -51,7 +51,13 @@ void AAIControllerAI1::Tick(float DeltaTime)
 
 void AAIControllerAI1::AttackPlayer(AActor* OtherActor, FAIStimulus Stimulus)
 {
-	//UE_LOG(LogTemp, Warning, TEXT("Player"));
+	//TODO: Only when enter
+	//GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, this, Fsm->Transition(static_cast<SimpleFSMAI1*>(Fsm)->GetThrowObjectState()), RespawnDelay, true);
+
+	//if(OtherActor->IsA<APinguCharacter>())
+	//{
+	//	Fsm->Transition(static_cast<SimpleFSMAI1*>(Fsm)->GetThrowObjectState());
+	//}
 }
 
 void AAIControllerAI1::EndPlay(const EEndPlayReason::Type EndPlayReason)

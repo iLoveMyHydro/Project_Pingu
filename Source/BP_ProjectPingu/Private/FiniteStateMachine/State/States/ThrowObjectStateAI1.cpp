@@ -4,7 +4,9 @@
 #include "FiniteStateMachine/State/States/ThrowObjectStateAI1.h"
 #include "BP_ProjectPingu/Private/FiniteStateMachine/FSM/FiniteStateMachineAI1.h"
 #include "BP_ProjectPingu/Private/FiniteStateMachine/State/StateAI1.h"
-#include "Enemy/Character/OilBarrel/OilBarrel.h"
+#include "BP_ProjectPingu/Private/Enemy/Character/AIEnemy1.h"
+#include "BP_ProjectPingu/Private/Enemy/Controller/AIControllerAI1.h"
+
 
 ThrowObjectStateAI1::ThrowObjectStateAI1(FString A_Name, FiniteStateMachineAI1* A_Machine)
 {
@@ -15,15 +17,17 @@ ThrowObjectStateAI1::ThrowObjectStateAI1(FString A_Name, FiniteStateMachineAI1* 
 void ThrowObjectStateAI1::Enter()
 {
 	StateAI1::Enter();
-}
 
-void ThrowObjectStateAI1::Tick(float a_deltaTime)
-{
-	StateAI1::Tick(a_deltaTime);
+	ThrowObject();
 }
 
 void ThrowObjectStateAI1::ThrowObject()
 {
-	OilBarrel->Throw();
-	UE_LOG(LogTemp, Warning, TEXT("Throwed Barrel"));
+	Character = Machine->GetController()->GetPawn<AAIEnemy1>();
+	if (Character == nullptr) return;
+
+	Character->ThrowOilBarrel();
+
+	//TODO: Implement Animation for Enemy
+	//Character->SetNootAnimation();
 }
