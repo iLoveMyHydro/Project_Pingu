@@ -19,7 +19,7 @@ ASpike::ASpike()
 	CollisionMesh->bDynamicObstacle = true;
 	CollisionMesh->SetupAttachment(RootComponent);
 	CollisionMesh->SetGenerateOverlapEvents(true);
-	CollisionMesh->SetBoxExtent(FVector(110.0f,110.0f, 30.0f));
+	CollisionMesh->SetBoxExtent(FVector(100.0f,100.0f, 30.0f));
 	CollisionMesh->SetRelativeLocation(FVector(0.0f, 0.0f, 30.0f));
 	CollisionMesh->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
 }
