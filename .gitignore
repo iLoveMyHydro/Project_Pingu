@@ -39,6 +39,8 @@
 *.suo
 *.opensdf
 *.sdf
+*.vscode
+*.code-workspace
 *.VC.db
 *.VC.opendb
 
