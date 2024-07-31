@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "FiniteStateMachine/FSM/FiniteStateMachineAI1.h"
+#include "FiniteStateMachine/State/States/ThrowObjectStateAI1.h"
 
 /**
  * 
@@ -17,7 +18,7 @@ public:
 	virtual void Initialize() override;
 
 	StateAI1* GetSearchPlayerState(void) const { return SearchPlayerState; }
-	StateAI1* GetThrowObjectState(void) const { return ThrowObjectState; }
+	ThrowObjectStateAI1* GetThrowObjectState(void) const { return ThrowObjectState; }
 	StateAI1* GetWaitState(void) const { return WaitState; }
 
 private:
@@ -27,6 +28,6 @@ private:
 
 	//States
 	StateAI1* SearchPlayerState = nullptr;
-	StateAI1* ThrowObjectState = nullptr;
+	ThrowObjectStateAI1* ThrowObjectState = nullptr;
 	StateAI1* WaitState = nullptr;
 };

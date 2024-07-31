@@ -67,10 +67,6 @@ APinguCharacter::APinguCharacter()
 	//Get HUD Object
 	PlayerHUDObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PLAYER_HUD_PATH).Class;
 
-	//Get Stimuli Source for AI
-	StimuliSource = CreateDefaultSubobject<UAIPerceptionStimuliSourceComponent>(*STIMULI_NAME);
-	StimuliSource->bAutoRegister = true;
-
 	SpawnLocationIceSpike = CreateDefaultSubobject<USceneComponent>(*SPAWNLOCATION_ICE_SPIKE_NAME);
 	SpawnLocationIceSpike->SetRelativeLocation(FVector(40.0f, 0.0f, 50.0f));
 	SpawnLocationIceSpike->SetupAttachment(RootComponent);

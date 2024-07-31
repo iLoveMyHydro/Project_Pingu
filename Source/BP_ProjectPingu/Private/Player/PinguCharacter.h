@@ -180,9 +180,6 @@ private:
 	UPROPERTY(EditAnywhere, DisplayName = "Animation Slap", Category = "Animation")
 	UAnimSequence* SlapAnim;
 
-	UPROPERTY(EditAnywhere, DisplayName = "Stimuli Source", Category = "AI")
-	UAIPerceptionStimuliSourceComponent* StimuliSource = nullptr;
-
 	UPROPERTY(EditAnywhere, DisplayName = "Spawnlocation Ice Spike", Category = "Attack")
 	USceneComponent* SpawnLocationIceSpike = nullptr;
 

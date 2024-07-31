@@ -3,9 +3,13 @@
 
 #include "Enemy/Character/AIEnemy1.h"
 #include "Enemy/Controller/AIControllerAI1.h"
+#include "FiniteStateMachine/Machines/SimpleFSMAI1.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "OilBarrel/OilBarrel.h"
+#include "BP_ProjectPingu/Private/FiniteStateMachine/FSM/FiniteStateMachineAI1.h"
+#include "FiniteStateMachine/State/StateAI1.h"
+#include "Player/PinguCharacter.h"
 
 // Sets default values
 AAIEnemy1::AAIEnemy1()
@@ -29,6 +33,15 @@ AAIEnemy1::AAIEnemy1()
 	CollisionMesh->SetBoxExtent(FVector(64.0f, 64.0f, 64.0f));
 	CollisionMesh->SetHiddenInGame(false);
 
+	sphereColl = CreateDefaultSubobject<USphereComponent>(TEXT("Perception Trigger"));
+	sphereColl->SetSphereRadius(500);
+	sphereColl->SetRelativeLocation(FVector(0, 0, 90));
+	sphereColl->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
+	sphereColl->SetHiddenInGame(false);
+	sphereColl->OnComponentBeginOverlap.AddDynamic(this, &AAIEnemy1::OnCollision);
+	sphereColl->OnComponentEndOverlap.AddDynamic(this, &AAIEnemy1::OnCollisionExit);
+	sphereColl->SetupAttachment(GetMesh());
+
 	SpawnLocationIceSpike = CreateDefaultSubobject<USceneComponent>(*SPAWNLOCATION_OIL_BARREL_NAME);
 	SpawnLocationIceSpike->SetRelativeLocation(FVector(40.0f, 0.0f, 50.0f));
 	SpawnLocationIceSpike->SetupAttachment(RootComponent);
@@ -44,6 +57,15 @@ void AAIEnemy1::BeginPlay()
 
 	auto controller = Cast<AAIControllerAI1>(GetController());
 	controller->SetCharacter(this);
+
+	if (Fsm == nullptr)
+	{
+		Fsm = static_cast<FiniteStateMachineAI1*>(new SimpleFSMAI1(controller));
+	}
+	if (Fsm != nullptr)
+	{
+		Fsm->Initialize();
+	}
 }
 
 // Called every frame
@@ -98,5 +120,26 @@ void AAIEnemy1::ThrowOilBarrel()
 	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("No Projectile"));
+	}
+}
+
+void AAIEnemy1::OnCollision(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	if(OtherActor->IsA(APinguCharacter::StaticClass()))
+	{
+		GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+		GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, [this]() {Fsm->Transition(static_cast<SimpleFSMAI1*>(Fsm)->GetThrowObjectState()); }, RespawnDelay, true);
+		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Enter"));
+	}
+}
+
+void AAIEnemy1::OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	if(OtherActor->IsA(APinguCharacter::StaticClass()))
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Exit"));
+		Fsm->Transition(static_cast<SimpleFSMAI1*>(Fsm)->GetSearchPlayerState());
+		GetWorld()->GetTimerManager().ClearTimer(RespawnTimerHandle);
 	}
 }

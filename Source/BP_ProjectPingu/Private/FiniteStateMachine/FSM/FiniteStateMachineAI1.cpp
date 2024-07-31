@@ -26,3 +26,8 @@ void FiniteStateMachineAI1::Transition(StateAI1* A_NewState)
 	CurrentState = A_NewState;
 	CurrentState->Enter();
 }
+
+StateAI1* FiniteStateMachineAI1::GetCurrentState() const
+{
+	return CurrentState;
+}

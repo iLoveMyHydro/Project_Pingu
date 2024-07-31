@@ -11,16 +11,27 @@ SearchPlayerStateAI1::SearchPlayerStateAI1(FString A_Name, FiniteStateMachineAI1
 {
 	Name = A_Name;
 	Machine = A_Machine;
+
+	//Counter = 0;
 }
 
 void SearchPlayerStateAI1::Tick(float A_DeltaTime)
 {
 	StateAI1::Tick(A_DeltaTime);
+
+
+	if(Counter >= 5)
+	{
+		SearchPlayer();
+
+		Counter = 0;
+	}
+	Counter += A_DeltaTime;
 }
 
-void SearchPlayerStateAI1::SearchPlayer(AActor* A_Player)
+void SearchPlayerStateAI1::SearchPlayer()
 {
-	Machine = nullptr;
 	Character = Machine->GetController()->GetPawn<AAIEnemy1>();
-	Character->SetActorRotation(FRotator(0.0f, 0.0f, 180.0f));
+	auto Rotation = Character->GetActorRotation();
+	Character->SetActorRotation(Rotation + Rotator);
 }

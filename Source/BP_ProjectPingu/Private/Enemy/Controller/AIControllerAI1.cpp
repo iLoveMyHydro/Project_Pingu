@@ -4,23 +4,10 @@
 #include "Enemy/Controller/AIControllerAI1.h"
 #include "FiniteStateMachine/Machines/SimpleFSMAI1.h"
 #include "Kismet/GameplayStatics.h"
-#include "Perception/AIPerceptionComponent.h"
-#include "Perception/AISenseConfig_Sight.h"
 #include "BP_ProjectPingu/Private/Player/PinguCharacter.h"
 
 AAIControllerAI1::AAIControllerAI1()
 {
-	PerceptionComponent = CreateDefaultSubobject<UAIPerceptionComponent>(*PERCEPTION_NAME);
-	UAISenseConfig_Sight* SightConfig = CreateDefaultSubobject<UAISenseConfig_Sight>(TEXT("Sight"));
-	SightConfig->LoseSightRadius = 400;
-	SightConfig->SightRadius = 450;
-	SightConfig->PeripheralVisionAngleDegrees = 45.0f;
-	SightConfig->DetectionByAffiliation.bDetectEnemies = true;
-	SightConfig->DetectionByAffiliation.bDetectFriendlies = true;
-	SightConfig->DetectionByAffiliation.bDetectNeutrals = true;
-	PerceptionComponent->ConfigureSense(*SightConfig);
-	PerceptionComponent->SetDominantSense(SightConfig->GetSenseImplementation());
-	PerceptionComponent->OnTargetPerceptionUpdated.AddDynamic(this, &AAIControllerAI1::AttackPlayer);
 }
 
 void AAIControllerAI1::BeginPlay()
@@ -29,11 +16,11 @@ void AAIControllerAI1::BeginPlay()
 
 	Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 
-	if(Fsm == nullptr)
+	if (Fsm == nullptr)
 	{
 		Fsm = static_cast<FiniteStateMachineAI1*>(new SimpleFSMAI1(this));
 	}
-	if(Fsm != nullptr)
+	if (Fsm != nullptr)
 	{
 		Fsm->Initialize();
 	}
@@ -43,29 +30,8 @@ void AAIControllerAI1::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if(Fsm != nullptr)
+	if (Fsm != nullptr)
 	{
 		Fsm->Tick(DeltaTime);
-	}
-}
-
-void AAIControllerAI1::AttackPlayer(AActor* OtherActor, FAIStimulus Stimulus)
-{
-	//TODO: Only when enter
-	//GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, this, Fsm->Transition(static_cast<SimpleFSMAI1*>(Fsm)->GetThrowObjectState()), RespawnDelay, true);
-
-	//if(OtherActor->IsA<APinguCharacter>())
-	//{
-	//	Fsm->Transition(static_cast<SimpleFSMAI1*>(Fsm)->GetThrowObjectState());
-	//}
-}
-
-void AAIControllerAI1::EndPlay(const EEndPlayReason::Type EndPlayReason)
-{
-	Super::EndPlay(EndPlayReason);
-
-	if (PerceptionComponent)
-	{
-		PerceptionComponent->OnTargetPerceptionUpdated.RemoveDynamic(this, &AAIControllerAI1::AttackPlayer);
 	}
 }

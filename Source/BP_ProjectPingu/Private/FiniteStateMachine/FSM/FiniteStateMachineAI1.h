@@ -25,6 +25,8 @@ public:
 
 	void Transition(StateAI1* A_NewState);
 
+	StateAI1* GetCurrentState(void) const;
+
 protected:
 	StateAI1* CurrentState = nullptr;
 	AAIControllerAI1* FsmController = nullptr;

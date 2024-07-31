@@ -6,8 +6,11 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/Character.h"
 #include "BP_ProjectPingu/Private/DamageSystem/Damagable.h"
+#include "Components/SphereComponent.h"
 #include "OilBarrel/OilBarrel.h"
 #include "AIEnemy1.generated.h"
+
+class FiniteStateMachineAI1;
 
 UCLASS()
 class AAIEnemy1 : public ACharacter, public IDamagable
@@ -33,6 +36,13 @@ public:
 
 	void ThrowOilBarrel();
 
+	UFUNCTION()
+	void OnCollision(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
 private:
 	const FString MESH_PATH = FString(TEXT("/Script/Engine.SkeletalMesh'/Engine/EditorMeshes/SkeletalMesh/DefaultSkeletalMesh.DefaultSkeletalMesh'"));
 	const FString FSM_CONTROLLER_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.AIControllerAI1'"));
@@ -48,6 +58,9 @@ private:
 	UPROPERTY(EditAnywhere, DisplayName = "Health", Category = "Value", meta = (AllowPrivateAccess = true))
 	int Health = 3;
 
+	UPROPERTY(EditAnywhere)
+	USphereComponent* sphereColl = nullptr;
+
 	UPROPERTY(EditAnywhere, DisplayName = "BoxCollider", Category = "Components", meta = (AllowPrivateAccess = true))
 	TObjectPtr<UBoxComponent> CollisionMesh = nullptr;
 
@@ -61,4 +74,14 @@ private:
 	TObjectPtr<USceneComponent> SpawnPoint = nullptr;
 
 	AAIEnemy1* Character = nullptr;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Respawn Delay", Category = "Respawn")
+	float RespawnDelay = 2;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Respawn Timer Handle", Category = "Respawn")
+	FTimerHandle RespawnTimerHandle;
+
+	FiniteStateMachineAI1* Fsm = nullptr;
+
+	APinguCharacter* PinguCharacter = nullptr;
 };

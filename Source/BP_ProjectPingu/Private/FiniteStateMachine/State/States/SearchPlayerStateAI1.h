@@ -20,8 +20,12 @@ public:
 
 	virtual void Tick(float A_DeltaTime) override;
 
-	void SearchPlayer(AActor* A_Player);
+	void SearchPlayer();
 
 	class AAIEnemy1* Character = nullptr;
+
+	FRotator Rotator = FRotator(0.0f, 180.0f, 0.0f);
+
+	float Counter = 0;
 
 };
