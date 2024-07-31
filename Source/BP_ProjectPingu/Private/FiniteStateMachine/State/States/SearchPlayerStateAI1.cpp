@@ -19,19 +19,9 @@ void SearchPlayerStateAI1::Tick(float A_DeltaTime)
 {
 	StateAI1::Tick(A_DeltaTime);
 
-
-	if(Counter >= 5)
-	{
-		SearchPlayer();
-
-		Counter = 0;
-	}
-	Counter += A_DeltaTime;
 }
 
 void SearchPlayerStateAI1::SearchPlayer()
 {
-	Character = Machine->GetController()->GetPawn<AAIEnemy1>();
-	auto Rotation = Character->GetActorRotation();
-	Character->SetActorRotation(Rotation + Rotator);
+
 }
