@@ -21,8 +21,6 @@ AAIEnemy1::AAIEnemy1()
 	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 
-	//Todo: Add Scene Component -> Als Spawn Point
-
 	//Get Oil Barrel
 	OilBarrelProjectile = ConstructorHelpers::FClassFinder<AOilBarrel>(*OIL_BARREL_PATH).Class;
 
@@ -42,9 +40,9 @@ AAIEnemy1::AAIEnemy1()
 	sphereColl->OnComponentEndOverlap.AddDynamic(this, &AAIEnemy1::OnCollisionExit);
 	sphereColl->SetupAttachment(GetMesh());
 
-	SpawnLocationIceSpike = CreateDefaultSubobject<USceneComponent>(*SPAWNLOCATION_OIL_BARREL_NAME);
-	SpawnLocationIceSpike->SetRelativeLocation(FVector(40.0f, 0.0f, 50.0f));
-	SpawnLocationIceSpike->SetupAttachment(RootComponent);
+	SpawnLocationOilBarrel = CreateDefaultSubobject<USceneComponent>(*SPAWNLOCATION_OIL_BARREL_NAME);
+	SpawnLocationOilBarrel->SetRelativeLocation(FVector(40.0f, 0.0f, 50.0f));
+	SpawnLocationOilBarrel->SetupAttachment(RootComponent);
 
 	AIControllerClass = ConstructorHelpers::FClassFinder<AAIController>(*FSM_CONTROLLER_PATH).Class;
 	GetCharacterMovement()->bOrientRotationToMovement = true;

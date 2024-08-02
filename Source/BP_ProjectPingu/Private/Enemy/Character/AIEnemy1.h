@@ -53,7 +53,7 @@ private:
 	const FString SPAWNLOCATION_OIL_BARREL_NAME = FString(TEXT("Ice Spike Spawn Location"));
 
 	UPROPERTY(EditAnywhere, DisplayName = "Spawnlocation Ice Spike", Category = "Attack")
-	USceneComponent* SpawnLocationIceSpike = nullptr;
+	USceneComponent* SpawnLocationOilBarrel = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Health", Category = "Value", meta = (AllowPrivateAccess = true))
 	int Health = 3;
@@ -64,7 +64,7 @@ private:
 	UPROPERTY(EditAnywhere, DisplayName = "BoxCollider", Category = "Components", meta = (AllowPrivateAccess = true))
 	TObjectPtr<UBoxComponent> CollisionMesh = nullptr;
 
-	UPROPERTY(EditAnywhere, DisplayName = "Ice Spike Actor", Category = "Attack", meta = (AllowPrivateAccess = true));
+	UPROPERTY(EditAnywhere, DisplayName = "Oil Barrel Actor", Category = "Attack", meta = (AllowPrivateAccess = true));
 	TSubclassOf<class AOilBarrel> OilBarrelProjectile;
 
 	TSubclassOf<AActor> PlayerClass;
