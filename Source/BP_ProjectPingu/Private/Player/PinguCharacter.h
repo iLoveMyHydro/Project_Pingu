@@ -8,7 +8,6 @@
 #include "DamageSystem/IceSpikes.h"
 #include "GameFramework/Character.h"
 #include "HUD/PlayerHUD.h"
-#include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "PinguCharacter.generated.h"
 
 class UCameraComponent;
@@ -150,9 +149,6 @@ private:
 
 	UPROPERTY(EditAnywhere, DisplayName = "Ice Spike Actor", Category = "Attack", meta = (AllowPrivateAccess = true));
 	TSubclassOf<class AIceSpikes> IceSpikeProjectile;
-
-	//UPROPERTY(EditDefaultsOnly, Category = Projectile)
-	//TSubclassOf<class AMyProject3Projectile> ProjectileClass;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Ice Spike Offset", Category = "Attack", meta = (AllowPrivateAccess = true))
 	FVector MuzzleOffset;

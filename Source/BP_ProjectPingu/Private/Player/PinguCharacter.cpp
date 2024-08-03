@@ -6,8 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "DamageSystem/IceSpikeSpawn.h"
-#include "Enemy/Character/AIBossEnemy1.h"
-#include "Enemy/Character/AIEnemy1.h"
+#include "Enemy/Character/NormalEnemy.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -17,7 +16,6 @@
 
 //Audio Hubsi here again
 #include "Components/AudioComponent.h"
-
 
 // Sets default values
 APinguCharacter::APinguCharacter()
@@ -272,13 +270,9 @@ void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 {
 	if(!GetWorld()) return;
 	
-	if(OtherActor->IsA<AAIEnemy1>())
+	if(OtherActor->IsA<ANormalEnemy>())
 	{
-		OtherCharacter = CastChecked<AAIEnemy1>(OtherActor);
-	}
-	else if(OtherActor->IsA<AAIBossEnemy1>())
-	{
-		OtherCharacter = CastChecked<AAIBossEnemy1>(OtherActor);
+		OtherCharacter = CastChecked<ANormalEnemy>(OtherActor);
 	}
 	else if(OtherActor->IsA<AIceSpikeSpawn>())
 	{
@@ -293,6 +287,11 @@ void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 		SpawnLocation = GetActorLocation();
 		UE_LOG(LogTemp, Warning, TEXT("Neuer SpawnPoint"));
 	}
+	//else if(OtherActor->IsA<ARespawnPoint>())
+	//{
+	//	SpawnLocation = GetActorLocation();
+	//	UE_LOG(LogTemp, Warning, TEXT("Neuer SpawnPoint"));
+	//}
 	else if(OtherActor->IsA<ASpike>())
 	{
 		ApplyDamage(1);

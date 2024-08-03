@@ -5,8 +5,7 @@
 #include "CoreMinimal.h"
 #include "InputMappingContext.h"
 #include "DamageSystem/Damagable.h"
-#include "Enemy/Character/AIBossEnemy1.h"
-#include "Enemy/Character/AIEnemy1.h"
+#include "Enemy/Character/NormalEnemy.h"
 #include "GameFramework/PlayerController.h"
 #include "InputController.generated.h"
 
@@ -115,8 +114,7 @@ private:
 #pragma endregion
 
 	APinguCharacter* PinguCharacter = nullptr;
-	AAIBossEnemy1* BossEnemy = nullptr;
-	AAIEnemy1* Enemy = nullptr;
+	ANormalEnemy* Enemy = nullptr;
 
 	UPROPERTY()
 	class UPauseMenu* PauseMenu = nullptr;

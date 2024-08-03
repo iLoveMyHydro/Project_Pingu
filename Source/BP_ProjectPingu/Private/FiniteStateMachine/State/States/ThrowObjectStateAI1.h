@@ -6,7 +6,7 @@
 #include "FiniteStateMachine/FSM/FiniteStateMachineAI1.h"
 #include "FiniteStateMachine/State/StateAI1.h"
 
-class AAIEnemy1;
+class ANormalEnemy;
 
 /**
  * 
@@ -22,5 +22,5 @@ public:
 private:
 	void ThrowObject(void);
 
-	class AAIEnemy1* Character = nullptr;
+	class ANormalEnemy* Character = nullptr;
 };

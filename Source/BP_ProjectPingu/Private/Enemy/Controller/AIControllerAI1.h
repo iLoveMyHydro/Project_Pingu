@@ -30,9 +30,9 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	AActor* GetPlayer(void) const { return Player; }
-	class AAIEnemy1* GetCharacterAI(void) const { return Character; };
+	class ANormalEnemy* GetCharacterAI(void) const { return Character; };
 
-	void SetCharacter(class AAIEnemy1* A_Character) { Character = A_Character; }
+	void SetCharacter(class ANormalEnemy* A_Character) { Character = A_Character; }
 
 
 private:
@@ -40,6 +40,5 @@ private:
 
 	FiniteStateMachineAI1* Fsm = nullptr;
 	AActor* Player = nullptr;
-	class AAIEnemy1* Character = nullptr;
-
+	class ANormalEnemy* Character = nullptr;
 };

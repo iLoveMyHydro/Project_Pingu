@@ -1,8 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "DamageSystem/IceSpikes.h"
-#include "Enemy/Character/AIBossEnemy1.h"
-#include "Enemy/Character/AIEnemy1.h"
+#include "Enemy/Character/NormalEnemy.h"
 #include  "Components/SphereComponent.h"
 
 // Sets default values
@@ -44,16 +43,10 @@ void AIceSpikes::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimit
 	if((OtherActor != nullptr) && (OtherActor != this))
 	{
 
-		if(OtherActor->IsA<AAIEnemy1>())
+		if(OtherActor->IsA<ANormalEnemy>())
 		{
-			Enemy = CastChecked<AAIEnemy1>(OtherActor);
+			Enemy = CastChecked<ANormalEnemy>(OtherActor);
 			Enemy->ApplyDamage(1);
-			Destroy();
-		}
-		else if(OtherActor->IsA<AAIBossEnemy1>())
-		{
-			BossEnemy = CastChecked<AAIBossEnemy1>(OtherActor);
-			BossEnemy->ApplyDamage(1);
 			Destroy();
 		}
 	}

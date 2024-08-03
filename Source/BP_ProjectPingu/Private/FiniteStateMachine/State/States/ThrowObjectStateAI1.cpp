@@ -4,7 +4,7 @@
 #include "FiniteStateMachine/State/States/ThrowObjectStateAI1.h"
 #include "BP_ProjectPingu/Private/FiniteStateMachine/FSM/FiniteStateMachineAI1.h"
 #include "BP_ProjectPingu/Private/FiniteStateMachine/State/StateAI1.h"
-#include "BP_ProjectPingu/Private/Enemy/Character/AIEnemy1.h"
+#include "BP_ProjectPingu/Private/Enemy/Character/NormalEnemy.h"
 #include "BP_ProjectPingu/Private/Enemy/Controller/AIControllerAI1.h"
 
 
@@ -23,7 +23,7 @@ void ThrowObjectStateAI1::Enter()
 
 void ThrowObjectStateAI1::ThrowObject()
 {
-	Character = Machine->GetController()->GetPawn<AAIEnemy1>();
+	Character = Machine->GetController()->GetPawn<ANormalEnemy>();
 	if (Character == nullptr) return;
 
 	Character->ThrowOilBarrel();

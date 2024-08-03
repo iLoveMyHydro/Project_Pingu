@@ -7,7 +7,7 @@
 #include "BP_ProjectPingu/Private/FiniteStateMachine/State/StateAI1.h"
 
 class AIControllerAI1;
-class AAIEnemy1;
+class NormalEnemy;
 
 /**
  * 
@@ -22,7 +22,7 @@ public:
 
 	void SearchPlayer();
 
-	class AAIEnemy1* Character = nullptr;
+	class NormalEnemy* Character = nullptr;
 
 	FRotator Rotator = FRotator(0.0f, 180.0f, 0.0f);
 

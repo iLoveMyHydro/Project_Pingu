@@ -7,8 +7,7 @@
 #include "InputMappingContext.h"
 #include "InputAction.h"
 #include "PinguCharacter.h"
-#include "Enemy/Character/AIBossEnemy1.h"
-#include "Enemy/Character/AIEnemy1.h"
+#include "Enemy/Character/NormalEnemy.h"
 #include "GameFramework/Character.h"
 #include "GUI/PauseMenu.h"
 
@@ -160,16 +159,10 @@ void AInputController::HandleSlapAttack()
 	auto OtherCharacter = CastChecked<APinguCharacter>(GetPawn())->GetOtherCharacter();
 	if(OtherCharacter != nullptr)
 	{
-		if(OtherCharacter->IsA<AAIBossEnemy1>())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Boss Enemy"));
-			BossEnemy = CastChecked<AAIBossEnemy1>(OtherCharacter);
-			BossEnemy->ApplyDamage(1);
-		}
-		if(OtherCharacter->IsA<AAIEnemy1>())
+		if(OtherCharacter->IsA<ANormalEnemy>())
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Enemy"));
-			Enemy = CastChecked<AAIEnemy1>(OtherCharacter);
+			Enemy = CastChecked<ANormalEnemy>(OtherCharacter);
 			Enemy->ApplyDamage(1);
 		}
 		PinguCharacter->PlaySlapSound(); //This code has been brought to you by Hubsi
