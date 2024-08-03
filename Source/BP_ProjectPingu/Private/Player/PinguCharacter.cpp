@@ -13,6 +13,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "DamageSystem/Spike.h"
 #include "RespawnSystem/RespawnPoint.h"
+#include "HUD/PlayerHUD.h"
 
 //Audio Hubsi here again
 #include "Components/AudioComponent.h"
@@ -26,7 +27,6 @@ APinguCharacter::APinguCharacter()
 	Material = ConstructorHelpers::FObjectFinder<UMaterial>(*MAT_PATH).Object;
 	GetMesh()->SetSkeletalMesh(ConstructorHelpers::FObjectFinder<USkeletalMesh>(*MESH_PATH).Object);
 	GetMesh()->SetupAttachment(RootComponent);
-	//SuperMesh->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 	GetMesh()->SetRelativeScale3D(FVector(0.3f, 0.3f, 0.3f));
 	GetMesh()->SetMaterial(0, Material);
@@ -165,6 +165,11 @@ void APinguCharacter::ThrowIceSpikes()
 	}
 }
 
+bool APinguCharacter::GetGotIceSpikes()
+{
+	return bGotIceSpikes;
+}
+
 APinguCharacter& APinguCharacter::SetIdleAnimation()
 {
 	GetMesh()->PlayAnimation(IdleAnim, true);
@@ -237,6 +242,7 @@ void APinguCharacter::InitPlayer()
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
 	SpawnLocation = FVector(0.0f, 0.0f, 0.0f);
+	bGotIceSpikes = false;
 }
 
 //Called when the game starts or when spawned
@@ -257,7 +263,7 @@ void APinguCharacter::BeginPlay()
 
 		PlayerHUD->AddToPlayerScreen();
 		PlayerHUD->SetLifeAmount(MaxHealth, MaxHealth);
-		PlayerHUD->SetIceSpikeAmount(0, 5);
+		PlayerHUD->SetIceSpikeAmount(IceSpikes, IceSpikesMax);
 	}
 
 	SetIdleAnimation();
@@ -276,6 +282,7 @@ void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 	}
 	else if(OtherActor->IsA<AIceSpikeSpawn>())
 	{
+		bGotIceSpikes = true;
 		if(IceSpikes <= IceSpikesMax)
 		{
 			IceSpikes = IceSpikesMax;
@@ -287,11 +294,6 @@ void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 		SpawnLocation = GetActorLocation();
 		UE_LOG(LogTemp, Warning, TEXT("Neuer SpawnPoint"));
 	}
-	//else if(OtherActor->IsA<ARespawnPoint>())
-	//{
-	//	SpawnLocation = GetActorLocation();
-	//	UE_LOG(LogTemp, Warning, TEXT("Neuer SpawnPoint"));
-	//}
 	else if(OtherActor->IsA<ASpike>())
 	{
 		ApplyDamage(1);

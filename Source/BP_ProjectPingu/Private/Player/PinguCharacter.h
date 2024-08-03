@@ -7,9 +7,10 @@
 #include "DamageSystem/Damagable.h"
 #include "DamageSystem/IceSpikes.h"
 #include "GameFramework/Character.h"
-#include "HUD/PlayerHUD.h"
 #include "PinguCharacter.generated.h"
 
+
+class UPlayerHUD;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
@@ -36,6 +37,8 @@ public:
 	void SetIceSpikes(int A_IceSpikes);
 
 	void ThrowIceSpikes();
+
+	bool GetGotIceSpikes();
 
 	APinguCharacter& SetIdleAnimation(void);
 	APinguCharacter& SetNootAnimation(void);
@@ -191,6 +194,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, DisplayName = "Audio Component Auto Activation", Category = "Components")
 	bool bAutoActivate = false;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Got IceSpikes", Category = "Attack")
+	bool bGotIceSpikes = false;
 
 	// UPROPERTY(EditAnywhere, DisplayName = "Attack Sound", Category = "Audio")
 	// class UMetaSoundSource* AttackSFX;

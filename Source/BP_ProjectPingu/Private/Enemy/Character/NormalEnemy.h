@@ -10,6 +10,7 @@
 #include "OilBarrel/OilBarrel.h"
 #include "NormalEnemy.generated.h"
 
+class ANormalAIController;
 class FiniteStateMachineAI1;
 
 UCLASS()
@@ -45,7 +46,7 @@ public:
 
 private:
 	const FString MESH_PATH = FString(TEXT("/Script/Engine.SkeletalMesh'/Engine/EditorMeshes/SkeletalMesh/DefaultSkeletalMesh.DefaultSkeletalMesh'"));
-	const FString FSM_CONTROLLER_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.AIControllerAI1'"));
+	const FString FSM_CONTROLLER_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.NormalAIController'"));
 	const FString PLAYER_CLASS_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.PinguCharacter'"));
 	const FString OIL_BARREL_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.OilBarrel'"));
 	const FString BOX_COLLISION_NAME = FString(TEXT("Box Collision"));
@@ -83,4 +84,6 @@ private:
 	FiniteStateMachineAI1* Fsm = nullptr;
 
 	APinguCharacter* PinguCharacter = nullptr;
+
+	ANormalAIController* Controller = nullptr;
 };

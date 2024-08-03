@@ -38,18 +38,18 @@ protected:
 	void HandleStartedMovement();
 
 private:
-	const FString IA_MOVE_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_Move.IA_Move'");
 	const FString PLAYER_CTX_PATH = TEXT("/Game/Input/IMC_Character");
-	const FString IA_JUMP_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_Jump.IA_Jump'");
-	const FString IA_SLAP_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_Slap.IA_Slap'");
-	const FString IA_NOOT_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_NootNoot.IA_NootNoot'");
-	const FString IMC_PATH = TEXT("/Script/EnhancedInput.InputMappingContext'/Game/Input/IMC_Character.IMC_Character'");
-	const FString IA_PAUSE_PATH = TEXT("/Script/EnhancedInput.InputAction'/Game/Input/Actions/IA_Pause.IA_Pause'");
-	const FString PAUSE_MENU_PATH = FString(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_PauseMenu_Code.WBP_PauseMenu_Code'"));
-	const FString PLAYER_HUD_PATH = FString(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_PlayerHUD_Code'"));
+	const FString IA_MOVE_PATH = TEXT("/Game/Input/Actions/IA_Move");
+	const FString IA_JUMP_PATH = TEXT("/Game/Input/Actions/IA_Jump");
+	const FString IA_SLAP_PATH = TEXT("/Game/Input/Actions/IA_Slap");
+	const FString IA_NOOT_PATH = TEXT("/Game/Input/Actions/IA_NootNoot");
+	const FString IMC_PATH = TEXT("/Game/Input/IMC_Character");
+	const FString IA_PAUSE_PATH = TEXT("/Game/Input/Actions/IA_Pause");
+	const FString PAUSE_MENU_PATH = FString(TEXT("/Game/Blueprint/HUD/C++/WBP_PauseMenu_Code"));
+	const FString PLAYER_HUD_PATH = FString(TEXT("/Game/Blueprint/HUD/C++/WBP_PlayerHUD_Code"));
 
 	//Audio Stuff by Hubsi
-	const FString MUSIC_PATH = FString(TEXT("/Script/MetasoundEngine.MetaSoundSource'/Game/Audio/MetaSounds/META_Music.META_Music'"));
+	const FString MUSIC_PATH = FString(TEXT("/Game/Audio/MetaSounds/META_Music"));
 	const FString MUSIC_NAME = FString(TEXT("Music"));
 	const FString MUSIC_TRIGGER_NAME = FString(TEXT("PlayLevelTheme"));
 	const FString PAUSE_MUSIC_TRIGGER_NAME = FString(TEXT("PauseLevelTheme"));

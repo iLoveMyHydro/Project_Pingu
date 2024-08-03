@@ -5,7 +5,7 @@
 #include "BP_ProjectPingu/Private/FiniteStateMachine/FSM/FiniteStateMachineAI1.h"
 #include "BP_ProjectPingu/Private/FiniteStateMachine/State/StateAI1.h"
 #include "BP_ProjectPingu/Private/Enemy/Character/NormalEnemy.h"
-#include "BP_ProjectPingu/Private/Enemy/Controller/AIControllerAI1.h"
+#include "BP_ProjectPingu/Private/Enemy/Controller/NormalAIController.h"
 
 
 ThrowObjectStateAI1::ThrowObjectStateAI1(FString A_Name, FiniteStateMachineAI1* A_Machine)

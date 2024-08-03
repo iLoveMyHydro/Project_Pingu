@@ -12,7 +12,7 @@
 class SimpleFSMAI1 : public FiniteStateMachineAI1
 {
 public:
-	inline SimpleFSMAI1(AAIControllerAI1* A_Controller) : FiniteStateMachineAI1(A_Controller) {};
+	inline SimpleFSMAI1(ANormalAIController* A_Controller) : FiniteStateMachineAI1(A_Controller) {};
 	inline ~SimpleFSMAI1() {};
 
 	virtual void Initialize() override;

@@ -2,7 +2,7 @@
 
 
 #include "Enemy/Character/NormalEnemy.h"
-#include "Enemy/Controller/AIControllerAI1.h"
+#include "Enemy/Controller/NormalAIController.h"
 #include "FiniteStateMachine/Machines/SimpleFSMAI1.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "OilBarrel/OilBarrel.h"
@@ -43,7 +43,7 @@ ANormalEnemy::ANormalEnemy()
 	SpawnLocationOilBarrel->SetRelativeLocation(FVector(40.0f, 0.0f, 50.0f));
 	SpawnLocationOilBarrel->SetupAttachment(RootComponent);
 
-	AIControllerClass = ConstructorHelpers::FClassFinder<AAIController>(*FSM_CONTROLLER_PATH).Class;
+	AIControllerClass = ConstructorHelpers::FClassFinder<ANormalAIController>(*FSM_CONTROLLER_PATH).Class;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
@@ -52,12 +52,12 @@ void ANormalEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto controller = Cast<AAIControllerAI1>(GetController());
-	controller->SetCharacter(this);
+	Controller = Cast<ANormalAIController>(GetController());
+	Controller->SetCharacter(this);
 
 	if (Fsm == nullptr)
 	{
-		Fsm = static_cast<FiniteStateMachineAI1*>(new SimpleFSMAI1(controller));
+		Fsm = static_cast<FiniteStateMachineAI1*>(new SimpleFSMAI1(Controller));
 	}
 	if (Fsm != nullptr)
 	{
