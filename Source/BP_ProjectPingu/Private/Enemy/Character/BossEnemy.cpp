@@ -2,9 +2,12 @@
 
 
 #include "Enemy/Character/BossEnemy.h"
-#include "OilBarrel/OilBarrel.h"
-#include "Components/SphereComponent.h"
+#include "Enemy/Controller/BossAIController.h"
+#include "FiniteStateMachine/Machines/BossSimpleFSM.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "OilBarrel/OilBarrel.h"
+#include "FiniteStateMachine/FSM/BossFSM.h"
+#include "FiniteStateMachine/State/BossStateAI.h"
 #include "Player/PinguCharacter.h"
 
 // Sets default values
@@ -40,7 +43,7 @@ ABossEnemy::ABossEnemy()
 	SpawnLocationOilBarrel->SetRelativeLocation(FVector(40.0f, 0.0f, 50.0f));
 	SpawnLocationOilBarrel->SetupAttachment(RootComponent);
 
-	//AIControllerClass = ConstructorHelpers::FClassFinder<>(*FSM_CONTROLLER_PATH).Class;
+	AIControllerClass = ConstructorHelpers::FClassFinder<ABossAIController>(*FSM_CONTROLLER_PATH).Class;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
@@ -48,7 +51,18 @@ ABossEnemy::ABossEnemy()
 void ABossEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	Controller = Cast<ABossAIController>(GetController());
+	Controller->SetCharacter(this);
+
+	if (Fsm == nullptr)
+	{
+		Fsm = static_cast<BossSimpleFSM*>(new BossSimpleFSM(Controller));
+	}
+	if (Fsm != nullptr)
+	{
+		Fsm->Initialize();
+	}
 }
 
 // Called every frame
@@ -144,6 +158,18 @@ void ABossEnemy::OnCollision(UPrimitiveComponent* OverlappedComponent, AActor* O
 {
 	if (OtherActor->IsA(APinguCharacter::StaticClass()))
 	{
+		if(Health > 3)
+		{
+			GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+			GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, [this]() {Fsm->Transition(static_cast<BossSimpleFSM*>(Fsm)->GetThrowObjectState()); }, RespawnDelay, true);
+			GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Enter"));
+		}
+		else if(Health < 3)
+		{
+			GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+			GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandleThree, [this]() {Fsm->Transition(static_cast<BossSimpleFSM*>(Fsm)->GetThrowThreeObjectsState()); }, RespawnDelay, true);
+			GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Enter"));
+		}
 	}
 }
 
@@ -152,6 +178,9 @@ void ABossEnemy::OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AActo
 {
 	if (OtherActor->IsA(APinguCharacter::StaticClass()))
 	{
+		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Exit"));
+		Fsm->Transition(static_cast<BossSimpleFSM*>(Fsm)->GetSearchPlayerState());
+		GetWorld()->GetTimerManager().ClearTimer(RespawnTimerHandle);
+		GetWorld()->GetTimerManager().ClearTimer(RespawnTimerHandleThree);
 	}
 }
-

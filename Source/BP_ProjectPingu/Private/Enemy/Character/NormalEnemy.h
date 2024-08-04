@@ -81,7 +81,5 @@ private:
 
 	NormalFSM* Fsm = nullptr;
 
-	APinguCharacter* PinguCharacter = nullptr;
-
 	ANormalAIController* Controller = nullptr;
 };

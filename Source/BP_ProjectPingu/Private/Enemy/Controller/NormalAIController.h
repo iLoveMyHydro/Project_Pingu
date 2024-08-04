@@ -32,7 +32,7 @@ public:
 	AActor* GetPlayer(void) const { return Player; }
 	class ANormalEnemy* GetCharacterAI(void) const { return Character; };
 
-	void SetCharacter(class ANormalEnemy* A_Character) { Character = A_Character; }
+	void SetCharacter(class ANormalEnemy* A_Character) { Character = A_Character; };
 
 
 private:

@@ -4,13 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "Components/BoxComponent.h"
-#include "OilBarrel/OilBarrel.h"
-#include "DamageSystem/Damagable.h"
 #include "GameFramework/Character.h"
+#include "DamageSystem/Damagable.h"
+#include "Components/SphereComponent.h"
+#include "OilBarrel/OilBarrel.h"
 #include "BossEnemy.generated.h"
 
-class USphereComponent;
-class APinguCharacter;
+class BossFSM;
+class ABossAIController;
 
 UCLASS()
 class ABossEnemy : public ACharacter, public IDamagable
@@ -46,7 +47,7 @@ public:
 	void OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
 	const FString MESH_PATH = FString(TEXT("/Engine/EditorMeshes/SkeletalMesh/DefaultSkeletalMesh"));
-	const FString FSM_CONTROLLER_PATH = FString(TEXT(""));
+	const FString FSM_CONTROLLER_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.BossAIController'"));
 	const FString PLAYER_CLASS_PATH = FString(TEXT("/Script/BP_ProjectPingu"));
 	const FString OIL_BARREL_PATH = FString(TEXT("/Script/BP_ProjectPingu"));
 	const FString BOX_COLLISION_NAME = FString(TEXT("Box Collision"));
@@ -56,7 +57,7 @@ public:
 	USceneComponent* SpawnLocationOilBarrel = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Health", Category = "Value", meta = (AllowPrivateAccess = true))
-	int Health = 3;
+	int Health = 6;
 
 	APinguCharacter* PinguCharacter = nullptr;
 
@@ -65,6 +66,9 @@ public:
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Timer Handle", Category = "Respawn")
 	FTimerHandle RespawnTimerHandle;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Respawn Timer Handle Three", Category = "Respawn")
+	FTimerHandle RespawnTimerHandleThree;
 
 	UPROPERTY(EditAnywhere)
 	USphereComponent* SphereColl = nullptr;
@@ -80,4 +84,8 @@ public:
 	TObjectPtr<AOilBarrel> OilBarrel = nullptr;
 
 	ABossEnemy* Character = nullptr;
+
+	BossFSM* Fsm = nullptr;
+
+	ABossAIController* Controller = nullptr;
 };

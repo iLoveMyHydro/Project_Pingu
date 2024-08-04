@@ -9,11 +9,11 @@
 /**
  * 
  */
-class BossSimpleFSM : BossFSM
+class BossSimpleFSM : public BossFSM
 {
 public:
 	inline BossSimpleFSM(ABossAIController* A_Controller) : BossFSM(A_Controller) {};
-	inline ~BossSimpleFSM();
+	inline ~BossSimpleFSM() {};
 
 	virtual void Initialize() override;
 
