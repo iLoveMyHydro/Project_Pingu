@@ -6,7 +6,6 @@
 
 void NormalFSM::Initialize()
 {
-	
 }
 
 void NormalFSM::Tick(float A_DeltaTime)
