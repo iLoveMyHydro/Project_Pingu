@@ -10,8 +10,8 @@
 #include "OilBarrel/OilBarrel.h"
 #include "NormalEnemy.generated.h"
 
+class NormalFSM;
 class ANormalAIController;
-class FiniteStateMachineAI1;
 
 UCLASS()
 class ANormalEnemy : public ACharacter, public IDamagable
@@ -50,16 +50,16 @@ private:
 	const FString PLAYER_CLASS_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.PinguCharacter'"));
 	const FString OIL_BARREL_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.OilBarrel'"));
 	const FString BOX_COLLISION_NAME = FString(TEXT("Box Collision"));
-	const FString SPAWNLOCATION_OIL_BARREL_NAME = FString(TEXT("Ice Spike Spawn Location"));
+	const FString SPAWNLOCATION_OIL_BARREL_NAME = FString(TEXT("Oil Barrel Spawn Location"));
 
-	UPROPERTY(EditAnywhere, DisplayName = "Spawnlocation Ice Spike", Category = "Attack")
+	UPROPERTY(EditAnywhere, DisplayName = "Spawnlocation Oil Barrel", Category = "Attack")
 	USceneComponent* SpawnLocationOilBarrel = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Health", Category = "Value", meta = (AllowPrivateAccess = true))
 	int Health = 3;
 
 	UPROPERTY(EditAnywhere)
-	USphereComponent* sphereColl = nullptr;
+	USphereComponent* SphereColl = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "BoxCollider", Category = "Components", meta = (AllowPrivateAccess = true))
 	TObjectPtr<UBoxComponent> CollisionMesh = nullptr;
@@ -71,8 +71,6 @@ private:
 
 	TObjectPtr<AOilBarrel> OilBarrel = nullptr;
 
-	TObjectPtr<USceneComponent> SpawnPoint = nullptr;
-
 	ANormalEnemy* Character = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Delay", Category = "Respawn")
@@ -81,7 +79,7 @@ private:
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Timer Handle", Category = "Respawn")
 	FTimerHandle RespawnTimerHandle;
 
-	FiniteStateMachineAI1* Fsm = nullptr;
+	NormalFSM* Fsm = nullptr;
 
 	APinguCharacter* PinguCharacter = nullptr;
 

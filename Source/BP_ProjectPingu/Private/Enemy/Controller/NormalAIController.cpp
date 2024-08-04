@@ -2,7 +2,7 @@
 
 
 #include "Enemy/Controller/NormalAIController.h"
-#include "FiniteStateMachine/Machines/SimpleFSMAI1.h"
+#include "FiniteStateMachine/Machines/NormalSimpleFSM.h"
 #include "Kismet/GameplayStatics.h"
 #include "BP_ProjectPingu/Private/Player/PinguCharacter.h"
 
@@ -18,7 +18,7 @@ void ANormalAIController::BeginPlay()
 
 	if (Fsm == nullptr)
 	{
-		Fsm = static_cast<FiniteStateMachineAI1*>(new SimpleFSMAI1(this));
+		Fsm = static_cast<NormalFSM*>(new NormalSimpleFSM(this));
 	}
 	if (Fsm != nullptr)
 	{

@@ -6,7 +6,7 @@
 #include "AIController.h"
 #include "NormalAIController.generated.h"
 
-class FiniteStateMachineAI1;
+class NormalFSM;
 
 /**
  *
@@ -38,7 +38,7 @@ public:
 private:
 	const FString PERCEPTION_NAME = FString(TEXT("Perception Component"));
 
-	FiniteStateMachineAI1* Fsm = nullptr;
+	NormalFSM* Fsm = nullptr;
 	AActor* Player = nullptr;
 	class ANormalEnemy* Character = nullptr;
 };
