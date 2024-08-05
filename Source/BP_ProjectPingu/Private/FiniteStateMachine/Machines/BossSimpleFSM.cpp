@@ -2,7 +2,6 @@
 
 
 #include "FiniteStateMachine/Machines/BossSimpleFSM.h"
-
 #include "FiniteStateMachine/State/States/BossSearchPlayerState.h"
 #include "FiniteStateMachine/State/States/BossThrowObjectState.h"
 #include "FiniteStateMachine/State/States/BossThrowThreeObjectsState.h"

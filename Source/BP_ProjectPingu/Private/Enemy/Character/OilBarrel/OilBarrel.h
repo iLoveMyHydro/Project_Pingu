@@ -29,8 +29,8 @@ private:
 
 private:
 
-	const FString MESH_PATH = TEXT("/Script/Engine.StaticMesh'/Engine/BasicShapes/Cone.Cone'");
-	const FString MAT_PATH = TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'");
+	const FString MESH_PATH = TEXT("/Game/Assets/Artist/Jean-Marc/OilBarrel/OilBarrel");
+	const FString MAT_PATH = TEXT("/Game/Assets/Artist/Jean-Marc/OilBarrel/Material/MAT_OilBarrel");
 	const FString BOX_NAME = TEXT("Box Collision Oil Barrel");
 	const FString PROJECTILE_MOVEMENT_NAME = TEXT("Projectile Movement Oil Barrel");
 

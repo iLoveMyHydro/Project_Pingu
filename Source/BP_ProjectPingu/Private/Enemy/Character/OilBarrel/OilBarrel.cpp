@@ -15,8 +15,8 @@ AOilBarrel::AOilBarrel()
 	Mesh->SetStaticMesh(ConstructorHelpers::FObjectFinder<UStaticMesh>(*MESH_PATH).Object);
 	Mesh->SetMaterial(0, Material);
 	Mesh->SetupAttachment(RootComponent);
-	Mesh->SetRelativeScale3D(FVector(0.1f, 0.1f, 0.1f));
-	Mesh->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
+	Mesh->SetRelativeScale3D(FVector(0.7f, 0.7f, 0.7f));
+	//Mesh->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
 	Mesh->OnComponentHit.AddDynamic(this, &AOilBarrel::OnHit);
 
 	RootComponent = Mesh;

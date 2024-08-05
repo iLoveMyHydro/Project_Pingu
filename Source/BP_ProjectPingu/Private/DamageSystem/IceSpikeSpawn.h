@@ -22,8 +22,18 @@ protected:
 
 private:
 	const FString BOX_NAME = TEXT("Box Collision");
-
+	const FString MESH_NAME = FString(TEXT("Mesh"));
+	const FString MESH_PATH = FString(TEXT("/Game/Assets/Artist/Jean-Marc/IceSpike/IceSpike"));
+	const FString MAT_PATH = FString(TEXT("/Game/IcePropsContent/Materials/M_Ice_Main"));
 
 	UPROPERTY(EditAnywhere, DisplayName = "Box Collision", Category = "Components", meta = (AllowPrivateAccess = true))
 	TObjectPtr<UBoxComponent> BoxCollision = nullptr;
+
+	UPROPERTY(EditAnywhere, meta = (DisplayName = "Material", Category = "Components"))
+	TObjectPtr<UMaterialInterface> Material = nullptr;
+
+	UPROPERTY(EditAnywhere, meta = (DisplayName = "Mesh", Category = "Components"))
+	TObjectPtr<UStaticMeshComponent> Mesh = nullptr;
+
+
 };

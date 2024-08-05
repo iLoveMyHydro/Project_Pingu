@@ -8,7 +8,7 @@
 ASpike::ASpike()
 {
     Material = ConstructorHelpers::FObjectFinder<UMaterialInterface>(*MAT_PATH).Object;
-    Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+    Mesh = CreateDefaultSubobject<UStaticMeshComponent>(*MESH_NAME);
 
     Mesh->SetupAttachment(RootComponent);
     Mesh->SetStaticMesh(ConstructorHelpers::FObjectFinder<UStaticMesh>(*MESH_PATH).Object);

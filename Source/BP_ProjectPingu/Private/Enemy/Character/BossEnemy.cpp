@@ -140,10 +140,14 @@ void ABossEnemy::ThrowThreeOilBarel()
 			if (Rotator.Yaw >= 90.0f)
 			{
 				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(-70.0f, 0.0f, 50.0f), FRotator(0.0f, 90.0f, 0.0f), ActorSpawnParams);
+				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(-70.0f, 0.0f, 55.0f), FRotator(0.0f, 90.0f, 0.0f), ActorSpawnParams);
+				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(-70.0f, 0.0f, 60.0f), FRotator(0.0f, 90.0f, 0.0f), ActorSpawnParams);
 			}
 			else
 			{
 				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(70.0f, 0.0f, 50.0f), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
+				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(70.0f, 0.0f, 55.0f), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
+				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(70.0f, 0.0f, 60.0f), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
 			}
 		}
 	}
@@ -164,12 +168,12 @@ void ABossEnemy::OnCollision(UPrimitiveComponent* OverlappedComponent, AActor* O
 			GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, [this]() {Fsm->Transition(static_cast<BossSimpleFSM*>(Fsm)->GetThrowObjectState()); }, RespawnDelay, true);
 			GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Enter"));
 		}
-		else if(Health < 3)
-		{
-			GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
-			GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandleThree, [this]() {Fsm->Transition(static_cast<BossSimpleFSM*>(Fsm)->GetThrowThreeObjectsState()); }, RespawnDelay, true);
-			GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Enter"));
-		}
+		//else if(Health < 3)
+		//{
+		//	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+		//	GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandleThree, [this]() {Fsm->Transition(static_cast<BossSimpleFSM*>(Fsm)->GetThrowThreeObjectsState()); }, RespawnDelay, true);
+		//	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Enter"));
+		//}
 	}
 }
 
