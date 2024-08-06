@@ -9,11 +9,13 @@
 #include "BP_ProjectPingu/Private/FiniteStateMachine/FSM/NormalFSM.h"
 #include "FiniteStateMachine/State/NormalStateAI.h"
 #include "Player/PinguCharacter.h"
+#include "Player/InputController.h"
+
 
 // Sets default values
 ANormalEnemy::ANormalEnemy()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	GetMesh()->SetSkeletalMesh(ConstructorHelpers::FObjectFinder<USkeletalMesh>(*MESH_PATH).Object);
@@ -34,7 +36,7 @@ ANormalEnemy::ANormalEnemy()
 	SphereColl->SetSphereRadius(500);
 	SphereColl->SetRelativeLocation(FVector(0, 0, 90));
 	SphereColl->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
-	SphereColl->SetHiddenInGame(false);
+	SphereColl->SetHiddenInGame(true);
 	SphereColl->OnComponentBeginOverlap.AddDynamic(this, &ANormalEnemy::OnCollision);
 	SphereColl->OnComponentEndOverlap.AddDynamic(this, &ANormalEnemy::OnCollisionExit);
 	SphereColl->SetupAttachment(GetMesh());
@@ -45,6 +47,7 @@ ANormalEnemy::ANormalEnemy()
 
 	AIControllerClass = ConstructorHelpers::FClassFinder<ANormalAIController>(*FSM_CONTROLLER_PATH).Class;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
 }
 
 // Called when the game starts or when spawned
@@ -54,6 +57,9 @@ void ANormalEnemy::BeginPlay()
 
 	Controller = Cast<ANormalAIController>(GetController());
 	Controller->SetCharacter(this);
+
+	PlayerController = Cast<AInputController>(GetWorld()->GetFirstPlayerController());
+
 
 	if (Fsm == nullptr)
 	{
@@ -82,7 +88,7 @@ void ANormalEnemy::ApplyDamage(int A_DamageAmount)
 {
 	Health -= A_DamageAmount;
 
-	if(Health <= 0)
+	if (Health <= 0)
 	{
 		ANormalEnemy::Destroy();
 	}
@@ -120,20 +126,22 @@ void ANormalEnemy::ThrowOilBarrel()
 	}
 }
 
+//OnCollisionOverlap ->Add Dynamic richtige Hitbox -> if state schlag von pingu -> gib mir schaden
+
 void ANormalEnemy::OnCollision(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if(OtherActor->IsA(APinguCharacter::StaticClass()))
+	if (OtherActor->IsA(APinguCharacter::StaticClass()) && !PlayerController->IsPaused())
 	{
 		GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
-		GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, [this]() {Fsm->Transition(static_cast<NormalSimpleFSM*>(Fsm)->GetThrowObjectState()); }, RespawnDelay, true);
+		GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, [this]() {Fsm->Transition(static_cast<NormalSimpleFSM*>(Fsm)->GetThrowObjectState()); }, RespawnDelay, !PlayerController->IsPaused());
 		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Enter"));
 	}
 }
 
 void ANormalEnemy::OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if(OtherActor->IsA(APinguCharacter::StaticClass()))
+	if (OtherActor->IsA(APinguCharacter::StaticClass()) && !PlayerController->IsPaused())
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Exit"));
 		Fsm->Transition(static_cast<NormalSimpleFSM*>(Fsm)->GetSearchPlayerState());

@@ -10,6 +10,7 @@
 #include "OilBarrel/OilBarrel.h"
 #include "BossEnemy.generated.h"
 
+class AInputController;
 class BossFSM;
 class ABossAIController;
 
@@ -26,7 +27,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
@@ -48,8 +49,10 @@ public:
 
 	const FString MESH_PATH = FString(TEXT("/Engine/EditorMeshes/SkeletalMesh/DefaultSkeletalMesh"));
 	const FString FSM_CONTROLLER_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.BossAIController'"));
-	const FString PLAYER_CLASS_PATH = FString(TEXT("/Script/BP_ProjectPingu"));
-	const FString OIL_BARREL_PATH = FString(TEXT("/Script/BP_ProjectPingu"));
+	const FString PLAYER_CLASS_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.PinguCharacter'"));
+	const FString OIL_BARREL_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.OilBarrel'"));
+	//const FString PLAYER_CLASS_PATH = FString(TEXT("/Script/BP_ProjectPingu"));
+	//const FString OIL_BARREL_PATH = FString(TEXT("/Script/BP_ProjectPingu"));
 	const FString BOX_COLLISION_NAME = FString(TEXT("Box Collision"));
 	const FString SPAWNLOCATION_OIL_BARREL_NAME = FString(TEXT("Oil Barrel Spawn Location"));
 
@@ -88,4 +91,6 @@ public:
 	BossFSM* Fsm = nullptr;
 
 	ABossAIController* Controller = nullptr;
+
+	AInputController* PlayerController = nullptr;
 };

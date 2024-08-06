@@ -26,7 +26,6 @@ void UPlayerHUD::SetLifeAmount(int CurrentLife, int MaxLife)
 		HealthThree->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 		HealthTwo->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 		HealthOne->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
-
 	}
 }
 

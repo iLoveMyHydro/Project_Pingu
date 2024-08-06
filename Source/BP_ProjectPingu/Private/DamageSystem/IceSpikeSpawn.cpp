@@ -16,8 +16,8 @@ AIceSpikeSpawn::AIceSpikeSpawn()
 	Mesh->SetRelativeScale3D(FVector(0.4f, 0.4f, 0.4f));
 
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(*BOX_NAME);
+	BoxCollision->SetupAttachment(Mesh);
 	BoxCollision->bDynamicObstacle = true;
-	BoxCollision->SetupAttachment(RootComponent);
 	BoxCollision->SetGenerateOverlapEvents(true);
 	BoxCollision->SetBoxExtent(FVector(60.0f, 60.0f, 60.0f));
 }

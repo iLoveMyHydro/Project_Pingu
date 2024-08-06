@@ -19,7 +19,7 @@ public:
 	virtual void Enter() override;
 
 private:
-	void ThrowObejct(void);
+	void ThrowObject(void);
 
 	class ABossEnemy* Character = nullptr;
 };

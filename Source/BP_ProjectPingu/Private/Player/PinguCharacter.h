@@ -15,6 +15,7 @@ class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
+class UDeathScreen;
 
 
 UCLASS()
@@ -79,6 +80,7 @@ private:
 	const FString MAT_ICE_SPIKE_PATH = FString(TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'"));
 	const FString ANIM_PATH = FString(TEXT("/Script/Engine.AnimBlueprint'/Game/Animation/Player/BP_AnimInstance.BP_AnimInstance_C'"));
 	const FString PLAYER_HUD_PATH = FString(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_PlayerHUD_Code'"));
+	const FString DEATH_SCREEN_PATH = FString(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_DeathScreen'"));
 
 	const FString STIMULI_NAME = FString(TEXT("Stimuli"));
 	const FString MESH_NAME = FString(TEXT("Mesh"));
@@ -112,7 +114,7 @@ private:
 	FVector SpawnLocation = FVector(-7250.548968, -3290.544749, 420.834087);
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Delay", Category = "Respawn")
-	float RespawnDelay = 2;
+	float RespawnDelay = 1;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Timer Handle", Category = "Respawn")
 	FTimerHandle RespawnTimerHandle;
@@ -163,6 +165,12 @@ private:
 
 	UPROPERTY()
 	TSubclassOf<class UPlayerHUD> PlayerHUDObject;
+
+	UPROPERTY()
+	class UDeathScreen* DeathScreen = nullptr;
+
+	UPROPERTY()
+	TSubclassOf<class UDeathScreen> DeathScreenObject;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Animation Idle", Category = "Animation")
 	UAnimSequence* IdleAnim;

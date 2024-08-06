@@ -18,7 +18,7 @@ void BossThrowObjectState::Enter()
 	BossStateAI::Enter();
 }
 
-void BossThrowObjectState::ThrowObejct()
+void BossThrowObjectState::ThrowObject()
 {
 	Character = Machine->GetController()->GetPawn<ABossEnemy>();
 	if (Character == nullptr) return;

@@ -9,6 +9,7 @@
 #include "FiniteStateMachine/FSM/BossFSM.h"
 #include "FiniteStateMachine/State/BossStateAI.h"
 #include "Player/PinguCharacter.h"
+#include "Player/InputController.h"
 
 // Sets default values
 ABossEnemy::ABossEnemy()
@@ -34,7 +35,7 @@ ABossEnemy::ABossEnemy()
 	SphereColl->SetSphereRadius(500);
 	SphereColl->SetRelativeLocation(FVector(0, 0, 90));
 	SphereColl->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
-	SphereColl->SetHiddenInGame(false);
+	SphereColl->SetHiddenInGame(true);
 	SphereColl->OnComponentBeginOverlap.AddDynamic(this, &ABossEnemy::OnCollision);
 	SphereColl->OnComponentEndOverlap.AddDynamic(this, &ABossEnemy::OnCollisionExit);
 	SphereColl->SetupAttachment(GetMesh());
@@ -54,6 +55,8 @@ void ABossEnemy::BeginPlay()
 
 	Controller = Cast<ABossAIController>(GetController());
 	Controller->SetCharacter(this);
+
+	PlayerController = Cast<AInputController>(GetWorld()->GetFirstPlayerController());
 
 	if (Fsm == nullptr)
 	{
@@ -160,7 +163,7 @@ void ABossEnemy::ThrowThreeOilBarel()
 void ABossEnemy::OnCollision(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (OtherActor->IsA(APinguCharacter::StaticClass()))
+	if (OtherActor->IsA(APinguCharacter::StaticClass()) && !PlayerController->IsPaused())
 	{
 		if(Health > 3)
 		{
@@ -168,19 +171,19 @@ void ABossEnemy::OnCollision(UPrimitiveComponent* OverlappedComponent, AActor* O
 			GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, [this]() {Fsm->Transition(static_cast<BossSimpleFSM*>(Fsm)->GetThrowObjectState()); }, RespawnDelay, true);
 			GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Enter"));
 		}
-		//else if(Health < 3)
-		//{
-		//	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
-		//	GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandleThree, [this]() {Fsm->Transition(static_cast<BossSimpleFSM*>(Fsm)->GetThrowThreeObjectsState()); }, RespawnDelay, true);
-		//	GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Enter"));
-		//}
+		else if(Health < 3)
+		{
+			GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+			GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandleThree, [this]() {Fsm->Transition(static_cast<BossSimpleFSM*>(Fsm)->GetThrowThreeObjectsState()); }, RespawnDelay, true);
+			GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Enter"));
+		}
 	}
 }
 
 void ABossEnemy::OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (OtherActor->IsA(APinguCharacter::StaticClass()))
+	if (OtherActor->IsA(APinguCharacter::StaticClass()) && !PlayerController->IsPaused())
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Exit"));
 		Fsm->Transition(static_cast<BossSimpleFSM*>(Fsm)->GetSearchPlayerState());

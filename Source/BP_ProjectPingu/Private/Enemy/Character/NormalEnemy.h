@@ -12,6 +12,7 @@
 
 class NormalFSM;
 class ANormalAIController;
+class AInputController;
 
 UCLASS()
 class ANormalEnemy : public ACharacter, public IDamagable
@@ -82,4 +83,6 @@ private:
 	NormalFSM* Fsm = nullptr;
 
 	ANormalAIController* Controller = nullptr;
+
+	AInputController* PlayerController = nullptr;
 };

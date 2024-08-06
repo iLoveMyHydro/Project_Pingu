@@ -14,9 +14,11 @@
 #include "DamageSystem/Spike.h"
 #include "RespawnSystem/RespawnPoint.h"
 #include "HUD/PlayerHUD.h"
+#include "GUI/DeathScreen.h"
 
 //Audio Hubsi here again
 #include "Components/AudioComponent.h"
+#include "Enemy/Character/BossEnemy.h"
 
 // Sets default values
 APinguCharacter::APinguCharacter()
@@ -65,6 +67,8 @@ APinguCharacter::APinguCharacter()
 	//Get HUD Object
 	PlayerHUDObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PLAYER_HUD_PATH).Class;
 
+	DeathScreenObject = ConstructorHelpers::FClassFinder<UDeathScreen>(*DEATH_SCREEN_PATH).Class;
+
 	SpawnLocationIceSpike = CreateDefaultSubobject<USceneComponent>(*SPAWNLOCATION_ICE_SPIKE_NAME);
 	SpawnLocationIceSpike->SetRelativeLocation(FVector(40.0f, 0.0f, 50.0f));
 	SpawnLocationIceSpike->SetupAttachment(RootComponent);
@@ -97,13 +101,16 @@ void APinguCharacter::ApplyDamage(int A_DamageAmount)
 
 	if (Health <= 0)
 	{
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
+
 		AInputController* const PlayerController = Cast<AInputController>(GEngine->GetFirstLocalPlayerController(GetWorld()));
 		if (PlayerController != nullptr)
 		{
-			PlayerController->SetPause(true);
+			DeathScreen->SetDeathScreen(true);
 			GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, this, &APinguCharacter::Respawn, RespawnDelay, false);
 			PlayerHUD->SetLifeAmount(MaxHealth, MaxHealth);
-			PlayerController->SetPause(false);
+			UGameplayStatics::SetGamePaused(GetWorld(), false);
+
 		}
 	}
 }
@@ -204,6 +211,7 @@ void APinguCharacter::Respawn()
 {
 	SetActorLocation(SpawnLocation);
 	Health = 3;
+	DeathScreen->SetDeathScreen(false);
 }
 
 auto APinguCharacter::InitCamera() -> UCameraComponent*
@@ -252,7 +260,7 @@ void APinguCharacter::BeginPlay()
 
 	CollisionMesh->OnComponentBeginOverlap.AddDynamic(this, &APinguCharacter::OnBoxBeginOverlap);
 
-	if(PlayerHUDObject && IsLocallyControlled())
+	if(PlayerHUDObject && IsLocallyControlled() && DeathScreenObject)
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("UI"));
 		AInputController* PlayerController = GetController<AInputController>();
@@ -264,6 +272,12 @@ void APinguCharacter::BeginPlay()
 		PlayerHUD->AddToPlayerScreen();
 		PlayerHUD->SetLifeAmount(MaxHealth, MaxHealth);
 		PlayerHUD->SetIceSpikeAmount(IceSpikes, IceSpikesMax);
+
+		DeathScreen = CreateWidget<UDeathScreen>(PlayerController, DeathScreenObject, "Death Screen");
+		check(DeathScreen);
+
+		DeathScreen->AddToPlayerScreen();
+		DeathScreen->SetDeathScreen(false);
 	}
 
 	SetIdleAnimation();
@@ -279,6 +293,10 @@ void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 	if(OtherActor->IsA<ANormalEnemy>())
 	{
 		OtherCharacter = CastChecked<ANormalEnemy>(OtherActor);
+	}
+	else if(OtherActor->IsA<ABossEnemy>())
+	{
+		OtherCharacter = CastChecked<ABossEnemy>(OtherActor);
 	}
 	else if(OtherActor->IsA<AIceSpikeSpawn>())
 	{
