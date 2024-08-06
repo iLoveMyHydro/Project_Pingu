@@ -10,6 +10,8 @@
 #include "Enemy/Character/NormalEnemy.h"
 #include "GameFramework/Character.h"
 #include "GUI/PauseMenu.h"
+#include "HUD/PlayerHUD.h"
+#include "Enemy/Character/BossEnemy.h"
 
 //Audio Hubsi here again
 #include "Components/AudioComponent.h"
@@ -20,7 +22,7 @@ AInputController::AInputController()
 {
 	InitInputAction();
 
-	PauseMenuObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PAUSE_MENU_PATH).Class;
+	//PauseMenuObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PAUSE_MENU_PATH).Class;
 
 	PlayerHUDObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PLAYER_HUD_PATH).Class;
 
@@ -42,19 +44,17 @@ void AInputController::BeginPlay()
 	{
 		// add the mapping context so we get controls
 		Subsystem->AddMappingContext(DefaultMappingContext, 0);
-
-		UE_LOG(LogTemp, Warning, TEXT("BeginPlay"));
 	}
 
-	if (PauseMenuObject)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Pause Menu"));
+	//if (PauseMenuObject)
+	//{
+	//	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Pause Menu"));
 
-		PauseMenu = CreateWidget<UPauseMenu>(this, PauseMenuObject, "Pause Menu");
-		check(PauseMenu);
+	//	PauseMenu = CreateWidget<UPauseMenu>(this, PauseMenuObject, "Pause Menu");
+	//	check(PauseMenu);
 
-		PauseMenu->AddToPlayerScreen();
-	}
+	//	PauseMenu->AddToPlayerScreen();
+	//}
 
 	if (PlayerHUDObject)
 	{
@@ -164,6 +164,12 @@ void AInputController::HandleSlapAttack()
 			UE_LOG(LogTemp, Warning, TEXT("Enemy"));
 			Enemy = CastChecked<ANormalEnemy>(OtherCharacter);
 			Enemy->ApplyDamage(1);
+		}
+		if(OtherCharacter->IsA<ABossEnemy>())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Boss Enemy"));
+			BossEnemy = CastChecked<ABossEnemy>(OtherCharacter);
+			BossEnemy->ApplyDamage(1);
 		}
 		PinguCharacter->PlaySlapSound(); //This code has been brought to you by Hubsi
 	}

@@ -7,6 +7,7 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "IceSpikes.generated.h"
 
+class ABossEnemy;
 class ANormalEnemy;
 class USphereComponent;
 
@@ -48,5 +49,6 @@ private:
 	UProjectileMovementComponent* ProjectileMovement = nullptr;
 
 	ANormalEnemy* Enemy = nullptr;
+	ABossEnemy* BossEnemy = nullptr;
 
 };

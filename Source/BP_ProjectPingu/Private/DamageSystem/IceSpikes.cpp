@@ -3,6 +3,7 @@
 #include "DamageSystem/IceSpikes.h"
 #include "Enemy/Character/NormalEnemy.h"
 #include  "Components/SphereComponent.h"
+#include "Enemy/Character/BossEnemy.h"
 
 // Sets default values
 AIceSpikes::AIceSpikes()
@@ -47,6 +48,12 @@ void AIceSpikes::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimit
 		{
 			Enemy = CastChecked<ANormalEnemy>(OtherActor);
 			Enemy->ApplyDamage(1);
+			Destroy();
+		}
+		if(OtherActor->IsA<ABossEnemy>())
+		{
+			BossEnemy = CastChecked<ABossEnemy>(OtherActor);
+			BossEnemy->ApplyDamage(1);
 			Destroy();
 		}
 	}

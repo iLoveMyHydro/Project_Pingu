@@ -9,6 +9,7 @@
 #include "GameFramework/PlayerController.h"
 #include "InputController.generated.h"
 
+class ABossEnemy;
 class APinguCharacter;
 /**
  * 
@@ -115,6 +116,7 @@ private:
 
 	APinguCharacter* PinguCharacter = nullptr;
 	ANormalEnemy* Enemy = nullptr;
+	ABossEnemy* BossEnemy = nullptr;
 
 	UPROPERTY()
 	class UPauseMenu* PauseMenu = nullptr;
