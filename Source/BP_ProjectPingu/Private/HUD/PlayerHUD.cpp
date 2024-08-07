@@ -4,7 +4,11 @@
 #include "HUD/PlayerHUD.h"
 #include "Components/CanvasPanel.h"
 #include "Components/HorizontalBox.h"
+#include "Components/Image.h"
 #include "Components/TextBlock.h"
+#include "Kismet/GameplayStatics.h"
+#include "Player/PinguCharacter.h"
+
 
 void UPlayerHUD::SetLifeAmount(int CurrentLife, int MaxLife)
 {
@@ -22,20 +26,41 @@ void UPlayerHUD::SetLifeAmount(int CurrentLife, int MaxLife)
 		HealthThree->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 		HealthTwo->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
 		HealthOne->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
-
 	}
 }
 
 void UPlayerHUD::SetIceSpikeAmount(int CurrentIceSpike, int MaxIceSpike)
 {
-	if (CurrentIceSpike == MaxIceSpike)
+	if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn())
 	{
-		FText currentIceSpike = FText::FromString(FString::FromInt(MaxIceSpike));
-		IceSpikeText->SetText(currentIceSpike);
+		PinguCharacter = Cast<APinguCharacter>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn());
+	}
+
+	if(PinguCharacter->GetGotIceSpikes())
+	{
+		IceSpikeText->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+		IceSpike->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+		IceSpikeMaxText->SetVisibility(ESlateVisibility::SelfHitTestInvisible);
+
+		if (CurrentIceSpike == MaxIceSpike)
+		{
+			FText currentIceSpike = FText::FromString(FString::FromInt(MaxIceSpike));
+			IceSpikeText->SetText(currentIceSpike);
+		}
+		else
+		{
+			FText currentIceSpike = FText::FromString(FString::FromInt(CurrentIceSpike));
+			IceSpikeText->SetText(currentIceSpike);
+		}
+	}
+	else if(PinguCharacter == nullptr)
+	{
+		return;
 	}
 	else
 	{
-		FText currentIceSpike = FText::FromString(FString::FromInt(CurrentIceSpike));
-		IceSpikeText->SetText(currentIceSpike);
+		IceSpikeText->SetVisibility(ESlateVisibility::Hidden);
+		IceSpike->SetVisibility(ESlateVisibility::Hidden);
+		IceSpikeMaxText->SetVisibility(ESlateVisibility::Hidden);
 	}
 }

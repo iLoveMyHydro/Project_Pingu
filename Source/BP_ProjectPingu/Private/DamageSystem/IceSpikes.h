@@ -3,14 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/BoxComponent.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "IceSpikes.generated.h"
 
+class ABossEnemy;
+class ANormalEnemy;
 class USphereComponent;
-class AAIEnemy1;
-class AAIBossEnemy1;
 
 UCLASS()
 class AIceSpikes : public AActor
@@ -21,12 +20,8 @@ public:
 	// Sets default values for this actor's properties
 	AIceSpikes();
 
-	///** Returns CollisionComp subobject **/
-	//USphereComponent* GetCollisionComp() const { return Sphere; }
 	/** Returns ProjectileMovement subobject **/
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
-
-
 
 protected:
 	// Called when the game starts or when spawned
@@ -38,8 +33,9 @@ private:
 
 private:
 	
-	const FString MESH_PATH = TEXT("/Script/Engine.StaticMesh'/Engine/BasicShapes/Cone.Cone'");
-	const FString MAT_PATH = TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'");
+	const FString MESH_PATH = TEXT("/Game/Assets/Artist/Jean-Marc/IceSpike/IceSpike");
+	const FString MAT_PATH = TEXT("/Game/IcePropsContent/Materials/M_Ice_Main");
+	const FString MESH_NAME = FString(TEXT("Mesh"));
 	const FString BOX_NAME = TEXT("Box Collision");
 	const FString PROJECTILE_MOVEMENT_NAME = TEXT("Projectile Movement");
 
@@ -52,7 +48,7 @@ private:
 	UPROPERTY(EditAnywhere, DisplayName = "Projectile Movement", Category = "Components", meta = (AllowPrivateAccess = true))
 	UProjectileMovementComponent* ProjectileMovement = nullptr;
 
-	AAIBossEnemy1* BossEnemy = nullptr;
-	AAIEnemy1* Enemy = nullptr;
+	ANormalEnemy* Enemy = nullptr;
+	ABossEnemy* BossEnemy = nullptr;
 
 };

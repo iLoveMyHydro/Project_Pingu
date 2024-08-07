@@ -1,15 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "DamageSystem/IceSpikes.h"
-#include "Enemy/Character/AIBossEnemy1.h"
-#include "Enemy/Character/AIEnemy1.h"
+#include "Enemy/Character/NormalEnemy.h"
 #include  "Components/SphereComponent.h"
+#include "Enemy/Character/BossEnemy.h"
 
 // Sets default values
 AIceSpikes::AIceSpikes()
 {
 	Material = ConstructorHelpers::FObjectFinder<UMaterialInterface>(*MAT_PATH).Object;
-	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(*MESH_NAME);
 
 	Mesh->SetStaticMesh(ConstructorHelpers::FObjectFinder<UStaticMesh>(*MESH_PATH).Object);
 	Mesh->SetMaterial(0, Material);
@@ -44,15 +44,15 @@ void AIceSpikes::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimit
 	if((OtherActor != nullptr) && (OtherActor != this))
 	{
 
-		if(OtherActor->IsA<AAIEnemy1>())
+		if(OtherActor->IsA<ANormalEnemy>())
 		{
-			Enemy = CastChecked<AAIEnemy1>(OtherActor);
+			Enemy = CastChecked<ANormalEnemy>(OtherActor);
 			Enemy->ApplyDamage(1);
 			Destroy();
 		}
-		else if(OtherActor->IsA<AAIBossEnemy1>())
+		if(OtherActor->IsA<ABossEnemy>())
 		{
-			BossEnemy = CastChecked<AAIBossEnemy1>(OtherActor);
+			BossEnemy = CastChecked<ABossEnemy>(OtherActor);
 			BossEnemy->ApplyDamage(1);
 			Destroy();
 		}

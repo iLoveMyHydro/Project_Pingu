@@ -6,6 +6,8 @@
 #include "Blueprint/UserWidget.h"
 #include "PlayerHUD.generated.h"
 
+class APinguCharacter;
+
 /**
  * 
  */
@@ -38,7 +40,14 @@ private:
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UTextBlock* IceSpikeText = nullptr;
 
-private:
-	const FString PLAYER_HUD_PATH = FString(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_PlayerHUD_Code'"));
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	class UImage* IceSpike = nullptr;
+
+	UPROPERTY(EditAnywhere, meta = (BindWidget))
+	class UTextBlock* IceSpikeMaxText = nullptr;
+
+	const FString PLAYER_HUD_PATH = FString(TEXT("/Game/Blueprint/HUD/C++/WBP_PlayerHUD_Code"));
+
+	APinguCharacter* PinguCharacter = nullptr;
 
 };

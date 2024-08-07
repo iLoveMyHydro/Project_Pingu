@@ -24,7 +24,7 @@ protected:
 private:
 	const FString MESH_NAME = FString(TEXT("Mesh"));
 	const FString MESH_PATH = FString(TEXT("/Script/Engine.StaticMesh'/Game/Assets/Artist/Stephan/Spikes.Spikes'"));
-	const FString MAT_PATH = FString(TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'"));
+	const FString MAT_PATH = FString(TEXT("/Game/IcePropsContent/Materials/M_Ice_Main"));
 	const FString BOX_COLLISION_NAME = FString(TEXT("Box Collision"));
 
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Material", Category = "Components"))

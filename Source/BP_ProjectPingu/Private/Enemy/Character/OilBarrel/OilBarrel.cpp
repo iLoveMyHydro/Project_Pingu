@@ -2,31 +2,47 @@
 
 
 #include "Enemy/Character/OilBarrel/OilBarrel.h"
+#include "Player/PinguCharacter.h"
+#include "GameFramework/ProjectileMovementComponent.h"
+
 
 // Sets default values
 AOilBarrel::AOilBarrel()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
+	Material = ConstructorHelpers::FObjectFinder<UMaterialInterface>(*MAT_PATH).Object;
+	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
+
+	Mesh->SetStaticMesh(ConstructorHelpers::FObjectFinder<UStaticMesh>(*MESH_PATH).Object);
+	Mesh->SetMaterial(0, Material);
+	Mesh->SetupAttachment(RootComponent);
+	Mesh->SetRelativeScale3D(FVector(0.7f, 0.7f, 0.7f));
+	//Mesh->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
+	Mesh->OnComponentHit.AddDynamic(this, &AOilBarrel::OnHit);
+
+	RootComponent = Mesh;
+
+	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(*PROJECTILE_MOVEMENT_NAME);
+	ProjectileMovement->InitialSpeed = 750.0f;
+	ProjectileMovement->MaxSpeed = 750.0f;
+	ProjectileMovement->bRotationFollowsVelocity = false;
+	ProjectileMovement->bShouldBounce = true;
+	ProjectileMovement->bInitialVelocityInLocalSpace = false;
+	ProjectileMovement->ProjectileGravityScale = 0.5f;
+
+	InitialLifeSpan = 3.0f;
 }
 
-void AOilBarrel::Throw()
+void AOilBarrel::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	FVector NormalImpulse, const FHitResult& Hit)
 {
-	//DetachFromActor(FDetachmentTransformRules::KeepRelativeTransform);
-	//Speed -= LowSpeed;
+	if ((OtherActor != nullptr) && (OtherActor != this))
+	{
+
+		if (OtherActor->IsA<APinguCharacter>())
+		{
+			PinguCharacter = CastChecked<APinguCharacter>(OtherActor);
+			PinguCharacter->ApplyDamage(1);
+			Destroy();
+		}
+	}
 }
-
-// Called when the game starts or when spawned
-void AOilBarrel::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-// Called every frame
-void AOilBarrel::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
-

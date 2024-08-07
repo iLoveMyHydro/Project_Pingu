@@ -7,14 +7,15 @@
 #include "DamageSystem/Damagable.h"
 #include "DamageSystem/IceSpikes.h"
 #include "GameFramework/Character.h"
-#include "HUD/PlayerHUD.h"
-#include "Perception/AIPerceptionStimuliSourceComponent.h"
 #include "PinguCharacter.generated.h"
 
+
+class UPlayerHUD;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
+class UDeathScreen;
 
 
 UCLASS()
@@ -37,6 +38,8 @@ public:
 	void SetIceSpikes(int A_IceSpikes);
 
 	void ThrowIceSpikes();
+
+	bool GetGotIceSpikes();
 
 	APinguCharacter& SetIdleAnimation(void);
 	APinguCharacter& SetNootAnimation(void);
@@ -77,6 +80,7 @@ private:
 	const FString MAT_ICE_SPIKE_PATH = FString(TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'"));
 	const FString ANIM_PATH = FString(TEXT("/Script/Engine.AnimBlueprint'/Game/Animation/Player/BP_AnimInstance.BP_AnimInstance_C'"));
 	const FString PLAYER_HUD_PATH = FString(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_PlayerHUD_Code'"));
+	const FString DEATH_SCREEN_PATH = FString(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_DeathScreen'"));
 
 	const FString STIMULI_NAME = FString(TEXT("Stimuli"));
 	const FString MESH_NAME = FString(TEXT("Mesh"));
@@ -110,7 +114,7 @@ private:
 	FVector SpawnLocation = FVector(-7250.548968, -3290.544749, 420.834087);
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Delay", Category = "Respawn")
-	float RespawnDelay = 2;
+	float RespawnDelay = 1;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Timer Handle", Category = "Respawn")
 	FTimerHandle RespawnTimerHandle;
@@ -151,9 +155,6 @@ private:
 	UPROPERTY(EditAnywhere, DisplayName = "Ice Spike Actor", Category = "Attack", meta = (AllowPrivateAccess = true));
 	TSubclassOf<class AIceSpikes> IceSpikeProjectile;
 
-	//UPROPERTY(EditDefaultsOnly, Category = Projectile)
-	//TSubclassOf<class AMyProject3Projectile> ProjectileClass;
-
 	UPROPERTY(EditAnywhere, DisplayName = "Ice Spike Offset", Category = "Attack", meta = (AllowPrivateAccess = true))
 	FVector MuzzleOffset;
 
@@ -164,6 +165,12 @@ private:
 
 	UPROPERTY()
 	TSubclassOf<class UPlayerHUD> PlayerHUDObject;
+
+	UPROPERTY()
+	class UDeathScreen* DeathScreen = nullptr;
+
+	UPROPERTY()
+	TSubclassOf<class UDeathScreen> DeathScreenObject;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Animation Idle", Category = "Animation")
 	UAnimSequence* IdleAnim;
@@ -180,9 +187,6 @@ private:
 	UPROPERTY(EditAnywhere, DisplayName = "Animation Slap", Category = "Animation")
 	UAnimSequence* SlapAnim;
 
-	UPROPERTY(EditAnywhere, DisplayName = "Stimuli Source", Category = "AI")
-	UAIPerceptionStimuliSourceComponent* StimuliSource = nullptr;
-
 	UPROPERTY(EditAnywhere, DisplayName = "Spawnlocation Ice Spike", Category = "Attack")
 	USceneComponent* SpawnLocationIceSpike = nullptr;
 
@@ -198,6 +202,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, DisplayName = "Audio Component Auto Activation", Category = "Components")
 	bool bAutoActivate = false;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Got IceSpikes", Category = "Attack")
+	bool bGotIceSpikes = false;
 
 	// UPROPERTY(EditAnywhere, DisplayName = "Attack Sound", Category = "Audio")
 	// class UMetaSoundSource* AttackSFX;

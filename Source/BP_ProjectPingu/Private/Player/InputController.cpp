@@ -7,10 +7,11 @@
 #include "InputMappingContext.h"
 #include "InputAction.h"
 #include "PinguCharacter.h"
-#include "Enemy/Character/AIBossEnemy1.h"
-#include "Enemy/Character/AIEnemy1.h"
+#include "Enemy/Character/NormalEnemy.h"
 #include "GameFramework/Character.h"
 #include "GUI/PauseMenu.h"
+#include "HUD/PlayerHUD.h"
+#include "Enemy/Character/BossEnemy.h"
 
 //Audio Hubsi here again
 #include "Components/AudioComponent.h"
@@ -19,9 +20,12 @@ class UEnhancedInputLocalPlayerSubsystem;
 
 AInputController::AInputController()
 {
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+
 	InitInputAction();
 
-	PauseMenuObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PAUSE_MENU_PATH).Class;
+	//PauseMenuObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PAUSE_MENU_PATH).Class;
 
 	PlayerHUDObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PLAYER_HUD_PATH).Class;
 
@@ -43,19 +47,17 @@ void AInputController::BeginPlay()
 	{
 		// add the mapping context so we get controls
 		Subsystem->AddMappingContext(DefaultMappingContext, 0);
-
-		UE_LOG(LogTemp, Warning, TEXT("BeginPlay"));
 	}
 
-	if (PauseMenuObject)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Pause Menu"));
+	//if (PauseMenuObject)
+	//{
+	//	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Pause Menu"));
 
-		PauseMenu = CreateWidget<UPauseMenu>(this, PauseMenuObject, "Pause Menu");
-		check(PauseMenu);
+	//	PauseMenu = CreateWidget<UPauseMenu>(this, PauseMenuObject, "Pause Menu");
+	//	check(PauseMenu);
 
-		PauseMenu->AddToPlayerScreen();
-	}
+	//	PauseMenu->AddToPlayerScreen();
+	//}
 
 	if (PlayerHUDObject)
 	{
@@ -111,6 +113,13 @@ void AInputController::InitInputAction()
 	PauseAction = ConstructorHelpers::FObjectFinder<UInputAction>(*IA_PAUSE_PATH).Object;
 }
 
+void AInputController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	SlapCoolDown -= DeltaSeconds;
+}
+
 void AInputController::Move(const FInputActionValue& Value)
 {
 	const FVector2D InputPlayerMovement = Value.Get<FVector2D>();
@@ -150,30 +159,35 @@ void AInputController::HandleStopMovement(const FInputActionValue& Value)
 
 void AInputController::HandleSlapAttack()
 {
-	PinguCharacter = GetPawn<APinguCharacter>();
-	if (PinguCharacter == nullptr) return;
-
-	PinguCharacter->SetSlapAnimation();
-
-	if(!GetWorld()) return;
-
-	auto OtherCharacter = CastChecked<APinguCharacter>(GetPawn())->GetOtherCharacter();
-	if(OtherCharacter != nullptr)
+	if(SlapCoolDown <= 0)
 	{
-		if(OtherCharacter->IsA<AAIBossEnemy1>())
+		PinguCharacter = GetPawn<APinguCharacter>();
+		if (PinguCharacter == nullptr) return;
+
+		PinguCharacter->SetSlapAnimation();
+
+		if (!GetWorld()) return;
+
+		auto OtherCharacter = CastChecked<APinguCharacter>(GetPawn())->GetOtherCharacter();
+		if (OtherCharacter != nullptr)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Boss Enemy"));
-			BossEnemy = CastChecked<AAIBossEnemy1>(OtherCharacter);
-			BossEnemy->ApplyDamage(1);
+			if (OtherCharacter->IsA<ANormalEnemy>())
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Enemy"));
+				Enemy = CastChecked<ANormalEnemy>(OtherCharacter);
+				Enemy->ApplyDamage(1);
+			}
+			if (OtherCharacter->IsA<ABossEnemy>())
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Boss Enemy"));
+				BossEnemy = CastChecked<ABossEnemy>(OtherCharacter);
+				BossEnemy->ApplyDamage(1);
+			}
+			PinguCharacter->PlaySlapSound(); //This code has been brought to you by Hubsi
 		}
-		if(OtherCharacter->IsA<AAIEnemy1>())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Enemy"));
-			Enemy = CastChecked<AAIEnemy1>(OtherCharacter);
-			Enemy->ApplyDamage(1);
-		}
-		PinguCharacter->PlaySlapSound(); //This code has been brought to you by Hubsi
+		SlapCoolDown = SlapCoolDownTime;
 	}
+	
 }
 
 void AInputController::HandleNootAttack()

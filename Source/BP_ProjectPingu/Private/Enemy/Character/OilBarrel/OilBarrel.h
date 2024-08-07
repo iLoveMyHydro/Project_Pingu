@@ -6,35 +6,42 @@
 #include "GameFramework/Actor.h"
 #include "OilBarrel.generated.h"
 
+class UProjectileMovementComponent;
+class APinguCharacter;
+class USphereComponent;
+
+
 UCLASS()
 class AOilBarrel : public AActor
 {
 	GENERATED_BODY()
 	
-public:	
+public:
 	// Sets default values for this actor's properties
 	AOilBarrel();
 
-	void Throw(void);
+	/** Returns ProjectileMovement subobject **/
+	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+private:
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 private:
 
-	const FString MESH_PATH = TEXT("/Script/Engine.StaticMesh'/Engine/BasicShapes/Cylinder.Cylinder'");
-	const FString MAT_PATH = TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'");
+	const FString MESH_PATH = TEXT("/Game/Assets/Artist/Jean-Marc/OilBarrel/OilBarrel");
+	const FString MAT_PATH = TEXT("/Game/Assets/Artist/Jean-Marc/OilBarrel/Material/MAT_OilBarrel");
+	const FString BOX_NAME = TEXT("Box Collision Oil Barrel");
+	const FString PROJECTILE_MOVEMENT_NAME = TEXT("Projectile Movement Oil Barrel");
 
+	UPROPERTY(EditAnywhere, meta = (DisplayName = "Material", Category = "Components"))
+	UMaterialInterface* Material = nullptr;
 
-	UPROPERTY(EditAnywhere, DisplayName = "Speed", Category = "Value", meta = (AllowPrivateAccess = true))
-	int Speed = 100;
+	UPROPERTY(EditAnywhere, meta = (DisplayName = "Mesh", Category = "Components"))
+	UStaticMeshComponent* Mesh = nullptr;
 
-	UPROPERTY(EditAnywhere, DisplayName = "LowSpeed", Category = "Value", meta = (AllowPrivateAccess = true))
-	int LowSpeed = 25;
+	UPROPERTY(EditAnywhere, DisplayName = "Projectile Movement", Category = "Components", meta = (AllowPrivateAccess = true))
+	UProjectileMovementComponent* ProjectileMovement = nullptr;
 
+	APinguCharacter* PinguCharacter = nullptr;
 };
