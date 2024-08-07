@@ -28,6 +28,8 @@ protected:
 	virtual void SetupInputComponent() override;
 	void InitInputAction(void);
 
+	void Tick(float DeltaSeconds) override;
+
 	void Move(const FInputActionValue& Value);
 	void Jump(void);
 	void StopJump(void);
@@ -129,4 +131,10 @@ private:
 
 	UPROPERTY()
 	TSubclassOf<class UPlayerHUD> PlayerHUDObject;
+
+	UPROPERTY()
+	float SlapCoolDown = 0;
+
+	const float SlapCoolDownTime = 1;
+
 };

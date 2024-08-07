@@ -2,9 +2,9 @@
 
 
 #include "Enemy/Controller/BossAIController.h"
-
-#include "FiniteStateMachine/Machines/BossSimpleFSM.h"
+#include "FiniteStateMachine/Machines/NormalSimpleFSM.h"
 #include "Kismet/GameplayStatics.h"
+#include "Player/PinguCharacter.h"
 
 ABossAIController::ABossAIController()
 {
@@ -18,7 +18,7 @@ void ABossAIController::BeginPlay()
 
 	if(Fsm == nullptr)
 	{
-		Fsm = static_cast<BossFSM*>(new BossSimpleFSM(this));
+		Fsm = static_cast<NormalFSM*>(new NormalSimpleFSM(this));
 	}
 	if(Fsm != nullptr)
 	{

@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/Character.h"
-#include "BP_ProjectPingu/Private/DamageSystem/Damagable.h"
+#include "DamageSystem/Damagable.h"
 #include "Components/SphereComponent.h"
 #include "OilBarrel/OilBarrel.h"
 #include "NormalEnemy.generated.h"

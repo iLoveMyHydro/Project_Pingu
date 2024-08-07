@@ -7,7 +7,6 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "OilBarrel/OilBarrel.h"
 #include "BP_ProjectPingu/Private/FiniteStateMachine/FSM/NormalFSM.h"
-#include "FiniteStateMachine/State/NormalStateAI.h"
 #include "Player/PinguCharacter.h"
 #include "Player/InputController.h"
 

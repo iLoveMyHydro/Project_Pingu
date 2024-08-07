@@ -3,15 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FiniteStateMachine/State/BossStateAI.h"
+#include "FiniteStateMachine/State/NormalStateAI.h"
 
 /**
  * 
  */
-class BossThrowThreeObjectsState : public BossStateAI
+class BossThrowThreeObjectsState : public NormalStateAI
 {
 public:
-	BossThrowThreeObjectsState(FString A_Name, BossFSM* A_Machine);
+	BossThrowThreeObjectsState(FString A_Name, NormalFSM* A_Machine);
 	virtual ~BossThrowThreeObjectsState() override {};
 
 	virtual void Enter() override;

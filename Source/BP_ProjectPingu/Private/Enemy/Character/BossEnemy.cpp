@@ -3,11 +3,10 @@
 
 #include "Enemy/Character/BossEnemy.h"
 #include "Enemy/Controller/BossAIController.h"
-#include "FiniteStateMachine/Machines/BossSimpleFSM.h"
+#include "FiniteStateMachine/Machines/NormalSimpleFSM.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "OilBarrel/OilBarrel.h"
-#include "FiniteStateMachine/FSM/BossFSM.h"
-#include "FiniteStateMachine/State/BossStateAI.h"
+#include "FiniteStateMachine/FSM/NormalFSM.h"
 #include "Player/PinguCharacter.h"
 #include "Player/InputController.h"
 
@@ -60,7 +59,7 @@ void ABossEnemy::BeginPlay()
 
 	if (Fsm == nullptr)
 	{
-		Fsm = static_cast<BossSimpleFSM*>(new BossSimpleFSM(Controller));
+		Fsm = static_cast<NormalSimpleFSM*>(new NormalSimpleFSM(Controller));
 	}
 	if (Fsm != nullptr)
 	{
@@ -143,14 +142,10 @@ void ABossEnemy::ThrowThreeOilBarel()
 			if (Rotator.Yaw >= 90.0f)
 			{
 				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(-70.0f, 0.0f, 50.0f), FRotator(0.0f, 90.0f, 0.0f), ActorSpawnParams);
-				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(-70.0f, 0.0f, 55.0f), FRotator(0.0f, 90.0f, 0.0f), ActorSpawnParams);
-				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(-70.0f, 0.0f, 60.0f), FRotator(0.0f, 90.0f, 0.0f), ActorSpawnParams);
 			}
 			else
 			{
 				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(70.0f, 0.0f, 50.0f), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
-				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(70.0f, 0.0f, 55.0f), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
-				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(70.0f, 0.0f, 60.0f), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
 			}
 		}
 	}
@@ -168,13 +163,13 @@ void ABossEnemy::OnCollision(UPrimitiveComponent* OverlappedComponent, AActor* O
 		if(Health > 3)
 		{
 			GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
-			GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, [this]() {Fsm->Transition(static_cast<BossSimpleFSM*>(Fsm)->GetThrowObjectState()); }, RespawnDelay, true);
+			GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, [this]() {Fsm->Transition(static_cast<NormalSimpleFSM*>(Fsm)->GetBossThrowObjectState()); }, RespawnDelay, true);
 			GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Enter"));
 		}
-		else if(Health < 3)
+		else if(Health <= 3)
 		{
 			GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
-			GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandleThree, [this]() {Fsm->Transition(static_cast<BossSimpleFSM*>(Fsm)->GetThrowThreeObjectsState()); }, RespawnDelay, true);
+			GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandleThree, [this]() {Fsm->Transition(static_cast<NormalSimpleFSM*>(Fsm)->GetThrowThreeObjectsState()); }, RespawnDelayFast, true);
 			GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Enter"));
 		}
 	}
@@ -186,7 +181,7 @@ void ABossEnemy::OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AActo
 	if (OtherActor->IsA(APinguCharacter::StaticClass()) && !PlayerController->IsPaused())
 	{
 		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Exit"));
-		Fsm->Transition(static_cast<BossSimpleFSM*>(Fsm)->GetSearchPlayerState());
+		Fsm->Transition(static_cast<NormalSimpleFSM*>(Fsm)->GetSearchPlayerState());
 		GetWorld()->GetTimerManager().ClearTimer(RespawnTimerHandle);
 		GetWorld()->GetTimerManager().ClearTimer(RespawnTimerHandleThree);
 	}

@@ -9,19 +9,25 @@
  * 
  */
 
+class ABossAIController;
 class NormalStateAI;
 class ANormalAIController;
 
 class NormalFSM
 {
 public:
-	explicit inline NormalFSM(ANormalAIController* A_Controller) : FsmController(A_Controller) {};
+	explicit inline NormalFSM(ANormalAIController* A_Controller) : FsmControllerNormal(A_Controller) {};
+	explicit inline NormalFSM(ABossAIController* A_Controller) : FsmControllerBoss(A_Controller) {};
 	virtual ~NormalFSM() {};
 
 	virtual void Initialize(void);
 	virtual void Tick(float A_DeltaTime);
 
-	ANormalAIController* GetController(void) const { return FsmController; }
+	ANormalAIController* GetController(void) const { return FsmControllerNormal; }
+	ABossAIController* GetControllerBoss(void) const { return FsmControllerBoss; }
+
+	inline void SetBossController(ABossAIController* A_Controller) { FsmControllerBoss = A_Controller; }
+
 
 	void Transition(NormalStateAI* A_NewState);
 
@@ -29,5 +35,6 @@ public:
 
 protected:
 	NormalStateAI* CurrentState = nullptr;
-	ANormalAIController* FsmController = nullptr;
+	ANormalAIController* FsmControllerNormal = nullptr;
+	ABossAIController* FsmControllerBoss = nullptr;
 };

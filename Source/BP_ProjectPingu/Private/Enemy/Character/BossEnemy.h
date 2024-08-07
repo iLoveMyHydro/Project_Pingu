@@ -10,9 +10,9 @@
 #include "OilBarrel/OilBarrel.h"
 #include "BossEnemy.generated.h"
 
-class AInputController;
-class BossFSM;
 class ABossAIController;
+class NormalFSM;
+class AInputController;
 
 UCLASS()
 class ABossEnemy : public ACharacter, public IDamagable
@@ -51,8 +51,6 @@ public:
 	const FString FSM_CONTROLLER_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.BossAIController'"));
 	const FString PLAYER_CLASS_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.PinguCharacter'"));
 	const FString OIL_BARREL_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.OilBarrel'"));
-	//const FString PLAYER_CLASS_PATH = FString(TEXT("/Script/BP_ProjectPingu"));
-	//const FString OIL_BARREL_PATH = FString(TEXT("/Script/BP_ProjectPingu"));
 	const FString BOX_COLLISION_NAME = FString(TEXT("Box Collision"));
 	const FString SPAWNLOCATION_OIL_BARREL_NAME = FString(TEXT("Oil Barrel Spawn Location"));
 
@@ -65,7 +63,10 @@ public:
 	APinguCharacter* PinguCharacter = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Delay", Category = "Respawn")
-	float RespawnDelay = 2;
+	float RespawnDelay = 3;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Respawn Delay", Category = "Respawn")
+	float RespawnDelayFast = 1;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Timer Handle", Category = "Respawn")
 	FTimerHandle RespawnTimerHandle;
@@ -88,9 +89,9 @@ public:
 
 	ABossEnemy* Character = nullptr;
 
-	BossFSM* Fsm = nullptr;
-
-	ABossAIController* Controller = nullptr;
+	NormalFSM* Fsm = nullptr;
 
 	AInputController* PlayerController = nullptr;
+
+	ABossAIController* Controller = nullptr;
 };

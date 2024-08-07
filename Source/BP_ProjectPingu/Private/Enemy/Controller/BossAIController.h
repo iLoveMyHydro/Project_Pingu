@@ -6,7 +6,7 @@
 #include "AIController.h"
 #include "BossAIController.generated.h"
 
-class BossFSM;
+class NormalFSM;
 /**
  * 
  */
@@ -38,7 +38,7 @@ public:
 private:
 	const FString PERCEPTION_NAME = FString(TEXT("Perception Component"));
 
-	BossFSM* Fsm = nullptr;
+	NormalFSM* Fsm = nullptr;
 	AActor* Player = nullptr;
 	class ABossEnemy* Character = nullptr;
 };

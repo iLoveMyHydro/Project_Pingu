@@ -3,23 +3,22 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "FiniteStateMachine/State/BossStateAI.h"
-
-class ABossEnemy;
+#include "FiniteStateMachine/FSM/NormalFSM.h"
+#include "FiniteStateMachine/State/NormalStateAI.h"
 
 /**
  * 
  */
-class BossThrowObjectState : public BossStateAI
+class BossThrowObjectState : public NormalStateAI
 {
 public:
-	BossThrowObjectState(FString A_Name, BossFSM* A_Machine);
+	BossThrowObjectState(FString A_Name, NormalFSM* A_Machine);
 	virtual ~BossThrowObjectState() override {};
 
 	virtual void Enter() override;
 
 private:
-	void ThrowObject(void);
+	void ThrowObject(void); 
 
 	class ABossEnemy* Character = nullptr;
 };

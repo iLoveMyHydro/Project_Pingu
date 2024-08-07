@@ -20,6 +20,9 @@ class UEnhancedInputLocalPlayerSubsystem;
 
 AInputController::AInputController()
 {
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	PrimaryActorTick.bCanEverTick = true;
+
 	InitInputAction();
 
 	//PauseMenuObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PAUSE_MENU_PATH).Class;
@@ -110,6 +113,13 @@ void AInputController::InitInputAction()
 	PauseAction = ConstructorHelpers::FObjectFinder<UInputAction>(*IA_PAUSE_PATH).Object;
 }
 
+void AInputController::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	SlapCoolDown -= DeltaSeconds;
+}
+
 void AInputController::Move(const FInputActionValue& Value)
 {
 	const FVector2D InputPlayerMovement = Value.Get<FVector2D>();
@@ -149,30 +159,35 @@ void AInputController::HandleStopMovement(const FInputActionValue& Value)
 
 void AInputController::HandleSlapAttack()
 {
-	PinguCharacter = GetPawn<APinguCharacter>();
-	if (PinguCharacter == nullptr) return;
-
-	PinguCharacter->SetSlapAnimation();
-
-	if(!GetWorld()) return;
-
-	auto OtherCharacter = CastChecked<APinguCharacter>(GetPawn())->GetOtherCharacter();
-	if(OtherCharacter != nullptr)
+	if(SlapCoolDown <= 0)
 	{
-		if(OtherCharacter->IsA<ANormalEnemy>())
+		PinguCharacter = GetPawn<APinguCharacter>();
+		if (PinguCharacter == nullptr) return;
+
+		PinguCharacter->SetSlapAnimation();
+
+		if (!GetWorld()) return;
+
+		auto OtherCharacter = CastChecked<APinguCharacter>(GetPawn())->GetOtherCharacter();
+		if (OtherCharacter != nullptr)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("Enemy"));
-			Enemy = CastChecked<ANormalEnemy>(OtherCharacter);
-			Enemy->ApplyDamage(1);
+			if (OtherCharacter->IsA<ANormalEnemy>())
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Enemy"));
+				Enemy = CastChecked<ANormalEnemy>(OtherCharacter);
+				Enemy->ApplyDamage(1);
+			}
+			if (OtherCharacter->IsA<ABossEnemy>())
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Boss Enemy"));
+				BossEnemy = CastChecked<ABossEnemy>(OtherCharacter);
+				BossEnemy->ApplyDamage(1);
+			}
+			PinguCharacter->PlaySlapSound(); //This code has been brought to you by Hubsi
 		}
-		if(OtherCharacter->IsA<ABossEnemy>())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Boss Enemy"));
-			BossEnemy = CastChecked<ABossEnemy>(OtherCharacter);
-			BossEnemy->ApplyDamage(1);
-		}
-		PinguCharacter->PlaySlapSound(); //This code has been brought to you by Hubsi
+		SlapCoolDown = SlapCoolDownTime;
 	}
+	
 }
 
 void AInputController::HandleNootAttack()
