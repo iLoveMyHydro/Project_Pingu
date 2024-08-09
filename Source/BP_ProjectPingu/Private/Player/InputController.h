@@ -22,6 +22,10 @@ class AInputController : public APlayerController
 public:
 	AInputController();
 
+	void PlayLevelTheme();
+	void PauseLevelTheme();
+	//Audio Stuff End
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -63,9 +67,7 @@ private:
 	UPROPERTY(VisibleAnywhere, DisplayName = "Audio Component Auto Activation", Category = "Components")
 	bool bAutoActivate = false;
 
-	void PlayLevelTheme();
-	void PauseLevelTheme();
-	//Audio Stuff End
+
 
 	UPROPERTY(EditAnywhere)
 	class AActor* SelectedActor;

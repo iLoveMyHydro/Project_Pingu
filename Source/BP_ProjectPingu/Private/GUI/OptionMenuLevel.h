@@ -27,7 +27,7 @@ protected:
 	class UOptionMenu* OptionMenu;
 
 private:
-	const FString OBJECT_PATH = FString(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_PauseMenu_Code.WBP_PauseMenu_Code'"));
+	const FString OBJECT_PATH = FString(TEXT("/Game/Blueprint/HUD/C++/WBP_OptionsMenu_Code"));
 
 
 };

@@ -25,7 +25,7 @@ AInputController::AInputController()
 
 	InitInputAction();
 
-	//PauseMenuObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PAUSE_MENU_PATH).Class;
+	PauseMenuObject = ConstructorHelpers::FClassFinder<UPauseMenu>(*PAUSE_MENU_PATH).Class;
 
 	PlayerHUDObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PLAYER_HUD_PATH).Class;
 
@@ -49,15 +49,16 @@ void AInputController::BeginPlay()
 		Subsystem->AddMappingContext(DefaultMappingContext, 0);
 	}
 
-	//if (PauseMenuObject)
-	//{
-	//	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Pause Menu"));
+	if (PauseMenuObject)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Pause Menu"));
 
-	//	PauseMenu = CreateWidget<UPauseMenu>(this, PauseMenuObject, "Pause Menu");
-	//	check(PauseMenu);
+		PauseMenu = CreateWidget<UPauseMenu>(this, PauseMenuObject, "Pause Menu");
+		check(PauseMenu);
 
-	//	PauseMenu->AddToPlayerScreen();
-	//}
+		PauseMenu->SetVisibility(ESlateVisibility::Hidden);
+		PauseMenu->AddToPlayerScreen();
+	}
 
 	if (PlayerHUDObject)
 	{
@@ -226,6 +227,7 @@ void AInputController::HandlePauseAction()
 	AInputController* const PlayerController = Cast<AInputController>(GEngine->GetFirstLocalPlayerController(GetWorld()));
 	if (PlayerController != nullptr)
 	{
+		PauseMenu->SetVisibility(ESlateVisibility::Visible);
 		PlayerController->bShowMouseCursor = true;
 		PlayerController->SetInputMode(FInputModeUIOnly());
 		PlayerController->SetPause(true);
