@@ -49,15 +49,15 @@ void AInputController::BeginPlay()
 		Subsystem->AddMappingContext(DefaultMappingContext, 0);
 	}
 
-	//if (PauseMenuObject)
-	//{
-	//	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Pause Menu"));
+	if (PauseMenuObject)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Pause Menu"));
 
-	//	PauseMenu = CreateWidget<UPauseMenu>(this, PauseMenuObject, "Pause Menu");
-	//	check(PauseMenu);
+		PauseMenu = CreateWidget<UPauseMenu>(this, PauseMenuObject, "Pause Menu");
+		check(PauseMenu);
 
-	//	PauseMenu->AddToPlayerScreen();
-	//}
+		PauseMenu->AddToPlayerScreen();
+	}
 
 	if (PlayerHUDObject)
 	{
@@ -229,6 +229,7 @@ void AInputController::HandlePauseAction()
 		PlayerController->bShowMouseCursor = true;
 		PlayerController->SetInputMode(FInputModeUIOnly());
 		PlayerController->SetPause(true);
+		PauseMenu->SetVisibility(ESlateVisibility::Visible);
 		PauseLevelTheme();
 	}
 }

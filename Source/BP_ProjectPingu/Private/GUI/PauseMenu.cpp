@@ -3,6 +3,8 @@
 
 #include "GUI/PauseMenu.h"
 
+#include "Components/Button.h"
+#include "Components/Image.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Player/InputController.h"
@@ -37,4 +39,15 @@ void UPauseMenu::MainMenuButtonClicked()
 void UPauseMenu::QuitButtonClicked()
 {
 	UKismetSystemLibrary::QuitGame(this, GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
+}
+
+void UPauseMenu::SetVisibility(ESlateVisibility InVisibility)
+{
+	Super::SetVisibility(InVisibility);
+
+	Background->SetVisibility(InVisibility);
+	OptionButton->SetVisibility(InVisibility);
+	MainMenuButton->SetVisibility(InVisibility);
+	PlayButton->SetVisibility(InVisibility);
+	QuitButton->SetVisibility(InVisibility);
 }

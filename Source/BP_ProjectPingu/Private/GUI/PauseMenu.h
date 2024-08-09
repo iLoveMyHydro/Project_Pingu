@@ -14,6 +14,9 @@ class UPauseMenu : public UUserWidget
 {
 	GENERATED_BODY()
 
+public:
+	virtual void SetVisibility(ESlateVisibility InVisibility) override;
+
 private:
 	virtual void NativeConstruct() override;
 
@@ -29,6 +32,8 @@ private:
 	UFUNCTION()
 	void QuitButtonClicked();
 
+
+
 	UPROPERTY(meta = (BindWidget))
 	class UButton* MainMenuButton = nullptr;
 
@@ -40,6 +45,9 @@ private:
 
 	UPROPERTY(meta = (BindWidget))
 	class UButton* QuitButton = nullptr;
+
+	UPROPERTY(meta = (BindWidget))
+	class UImage* Background = nullptr;
 
 private:
 	const FName MAIN_MENU_NAME = FName(TEXT("/Script/Engine.World'/Game/Maps/MainMenu_Code.MainMenu_Code'"));

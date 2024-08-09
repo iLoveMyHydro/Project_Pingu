@@ -2,9 +2,9 @@
 
 
 #include "GameModeBase/MyGameModeBaseCreditsMenu.h"
-#include "GUI/UCreditsMenu.h"
+#include "GUI/CreditsMenu.h"
 
 AMyGameModeBaseCreditsMenu::AMyGameModeBaseCreditsMenu()
 {
-	HUDClass = UUCreditsMenu::StaticClass();
+	HUDClass = UCreditsMenu::StaticClass();
 }
