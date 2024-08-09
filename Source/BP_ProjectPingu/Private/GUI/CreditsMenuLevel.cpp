@@ -2,12 +2,12 @@
 
 
 #include "GUI/CreditsMenuLevel.h"
-#include "BP_ProjectPingu/Private/GUI/CreditsMenu.h"
+#include "BP_ProjectPingu/Private/GUI/UCreditsMenu.h"
 #include "Blueprint/UserWidget.h"
 
 ACreditsMenuLevel::ACreditsMenuLevel()
 {
-	CreditsMenuObject = ConstructorHelpers::FClassFinder<UCreditsMenu>(*OBJECT_PATH).Class;
+	CreditsMenuObject = ConstructorHelpers::FClassFinder<UUCreditsMenu>(*OBJECT_PATH).Class;
 
 }
 
@@ -17,7 +17,7 @@ void ACreditsMenuLevel::BeginPlay()
 
 	if (CreditsMenuObject)
 	{
-		CreditsMenu = CreateWidget<UCreditsMenu>(GetWorld(), CreditsMenuObject);
+		CreditsMenu = CreateWidget<UUCreditsMenu>(GetWorld(), CreditsMenuObject);
 		if (CreditsMenu)
 		{
 			CreditsMenu->AddToViewport();

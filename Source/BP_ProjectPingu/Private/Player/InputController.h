@@ -48,7 +48,7 @@ private:
 	const FString IA_NOOT_PATH = TEXT("/Game/Input/Actions/IA_NootNoot");
 	const FString IMC_PATH = TEXT("/Game/Input/IMC_Character");
 	const FString IA_PAUSE_PATH = TEXT("/Game/Input/Actions/IA_Pause");
-	const FString PAUSE_MENU_PATH = FString(TEXT("/Game/Blueprint/HUD/C++/WBP_PauseMenu"));
+	const FString PAUSE_MENU_PATH = FString(TEXT("/Game/Blueprint/HUD/C++/WBP_PauseMenu_Code"));
 	const FString PLAYER_HUD_PATH = FString(TEXT("/Game/Blueprint/HUD/C++/WBP_PlayerHUD_Code"));
 
 	//Audio Stuff by Hubsi

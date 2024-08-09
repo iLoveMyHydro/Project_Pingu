@@ -22,10 +22,10 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditAnywhere)
-	TSubclassOf<class UCreditsMenu> CreditsMenuObject;
+	TSubclassOf<class UUCreditsMenu> CreditsMenuObject;
 
 	UPROPERTY()
-	class UCreditsMenu* CreditsMenu;
+	class UUCreditsMenu* CreditsMenu;
 
 private:
 	const FString OBJECT_PATH = FString(TEXT("/Script/UMGEditor.WidgetBlueprint'/Game/Blueprint/HUD/C++/WBP_PauseMenu_Code.WBP_PauseMenu_Code'"));

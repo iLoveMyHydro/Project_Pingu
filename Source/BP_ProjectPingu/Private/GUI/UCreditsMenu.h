@@ -4,13 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "CreditsMenu.generated.h"
+#include "UCreditsMenu.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class UCreditsMenu : public UUserWidget
+class UUCreditsMenu : public UUserWidget
 {
 	GENERATED_BODY()
 
