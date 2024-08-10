@@ -231,6 +231,8 @@ void AInputController::HandlePauseAction()
 		PlayerController->bShowMouseCursor = true;
 		PlayerController->SetInputMode(FInputModeUIOnly());
 		PlayerController->SetPause(true);
+
+		//Code from Hubsi
 		PauseLevelTheme();
 	}
 }

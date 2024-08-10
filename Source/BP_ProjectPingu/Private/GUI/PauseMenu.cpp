@@ -41,7 +41,6 @@ void UPauseMenu::PlayButtonClicked()
 		PlayerController->SetPause(false);
 		PlayerController->bShowMouseCursor = false;
 		PlayerController->SetInputMode(FInputModeGameOnly());
-		RemoveFromParent();
 	}
 	SetVisibility(ESlateVisibility::Hidden);
 
