@@ -43,6 +43,7 @@ protected:
 	void HandleSlapAttackComplete(void);
 	void HandlePauseAction(void);
 	void HandleStartedMovement();
+	void AnimationHandler(void);
 
 private:
 	const FString PLAYER_CTX_PATH = TEXT("/Game/Input/IMC_Character");
@@ -67,7 +68,11 @@ private:
 	UPROPERTY(VisibleAnywhere, DisplayName = "Audio Component Auto Activation", Category = "Components")
 	bool bAutoActivate = false;
 
+	UPROPERTY(EditAnywhere, DisplayName = "Walking State", Category = "Animation Handler")
+	bool bIsWalking = false;
 
+	UPROPERTY(EditAnywhere, DisplayName = "Jump State", Category = "Animation Handler")
+	bool bIsJumping = false;
 
 	UPROPERTY(EditAnywhere)
 	class AActor* SelectedActor;
@@ -76,7 +81,7 @@ private:
 #pragma region Attack
 
 	UPROPERTY(EditAnywhere, DisplayName = "Is Attacking", Category = "Attack", meta = (AllowPrivateAccess = true))
-	bool IsAttacking = false;
+	bool bIsAttacking = false;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Damage", Category = "Attack", meta = (AllowPrivateAccess = true))
 	float Damage = 1;

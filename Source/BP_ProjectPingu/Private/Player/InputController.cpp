@@ -127,6 +127,8 @@ void AInputController::Move(const FInputActionValue& Value)
 	FVector InputVector = FVector(InputPlayerMovement, 0);
 
 	GetCharacter()->AddMovementInput(InputVector, Speed, false);
+	bIsWalking = true;
+	AnimationHandler();
 }
 
 void AInputController::Jump()
@@ -135,15 +137,14 @@ void AInputController::Jump()
 	if (PinguCharacter == nullptr) return;
 
 	PinguCharacter->Jump();
-	PinguCharacter->SetJumpAnimation();
+	bIsJumping = true;
+	AnimationHandler();
 }
 
 void AInputController::StopJump()
 {
-	PinguCharacter = GetPawn<APinguCharacter>();
-	if (PinguCharacter == nullptr) return;
-
-	PinguCharacter->StopJumping();
+	bIsJumping = false;
+	AnimationHandler();
 }
 
 void AInputController::HandleStopMovement(const FInputActionValue& Value)
@@ -153,7 +154,8 @@ void AInputController::HandleStopMovement(const FInputActionValue& Value)
 	FVector InputVector = FVector(InputPlayerMovement, 0);
 
 	GetCharacter()->AddMovementInput(InputVector, 0, false);
-	PinguCharacter->SetIdleAnimation();
+	bIsWalking = false;
+	AnimationHandler();
 
 }
 
@@ -219,7 +221,7 @@ void AInputController::HandleNootAttack()
 
 void AInputController::HandleSlapAttackComplete()
 {
-	IsAttacking = false;
+	bIsAttacking = false;
 }
 
 void AInputController::HandlePauseAction()
@@ -243,6 +245,29 @@ void AInputController::HandleStartedMovement()
 	if (PinguCharacter == nullptr) return;
 
 	PinguCharacter->SetWalkAnimation();
+}
+
+void AInputController::AnimationHandler()
+{
+	PinguCharacter = Cast<APinguCharacter>(GetPawn());
+	if (PinguCharacter == nullptr) return;
+
+	//if(bIsJumping)
+	//{
+	//	PinguCharacter->SetJumpAnimation();
+	//}
+	//else if(bIsWalking)
+	//{
+	//	PinguCharacter->SetWalkAnimation();
+	//}
+	//else if(bIsAttacking)
+	//{
+	//	PinguCharacter->SetSlapAnimation();
+	//}
+	if(!bIsWalking && !bIsJumping && !bIsAttacking)
+	{
+		PinguCharacter->SetIdleAnimation();
+	}
 }
 
 void AInputController::PlayLevelTheme()
