@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "PauseMenu.generated.h"
 
+class APinguCharacter;
 /**
  * 
  */
@@ -13,6 +14,9 @@ UCLASS()
 class UPauseMenu : public UUserWidget
 {
 	GENERATED_BODY()
+
+public:
+	virtual void SetVisibility(ESlateVisibility InVisibility) override;
 
 private:
 	virtual void NativeConstruct() override;
@@ -41,8 +45,14 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	class UButton* QuitButton = nullptr;
 
+	UPROPERTY(meta = (BindWidget))
+	class UImage* Background = nullptr;
+
 private:
-	const FName MAIN_MENU_NAME = FName(TEXT("/Script/Engine.World'/Game/Maps/MainMenu_Code.MainMenu_Code'"));
-	const FName OPTION_MENU_NAME = FName(TEXT("/Script/Engine.World'/Game/Maps/OptionMenu_Code.OptionMenu_Code'"));
+	const FName MAIN_MENU_NAME = FName(TEXT("/Game/Maps/MainMenu_Code"));
+	const FName OPTION_MENU_NAME = FName(TEXT("/Game/Maps/OptionMenu_Code"));
+
+	class AInputController* Controller = nullptr;
+	APinguCharacter* Character = nullptr;
 
 };

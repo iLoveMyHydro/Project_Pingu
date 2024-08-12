@@ -25,7 +25,7 @@ AInputController::AInputController()
 
 	InitInputAction();
 
-	//PauseMenuObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PAUSE_MENU_PATH).Class;
+	PauseMenuObject = ConstructorHelpers::FClassFinder<UPauseMenu>(*PAUSE_MENU_PATH).Class;
 
 	PlayerHUDObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PLAYER_HUD_PATH).Class;
 
@@ -49,15 +49,16 @@ void AInputController::BeginPlay()
 		Subsystem->AddMappingContext(DefaultMappingContext, 0);
 	}
 
-	//if (PauseMenuObject)
-	//{
-	//	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Pause Menu"));
+	if (PauseMenuObject)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Pause Menu"));
 
-	//	PauseMenu = CreateWidget<UPauseMenu>(this, PauseMenuObject, "Pause Menu");
-	//	check(PauseMenu);
+		PauseMenu = CreateWidget<UPauseMenu>(this, PauseMenuObject, "Pause Menu");
+		check(PauseMenu);
 
-	//	PauseMenu->AddToPlayerScreen();
-	//}
+		PauseMenu->SetVisibility(ESlateVisibility::Hidden);
+		PauseMenu->AddToPlayerScreen();
+	}
 
 	if (PlayerHUDObject)
 	{
@@ -126,6 +127,8 @@ void AInputController::Move(const FInputActionValue& Value)
 	FVector InputVector = FVector(InputPlayerMovement, 0);
 
 	GetCharacter()->AddMovementInput(InputVector, Speed, false);
+	bIsWalking = true;
+	AnimationHandler();
 }
 
 void AInputController::Jump()
@@ -134,15 +137,14 @@ void AInputController::Jump()
 	if (PinguCharacter == nullptr) return;
 
 	PinguCharacter->Jump();
-	PinguCharacter->SetJumpAnimation();
+	bIsJumping = true;
+	AnimationHandler();
 }
 
 void AInputController::StopJump()
 {
-	PinguCharacter = GetPawn<APinguCharacter>();
-	if (PinguCharacter == nullptr) return;
-
-	PinguCharacter->StopJumping();
+	bIsJumping = false;
+	AnimationHandler();
 }
 
 void AInputController::HandleStopMovement(const FInputActionValue& Value)
@@ -152,7 +154,8 @@ void AInputController::HandleStopMovement(const FInputActionValue& Value)
 	FVector InputVector = FVector(InputPlayerMovement, 0);
 
 	GetCharacter()->AddMovementInput(InputVector, 0, false);
-	PinguCharacter->SetIdleAnimation();
+	bIsWalking = false;
+	AnimationHandler();
 
 }
 
@@ -218,7 +221,7 @@ void AInputController::HandleNootAttack()
 
 void AInputController::HandleSlapAttackComplete()
 {
-	IsAttacking = false;
+	bIsAttacking = false;
 }
 
 void AInputController::HandlePauseAction()
@@ -226,9 +229,12 @@ void AInputController::HandlePauseAction()
 	AInputController* const PlayerController = Cast<AInputController>(GEngine->GetFirstLocalPlayerController(GetWorld()));
 	if (PlayerController != nullptr)
 	{
+		PauseMenu->SetVisibility(ESlateVisibility::Visible);
 		PlayerController->bShowMouseCursor = true;
 		PlayerController->SetInputMode(FInputModeUIOnly());
 		PlayerController->SetPause(true);
+
+		//Code from Hubsi
 		PauseLevelTheme();
 	}
 }
@@ -239,6 +245,29 @@ void AInputController::HandleStartedMovement()
 	if (PinguCharacter == nullptr) return;
 
 	PinguCharacter->SetWalkAnimation();
+}
+
+void AInputController::AnimationHandler()
+{
+	PinguCharacter = Cast<APinguCharacter>(GetPawn());
+	if (PinguCharacter == nullptr) return;
+
+	//if(bIsJumping)
+	//{
+	//	PinguCharacter->SetJumpAnimation();
+	//}
+	//else if(bIsWalking)
+	//{
+	//	PinguCharacter->SetWalkAnimation();
+	//}
+	//else if(bIsAttacking)
+	//{
+	//	PinguCharacter->SetSlapAnimation();
+	//}
+	if(!bIsWalking && !bIsJumping && !bIsAttacking)
+	{
+		PinguCharacter->SetIdleAnimation();
+	}
 }
 
 void AInputController::PlayLevelTheme()

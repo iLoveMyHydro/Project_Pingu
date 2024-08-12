@@ -37,6 +37,6 @@ private:
 	class UCheckBox* VsyncCheckBox = nullptr;
 
 private:
-	const FName MAIN_MENU_NAME = FName(TEXT("/Script/Engine.World'/Game/Maps/MainMenu_Code.MainMenu_Code'"));
+	const FName MAIN_MENU_NAME = FName(TEXT("/Game/Maps/MainMenu_Code"));
 
 };
