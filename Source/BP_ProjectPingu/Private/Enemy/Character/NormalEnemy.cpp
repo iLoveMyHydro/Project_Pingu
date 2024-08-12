@@ -10,6 +10,7 @@
 #include "Player/PinguCharacter.h"
 #include "Player/InputController.h"
 
+#include "Components/AudioComponent.h"
 
 // Sets default values
 ANormalEnemy::ANormalEnemy()
@@ -46,6 +47,16 @@ ANormalEnemy::ANormalEnemy()
 
 	AIControllerClass = ConstructorHelpers::FClassFinder<ANormalAIController>(*FSM_CONTROLLER_PATH).Class;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	//Audio Code
+	EnemyDamageSFXComponent = CreateDefaultSubobject<UAudioComponent>(*ENEMY_DAMAGE_SFX_COMPONENT_NAME);
+
+	EnemyDamageSFXComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*ENEMY_DAMAGE_SFX_PATH).Object);
+
+	EnemyDamageSFXComponent->SetAutoActivate(bAutoActivate);
+
+	EnemyDamageSFXComponent->SetupAttachment(RootComponent);
+	//No more Audio Code
 
 }
 
@@ -91,6 +102,8 @@ void ANormalEnemy::ApplyDamage(int A_DamageAmount)
 	{
 		ANormalEnemy::Destroy();
 	}
+
+	PlayEnemyDamageSFX();
 }
 
 void ANormalEnemy::ThrowOilBarrel()
@@ -146,4 +159,15 @@ void ANormalEnemy::OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AAc
 		Fsm->Transition(static_cast<NormalSimpleFSM*>(Fsm)->GetSearchPlayerState());
 		GetWorld()->GetTimerManager().ClearTimer(RespawnTimerHandle);
 	}
+}
+
+void ANormalEnemy::PlayEnemyDamageSFX()
+{
+	if (!EnemyDamageSFXComponent) return;
+	if (!EnemyDamageSFXComponent->GetSound()) return;
+
+	if (EnemyDamageSFXComponent->IsActive() == false) EnemyDamageSFXComponent->SetActive(true);
+	if (EnemyDamageSFXComponent->IsPlaying() == false) EnemyDamageSFXComponent->Play();
+
+	EnemyDamageSFXComponent->SetTriggerParameter(*ENEMY_DAMAGE_SFX_TRIGGER_NAME);
 }

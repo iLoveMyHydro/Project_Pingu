@@ -54,6 +54,7 @@ public:
 	void PlayNootNootSound();
 	void PlayDamageSound();
 	void PlayFootstepSound();
+	void PlayJumpSound();
 
 private:
 	auto InitCamera(void) -> class UCameraComponent*;
@@ -100,14 +101,18 @@ private:
 	const FString ATTACK_SFX_NAME = FString(TEXT("AttackSFX"));
 	const FString DAMAGE_SFX_NAME = FString(TEXT("DamageSFX"));
 	const FString FOOTSTEPS_SFX_NAME = FString(TEXT("FootstepSFX"));
+	const FString JUMP_SFX_NAME = FString(TEXT("JumpSFX"));
+
 	const FString ATTACK_SFX_PATH = FString(TEXT("/Script/MetasoundEngine.MetaSoundSource'/Game/Audio/MetaSounds/META_Attack.META_Attack'"));
 	const FString DAMAGE_SFX_PATH = FString(TEXT("/Script/MetasoundEngine.MetaSoundSource'/Game/Audio/MetaSounds/META_Damage.META_Damage'"));
 	const FString FOOTSTEPS_SFX_PATH = FString(TEXT("/Script/MetasoundEngine.MetaSoundSource'/Game/Audio/MetaSounds/META_Footsteps.META_Footsteps'"));
+	const FString JUMP_SFX_PATH = FString(TEXT("/Script/MetasoundEngine.MetaSoundSource'/Game/Audio/MetaSounds/META_Jump.META_Jump'"));
 
 	const FString MELEE_ATTACK_TRIGGER_NAME = FString(TEXT("PlayMeleeAttack"));
 	const FString RANGED_ATTACK_TRIGGER_NAME = FString(TEXT("PlayRangedAttack"));
 	const FString DAMAGE_TRIGGER_NAME = FString(TEXT("PlayDamage"));
 	const FString FOOTSTEP_TRIGGER_NAME = FString(TEXT("PlayFootstep"));
+	const FString JUMP_TRIGGER_NAME = FString(TEXT("Jump"));
 	//Audio Stuff End
 
 	UPROPERTY(EditAnywhere, DisplayName = "Spawn Location", Category = "Respawn")
@@ -200,18 +205,13 @@ private:
 	UPROPERTY(EditAnywhere, DisplayName = "Footstep SFX", Category = "Components", meta = (AllowPrivateAccess = true))
 	TObjectPtr<class UAudioComponent> FootstepSFXComponent = nullptr;
 
+	UPROPERTY(EditAnywhere, DisplayName = "Jump SFX", Category = "Components", meta = (AllowPrivateAccess = true))
+	TObjectPtr<class UAudioComponent> JumpSFXComponent = nullptr;
+
 	UPROPERTY(VisibleAnywhere, DisplayName = "Audio Component Auto Activation", Category = "Components")
 	bool bAutoActivate = false;
+	//Less Audio Stuff
 
 	UPROPERTY(EditAnywhere, DisplayName = "Got IceSpikes", Category = "Attack")
 	bool bGotIceSpikes = false;
-
-	// UPROPERTY(EditAnywhere, DisplayName = "Attack Sound", Category = "Audio")
-	// class UMetaSoundSource* AttackSFX;
-
-	// UPROPERTY(EditAnywhere, DisplayName = "Damage Sound", Category = "Audio")
-	// class UMetaSoundSource* DamageSFX;
-
-	// UPROPERTY(EditAnywhere, DisplayName = "Footstep Sound", Category = "Audio")
-	// class UMetaSoundSource* FootstepSFX;
 };

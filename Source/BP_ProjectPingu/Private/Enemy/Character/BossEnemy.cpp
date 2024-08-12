@@ -10,6 +10,8 @@
 #include "Player/PinguCharacter.h"
 #include "Player/InputController.h"
 
+#include "Components/AudioComponent.h"
+
 // Sets default values
 ABossEnemy::ABossEnemy()
 {
@@ -45,6 +47,16 @@ ABossEnemy::ABossEnemy()
 
 	AIControllerClass = ConstructorHelpers::FClassFinder<ABossAIController>(*FSM_CONTROLLER_PATH).Class;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	//Audio Code
+	BossDamageSFXComponent = CreateDefaultSubobject<UAudioComponent>(*BOSS_DAMAGE_SFX_COMPONENT_NAME);
+
+	BossDamageSFXComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*BOSS_DAMAGE_SFX_PATH).Object);
+
+	BossDamageSFXComponent->SetAutoActivate(bAutoActivate);
+
+	BossDamageSFXComponent->SetupAttachment(RootComponent);
+	//No more Audio Code
 }
 
 // Called when the game starts or when spawned
@@ -185,4 +197,15 @@ void ABossEnemy::OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AActo
 		GetWorld()->GetTimerManager().ClearTimer(RespawnTimerHandle);
 		GetWorld()->GetTimerManager().ClearTimer(RespawnTimerHandleThree);
 	}
+}
+
+void ABossEnemy::PlayBossDamageSFX()
+{
+	if (!BossDamageSFXComponent) return;
+	if (!BossDamageSFXComponent->GetSound()) return;
+
+	if (BossDamageSFXComponent->IsActive() == false) BossDamageSFXComponent->SetActive(true);
+	if (BossDamageSFXComponent->IsPlaying() == false) BossDamageSFXComponent->Play();
+
+	BossDamageSFXComponent->SetTriggerParameter(*BOSS_DAMAGE_SFX_TRIGGER_NAME);
 }

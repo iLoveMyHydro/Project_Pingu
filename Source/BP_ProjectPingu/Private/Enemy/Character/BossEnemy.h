@@ -47,12 +47,24 @@ public:
 	UFUNCTION()
 	void OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	//Audio Functions
+	void PlayBossDamageSFX();
+	//less Audio Functions from here
+
 	const FString MESH_PATH = FString(TEXT("/Engine/EditorMeshes/SkeletalMesh/DefaultSkeletalMesh"));
 	const FString FSM_CONTROLLER_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.BossAIController'"));
 	const FString PLAYER_CLASS_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.PinguCharacter'"));
 	const FString OIL_BARREL_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.OilBarrel'"));
 	const FString BOX_COLLISION_NAME = FString(TEXT("Box Collision"));
 	const FString SPAWNLOCATION_OIL_BARREL_NAME = FString(TEXT("Oil Barrel Spawn Location"));
+
+	//this audio section has been brought to you by Hubsi (Für Marcus: Hubsi == Alex Huber)
+	const FString BOSS_DAMAGE_SFX_COMPONENT_NAME = FString(TEXT("BossDamageSFX"));
+	
+	const FString BOSS_DAMAGE_SFX_PATH = FString(TEXT("/Script/MetasoundEngine.MetaSoundSource'/Game/Audio/MetaSounds/META_BossDamage.META_BossDamage'"));
+
+	const FString BOSS_DAMAGE_SFX_TRIGGER_NAME = FString(TEXT("BossDamage"));
+	//end of this audio section
 
 	UPROPERTY(EditAnywhere, DisplayName = "Spawnlocation Oil Barrel", Category = "Attack")
 	USceneComponent* SpawnLocationOilBarrel = nullptr;
@@ -82,6 +94,14 @@ public:
 
 	UPROPERTY(EditAnywhere, DisplayName = "Oil Barrel Actor", Category = "Attack", meta = (AllowPrivateAccess = true));
 	TSubclassOf<class AOilBarrel> OilBarrelProjectile;
+
+	//More Audio
+	UPROPERTY(EditAnywhere, DisplayName = "BossDamageSFX", Category = "Components")
+	TObjectPtr<UAudioComponent> BossDamageSFXComponent = nullptr;
+
+	UPROPERTY(VisibleAnywhere, DisplayName = "Audio Component Auto Activation", Category = "Components")
+	bool bAutoActivate = false;
+	//Less Audio
 
 	TSubclassOf<AActor> PlayerClass;
 

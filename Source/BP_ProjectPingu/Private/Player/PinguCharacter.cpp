@@ -77,18 +77,22 @@ APinguCharacter::APinguCharacter()
 	AttackSFXComponent = CreateDefaultSubobject<UAudioComponent>(*ATTACK_SFX_NAME);
 	DamageSFXComponent = CreateDefaultSubobject<UAudioComponent>(*DAMAGE_SFX_NAME);
 	FootstepSFXComponent = CreateDefaultSubobject<UAudioComponent>(*FOOTSTEPS_SFX_NAME);
+	JumpSFXComponent = CreateDefaultSubobject<UAudioComponent>(*JUMP_SFX_NAME);
 
 	AttackSFXComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*ATTACK_SFX_PATH).Object);
 	DamageSFXComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*DAMAGE_SFX_PATH).Object);
 	FootstepSFXComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*FOOTSTEPS_SFX_PATH).Object);
+	JumpSFXComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*JUMP_SFX_PATH).Object);
 
 	AttackSFXComponent->SetAutoActivate(bAutoActivate);
 	DamageSFXComponent->SetAutoActivate(bAutoActivate);
 	FootstepSFXComponent->SetAutoActivate(bAutoActivate);
+	JumpSFXComponent->SetAutoActivate(bAutoActivate);
 
 	AttackSFXComponent->SetupAttachment(RootComponent);
 	DamageSFXComponent->SetupAttachment(RootComponent);
 	FootstepSFXComponent->SetupAttachment(RootComponent);
+	JumpSFXComponent->SetupAttachment(RootComponent);
 }
 
 void APinguCharacter::ApplyDamage(int A_DamageAmount)
@@ -363,4 +367,15 @@ void APinguCharacter::PlayFootstepSound()
 	if (FootstepSFXComponent->IsPlaying() == false) FootstepSFXComponent->Play();
 
 	FootstepSFXComponent->SetTriggerParameter(*FOOTSTEP_TRIGGER_NAME);
+}
+
+void APinguCharacter::PlayJumpSound()
+{
+	if (!JumpSFXComponent) return;
+	if (!JumpSFXComponent->GetSound()) return;
+
+	if (JumpSFXComponent->IsActive() == false) JumpSFXComponent->SetActive(true);
+	if (JumpSFXComponent->IsPlaying() == false) JumpSFXComponent->Play();
+
+	if (CanJump()) JumpSFXComponent->SetTriggerParameter(*JUMP_TRIGGER_NAME);
 }

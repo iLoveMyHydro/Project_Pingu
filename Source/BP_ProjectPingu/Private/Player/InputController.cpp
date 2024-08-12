@@ -137,6 +137,7 @@ void AInputController::Jump()
 	if (PinguCharacter == nullptr) return;
 
 	PinguCharacter->Jump();
+	PinguCharacter->PlayJumpSound();
 	bIsJumping = true;
 	AnimationHandler();
 }
