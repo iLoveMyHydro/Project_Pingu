@@ -68,10 +68,10 @@ private:
 	UPROPERTY(VisibleAnywhere, DisplayName = "Audio Component Auto Activation", Category = "Components")
 	bool bAutoActivate = false;
 
-	UPROPERTY(EditAnywhere, DisplayName = "Walking State", Category = "Animation Handler")
+	UPROPERTY(EditAnywhere, DisplayName = "Walking State", Category = "AnimationHandler")
 	bool bIsWalking = false;
 
-	UPROPERTY(EditAnywhere, DisplayName = "Jump State", Category = "Animation Handler")
+	UPROPERTY(EditAnywhere, DisplayName = "Jump State", Category = "AnimationHandler")
 	bool bIsJumping = false;
 
 	UPROPERTY(EditAnywhere)

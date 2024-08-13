@@ -1,6 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Player/InputController.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
@@ -15,9 +14,11 @@
 
 //Audio Hubsi here again
 #include "Components/AudioComponent.h"
+#include "GameFramework/PawnMovementComponent.h"
 
 class UEnhancedInputLocalPlayerSubsystem;
 
+// Sets default values
 AInputController::AInputController()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -36,6 +37,7 @@ AInputController::AInputController()
 	MusicComponent->SetupAttachment(RootComponent);
 }
 
+//Called when the game starts or when spawned
 void AInputController::BeginPlay()
 {
 	Super::BeginPlay();
@@ -43,7 +45,8 @@ void AInputController::BeginPlay()
 	//Hubsi
 	PlayLevelTheme();
 
-	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer()))
+	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(
+		GetLocalPlayer()))
 	{
 		// add the mapping context so we get controls
 		Subsystem->AddMappingContext(DefaultMappingContext, 0);
@@ -70,13 +73,17 @@ void AInputController::BeginPlay()
 		PlayerHUD->AddToPlayerScreen();
 
 		PinguCharacter = GetPawn<APinguCharacter>();
-		if (PinguCharacter == nullptr) return;
+		if (PinguCharacter == nullptr)
+		{
+			return;
+		}
 
 
 		PlayerHUD->SetIceSpikeAmount(PinguCharacter->GetIceSpikes(), 5);
 	}
 }
 
+//Binds the Input Actions to their related Methods
 void AInputController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
@@ -85,25 +92,33 @@ void AInputController::SetupInputComponent()
 	{
 		//Moving
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AInputController::Move);
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Started, this, &AInputController::HandleStartedMovement);
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Completed, this, &AInputController::HandleStopMovement);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Started, this,
+		                                   &AInputController::HandleStartedMovement);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Completed, this,
+		                                   &AInputController::HandleStopMovement);
 
 		//Jumping
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Started, this, &AInputController::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &AInputController::StopJump);
 
+
 		//Slap Attack
-		EnhancedInputComponent->BindAction(SlapAction, ETriggerEvent::Started, this, &AInputController::HandleSlapAttack);
-		EnhancedInputComponent->BindAction(SlapAction, ETriggerEvent::Completed, this, &AInputController::HandleSlapAttackComplete);
+		EnhancedInputComponent->BindAction(SlapAction, ETriggerEvent::Started, this,
+		                                   &AInputController::HandleSlapAttack);
+		EnhancedInputComponent->BindAction(SlapAction, ETriggerEvent::Completed, this,
+		                                   &AInputController::HandleSlapAttackComplete);
 
 		//Noot Noot Attack
-		EnhancedInputComponent->BindAction(NootNootAction, ETriggerEvent::Started, this, &AInputController::HandleNootAttack);
+		EnhancedInputComponent->BindAction(NootNootAction, ETriggerEvent::Started, this,
+		                                   &AInputController::HandleNootAttack);
 
 		//Pause Menu
-		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Started, this, &AInputController::HandlePauseAction);
+		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Started, this,
+		                                   &AInputController::HandlePauseAction);
 	}
 }
 
+//Initialize the Mapping Context and the Input Actions
 void AInputController::InitInputAction()
 {
 	DefaultMappingContext = ConstructorHelpers::FObjectFinder<UInputMappingContext>(*IMC_PATH).Object;
@@ -114,6 +129,7 @@ void AInputController::InitInputAction()
 	PauseAction = ConstructorHelpers::FObjectFinder<UInputAction>(*IA_PAUSE_PATH).Object;
 }
 
+//Updates every frame
 void AInputController::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
@@ -121,6 +137,7 @@ void AInputController::Tick(float DeltaSeconds)
 	SlapCoolDown -= DeltaSeconds;
 }
 
+//When the Move Button is pressed
 void AInputController::Move(const FInputActionValue& Value)
 {
 	const FVector2D InputPlayerMovement = Value.Get<FVector2D>();
@@ -128,26 +145,30 @@ void AInputController::Move(const FInputActionValue& Value)
 
 	GetCharacter()->AddMovementInput(InputVector, Speed, false);
 	bIsWalking = true;
-	AnimationHandler();
 }
 
+//When the Jump Button is pressed
 void AInputController::Jump()
 {
 	PinguCharacter = GetPawn<APinguCharacter>();
-	if (PinguCharacter == nullptr) return;
+	if (PinguCharacter == nullptr)
+	{
+		return;
+	}
 
+	bIsJumping = true;
 	PinguCharacter->Jump();
 	PinguCharacter->PlayJumpSound();
-	bIsJumping = true;
 	AnimationHandler();
 }
 
+//When the jump is done
 void AInputController::StopJump()
 {
 	bIsJumping = false;
-	AnimationHandler();
 }
 
+//When the Character is not walking
 void AInputController::HandleStopMovement(const FInputActionValue& Value)
 {
 	const FVector2D InputPlayerMovement = Value.Get<FVector2D>();
@@ -157,20 +178,26 @@ void AInputController::HandleStopMovement(const FInputActionValue& Value)
 	GetCharacter()->AddMovementInput(InputVector, 0, false);
 	bIsWalking = false;
 	AnimationHandler();
-
 }
 
-
+//When the Slap Attack Button is pressed
 void AInputController::HandleSlapAttack()
 {
-	if(SlapCoolDown <= 0)
+	if (SlapCoolDown <= 0)
 	{
+		bIsAttacking = true;
 		PinguCharacter = GetPawn<APinguCharacter>();
-		if (PinguCharacter == nullptr) return;
+		if (PinguCharacter == nullptr)
+		{
+			return;
+		}
 
 		PinguCharacter->SetSlapAnimation();
 
-		if (!GetWorld()) return;
+		if (!GetWorld())
+		{
+			return;
+		}
 
 		auto OtherCharacter = CastChecked<APinguCharacter>(GetPawn())->GetOtherCharacter();
 		if (OtherCharacter != nullptr)
@@ -191,13 +218,16 @@ void AInputController::HandleSlapAttack()
 		}
 		SlapCoolDown = SlapCoolDownTime;
 	}
-	
 }
 
+//When the Noot Noot Attack Button is pressed
 void AInputController::HandleNootAttack()
 {
 	PinguCharacter = GetPawn<APinguCharacter>();
-	if (PinguCharacter == nullptr) return;
+	if (PinguCharacter == nullptr)
+	{
+		return;
+	}
 
 	if (PinguCharacter->GetIceSpikes() > 0)
 	{
@@ -209,25 +239,26 @@ void AInputController::HandleNootAttack()
 
 	IceSpikes--;
 
-	if(IceSpikes <= 0)
+	if (IceSpikes <= 0)
 	{
 		IceSpikes = 0;
 	}
 
 	PlayerHUD->SetIceSpikeAmount(IceSpikes, 5);
 	PinguCharacter->SetIceSpikes(IceSpikes);
-
-
 }
 
+//When the Slap Attack is done 
 void AInputController::HandleSlapAttackComplete()
 {
 	bIsAttacking = false;
 }
 
+//When this Button is pressed
 void AInputController::HandlePauseAction()
 {
-	AInputController* const PlayerController = Cast<AInputController>(GEngine->GetFirstLocalPlayerController(GetWorld()));
+	AInputController* const PlayerController = Cast<AInputController>(
+		GEngine->GetFirstLocalPlayerController(GetWorld()));
 	if (PlayerController != nullptr)
 	{
 		PauseMenu->SetVisibility(ESlateVisibility::Visible);
@@ -240,55 +271,90 @@ void AInputController::HandlePauseAction()
 	}
 }
 
+//When the Move Button is pressed
 void AInputController::HandleStartedMovement()
 {
 	PinguCharacter = Cast<APinguCharacter>(GetPawn());
-	if (PinguCharacter == nullptr) return;
+	if (PinguCharacter == nullptr)
+	{
+		return;
+	}
 
-	PinguCharacter->SetWalkAnimation();
+	bIsWalking = true;
+	AnimationHandler();
 }
 
+//Sets the Animation for Walking, Idle and Jumping
 void AInputController::AnimationHandler()
 {
 	PinguCharacter = Cast<APinguCharacter>(GetPawn());
-	if (PinguCharacter == nullptr) return;
+	if (PinguCharacter == nullptr)
+	{
+		return;
+	}
 
-	//if(bIsJumping)
-	//{
-	//	PinguCharacter->SetJumpAnimation();
-	//}
-	//else if(bIsWalking)
-	//{
-	//	PinguCharacter->SetWalkAnimation();
-	//}
-	//else if(bIsAttacking)
-	//{
-	//	PinguCharacter->SetSlapAnimation();
-	//}
-	if(!bIsWalking && !bIsJumping && !bIsAttacking)
+	if (!bIsJumping && bIsWalking)
+	{
+		PinguCharacter->SetWalkAnimation();
+		UE_LOG(LogTemp, Warning, TEXT("WalkAnimation Jumping:%s Walking:%s"),
+		       (bIsJumping) ? TEXT("true") : TEXT("false"), (bIsWalking) ? TEXT("true"):TEXT("false"));
+	}
+	else if (bIsJumping)
+	{
+		PinguCharacter->SetJumpAnimation();
+		UE_LOG(LogTemp, Warning, TEXT("JumpAnimation Jumping:%s Walking:%s"),
+		       (bIsJumping) ? TEXT("true") : TEXT("false"), (bIsWalking) ? TEXT("true") : TEXT("false"));
+	}
+	if (!bIsJumping && !bIsWalking)
 	{
 		PinguCharacter->SetIdleAnimation();
+		UE_LOG(LogTemp, Warning, TEXT("IdleAnimation Jumping:%s Walking:%s"),
+		       (bIsJumping) ? TEXT("true") : TEXT("false"), (bIsWalking) ? TEXT("true") : TEXT("false"));
 	}
 }
 
 void AInputController::PlayLevelTheme()
 {
-	if (!MusicComponent) return;
-	if (!MusicComponent->GetSound()) return;
+	if (!MusicComponent)
+	{
+		return;
+	}
+	if (!MusicComponent->GetSound())
+	{
+		return;
+	}
 
-	if (MusicComponent->IsActive() == false) MusicComponent->SetActive(true);
-	if (MusicComponent->IsPlaying() == false) MusicComponent->Play();
+	if (MusicComponent->IsActive() == false)
+	{
+		MusicComponent->SetActive(true);
+	}
+	if (MusicComponent->IsPlaying() == false)
+	{
+		MusicComponent->Play();
+	}
 
 	MusicComponent->SetTriggerParameter(*MUSIC_TRIGGER_NAME);
 }
 
 void AInputController::PauseLevelTheme()
 {
-	if (!MusicComponent) return;
-	if (!MusicComponent->GetSound()) return;
+	if (!MusicComponent)
+	{
+		return;
+	}
+	if (!MusicComponent->GetSound())
+	{
+		return;
+	}
 
-	if (MusicComponent->IsActive() == false) MusicComponent->SetActive(true);
-	if (MusicComponent->IsPlaying() == false) MusicComponent->Play();
+	if (MusicComponent->IsActive() == false)
+	{
+		MusicComponent->SetActive(true);
+	}
+	if (MusicComponent->IsPlaying() == false)
+	{
+		MusicComponent->Play();
+	}
 
 	MusicComponent->SetTriggerParameter(*PAUSE_MUSIC_TRIGGER_NAME);
 }

@@ -95,6 +95,8 @@ APinguCharacter::APinguCharacter()
 	JumpSFXComponent->SetupAttachment(RootComponent);
 }
 
+//If the Player get hits by something he will get damage
+//If the Player has no Life left - he will be respawned 
 void APinguCharacter::ApplyDamage(int A_DamageAmount)
 {
 	Health -= A_DamageAmount;
@@ -114,7 +116,6 @@ void APinguCharacter::ApplyDamage(int A_DamageAmount)
 			GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, this, &APinguCharacter::Respawn, RespawnDelay, false);
 			PlayerHUD->SetLifeAmount(MaxHealth, MaxHealth);
 			UGameplayStatics::SetGamePaused(GetWorld(), false);
-
 		}
 	}
 }
@@ -139,6 +140,7 @@ void APinguCharacter::SetIceSpikes(int A_IceSpikes)
 	IceSpikes = A_IceSpikes;
 }
 
+//Spawns the Ice Spikes with the correct Rotation and Location
 void APinguCharacter::ThrowIceSpikes()
 {
 
@@ -211,6 +213,7 @@ APinguCharacter& APinguCharacter::SetSlapAnimation()
 	return *this;
 }
 
+//When the player has no life left, he will be respawned
 void APinguCharacter::Respawn()
 {
 	SetActorLocation(SpawnLocation);
@@ -218,6 +221,7 @@ void APinguCharacter::Respawn()
 	DeathScreen->SetDeathScreen(false);
 }
 
+//Initialize some STats for the Camera
 auto APinguCharacter::InitCamera() -> UCameraComponent*
 {
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(*CAMERA_ARM_NAME);
@@ -237,7 +241,7 @@ auto APinguCharacter::InitCamera() -> UCameraComponent*
 	return PinguCameraComponent;
 }
 
-
+//Initialize some Stats for the player
 void APinguCharacter::InitPlayer()
 {
 	ACharacter::JumpMaxCount = 2;
@@ -289,6 +293,7 @@ void APinguCharacter::BeginPlay()
 	SpawnLocation = GetActorLocation();
 }
 
+//When somethings Overlaps with the Box Collision
 void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
