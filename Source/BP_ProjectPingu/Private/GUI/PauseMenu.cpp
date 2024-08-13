@@ -55,19 +55,44 @@ void UPauseMenu::PlayButtonClicked()
 
 void UPauseMenu::OptionButtonClicked()
 {
+	//Audio
+	auto* PlayerController = Cast<AInputController>(GetWorld()->GetFirstPlayerController());
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("PlayerController returned Nullpointer on button click!"));
+		return;
+	}
+	PlayerController->PlayUIConfirmSound();
+
 	UGameplayStatics::OpenLevel(GetWorld(), OPTION_MENU_NAME);
 	SetVisibility(ESlateVisibility::Hidden);
-
 }
 
 void UPauseMenu::MainMenuButtonClicked()
 {
+	//Audio
+	auto* PlayerController = Cast<AInputController>(GetWorld()->GetFirstPlayerController());
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("PlayerController returned Nullpointer on button click!"));
+		return;
+	}
+	PlayerController->PlayUIConfirmSound();
+
 	UGameplayStatics::OpenLevel(GetWorld(), MAIN_MENU_NAME);
 	SetVisibility(ESlateVisibility::Hidden);
-
 }
 
 void UPauseMenu::QuitButtonClicked()
 {
+	//Audio
+	auto* PlayerController = Cast<AInputController>(GetWorld()->GetFirstPlayerController());
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("PlayerController returned Nullpointer on button click!"));
+		return;
+	}
+	PlayerController->PlayUIConfirmSound();
+
 	UKismetSystemLibrary::QuitGame(this, GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
 }

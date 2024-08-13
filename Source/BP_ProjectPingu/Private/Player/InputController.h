@@ -22,8 +22,12 @@ class AInputController : public APlayerController
 public:
 	AInputController();
 
+	//Audio Stuff Begin
 	void PlayLevelTheme();
 	void PauseLevelTheme();
+	void PlayUIConfirmSound();
+	void PlayUIHoverSound();
+	void PlayUIOpenSound();
 	//Audio Stuff End
 
 protected:
@@ -61,9 +65,17 @@ private:
 	const FString MUSIC_NAME = FString(TEXT("Music"));
 	const FString MUSIC_TRIGGER_NAME = FString(TEXT("PlayLevelTheme"));
 	const FString PAUSE_MUSIC_TRIGGER_NAME = FString(TEXT("PauseLevelTheme"));
+	const FString UI_PATH = FString(TEXT("/Script/MetasoundEngine.MetaSoundSource'/Game/Audio/MetaSounds/META_UI.META_UI'"));
+	const FString UI_NAME = FString(TEXT("UI SFX"));
+	const FString UI_CONFIRM_TRIGGER_NAME = FString(TEXT("UIConfirm"));
+	const FString UI_HOVER_TRIGGER_NAME = FString(TEXT("UIHover"));
+	const FString UI_OPEN_TRIGGER_NAME = FString(TEXT("UIOpen"));
 
 	UPROPERTY(VisibleAnywhere, DisplayName = "Music", Category = "Components")
 	TObjectPtr<class UAudioComponent> MusicComponent = nullptr;
+
+	UPROPERTY(VisibleAnywhere, DisplayName = "UI SFX", Category = "Components")
+	TObjectPtr<class UAudioComponent> UISFXComponent = nullptr;
 
 	UPROPERTY(VisibleAnywhere, DisplayName = "Audio Component Auto Activation", Category = "Components")
 	bool bAutoActivate = false;

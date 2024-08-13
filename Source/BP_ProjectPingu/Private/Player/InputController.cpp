@@ -34,6 +34,11 @@ AInputController::AInputController()
 	MusicComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*MUSIC_PATH).Object);
 	MusicComponent->SetAutoActivate(bAutoActivate);
 	MusicComponent->SetupAttachment(RootComponent);
+
+	UISFXComponent = CreateDefaultSubobject<UAudioComponent>(*UI_NAME);
+	UISFXComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*UI_PATH).Object);
+	UISFXComponent->SetAutoActivate(bAutoActivate);
+	UISFXComponent->SetupAttachment(RootComponent);
 }
 
 void AInputController::BeginPlay()
@@ -233,10 +238,11 @@ void AInputController::HandlePauseAction()
 		PauseMenu->SetVisibility(ESlateVisibility::Visible);
 		PlayerController->bShowMouseCursor = true;
 		PlayerController->SetInputMode(FInputModeUIOnly());
-		PlayerController->SetPause(true);
-
 		//Code from Hubsi
 		PauseLevelTheme();
+		PlayUIOpenSound();
+		//No more Hubsi
+		PlayerController->SetPause(true);
 	}
 }
 
@@ -273,8 +279,16 @@ void AInputController::AnimationHandler()
 
 void AInputController::PlayLevelTheme()
 {
-	if (!MusicComponent) return;
-	if (!MusicComponent->GetSound()) return;
+	if (!MusicComponent)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the Music does not exist!"));
+		return;	
+	}
+	if (!MusicComponent->GetSound()) 
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("The Music MetaSound is not loaded into the Component, did you change its location in the project?"));
+		return;
+	}
 
 	if (MusicComponent->IsActive() == false) MusicComponent->SetActive(true);
 	if (MusicComponent->IsPlaying() == false) MusicComponent->Play();
@@ -284,11 +298,76 @@ void AInputController::PlayLevelTheme()
 
 void AInputController::PauseLevelTheme()
 {
-	if (!MusicComponent) return;
-	if (!MusicComponent->GetSound()) return;
+	if (!MusicComponent) 
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the Music does not exist!"));
+		return;	
+	}
+	if (!MusicComponent->GetSound())
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("The Music MetaSound is not loaded into the Component, did you change its location in the project?"));
+		return;
+	}
 
 	if (MusicComponent->IsActive() == false) MusicComponent->SetActive(true);
 	if (MusicComponent->IsPlaying() == false) MusicComponent->Play();
 
 	MusicComponent->SetTriggerParameter(*PAUSE_MUSIC_TRIGGER_NAME);
+}
+
+void AInputController::PlayUIConfirmSound()
+{
+	if (!UISFXComponent) 
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the UI Sounds does not exist!"));
+		return;	
+	}
+	if (!UISFXComponent->GetSound())
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("The UI MetaSound is not loaded into the Component, did you change its location in the project?"));
+		return;
+	}
+
+	if (UISFXComponent->IsActive() == false) UISFXComponent->SetActive(true);
+	if (UISFXComponent->IsPlaying() == false) UISFXComponent->Play();
+
+	UISFXComponent->SetTriggerParameter(*UI_CONFIRM_TRIGGER_NAME);
+}
+
+void AInputController::PlayUIHoverSound()
+{
+	if (!UISFXComponent) 
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the UI Sounds does not exist!"));
+		return;	
+	}
+	if (!UISFXComponent->GetSound())
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("The UI MetaSound is not loaded into the Component, did you change its location in the project?"));
+		return;
+	}
+
+	if (UISFXComponent->IsActive() == false) UISFXComponent->SetActive(true);
+	if (UISFXComponent->IsPlaying() == false) UISFXComponent->Play();
+
+	UISFXComponent->SetTriggerParameter(*UI_HOVER_TRIGGER_NAME);
+}
+
+void AInputController::PlayUIOpenSound()
+{
+	if (!UISFXComponent) 
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the UI Sounds does not exist!"));
+		return;	
+	}
+	if (!UISFXComponent->GetSound())
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("The UI MetaSound is not loaded into the Component, did you change its location in the project?"));
+		return;
+	}
+
+	if (UISFXComponent->IsActive() == false) UISFXComponent->SetActive(true);
+	if (UISFXComponent->IsPlaying() == false) UISFXComponent->Play();
+
+	UISFXComponent->SetTriggerParameter(*UI_OPEN_TRIGGER_NAME);
 }

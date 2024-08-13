@@ -5,6 +5,9 @@
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
 
+//Audio necessities
+#include "Player/InputController.h"
+
 void UCreditsMenu::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -18,5 +21,14 @@ void UCreditsMenu::NativeConstruct()
 
 void UCreditsMenu::MainMenuButtonClicked()
 {
+	//Audio
+	auto* PlayerController = Cast<AInputController>(GetWorld()->GetFirstPlayerController());
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("PlayerController returned Nullpointer on button click!"));
+		return;
+	}
+	PlayerController->PlayUIConfirmSound();
+
 	UGameplayStatics::OpenLevel(GetWorld(), MAIN_MENU_NAME);
 }

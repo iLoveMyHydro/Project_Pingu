@@ -5,6 +5,9 @@
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
 
+//Audio necessities
+#include "Player/InputController.h"
+
 
 void UMainMenu::NativeConstruct()
 {
@@ -22,20 +25,56 @@ void UMainMenu::NativeConstruct()
 
 void UMainMenu::PlayButtonClicked()
 {
+	//Audio
+	auto* PlayerController = Cast<AInputController>(GetWorld()->GetFirstPlayerController());
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("PlayerController returned Nullpointer on button click!"));
+		return;
+	}
+	PlayerController->PlayUIConfirmSound();
+
 	UGameplayStatics::OpenLevel(GetWorld(), LEVEL_NAME);
 }
 
 void UMainMenu::OptionButtonClicked()
 {
+	//Audio
+	auto* PlayerController = Cast<AInputController>(GetWorld()->GetFirstPlayerController());
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("PlayerController returned Nullpointer on button click!"));
+		return;
+	}
+	PlayerController->PlayUIConfirmSound();
+
 	UGameplayStatics::OpenLevel(GetWorld(), OPTION_LEVEL_NAME);
 }
 
 void UMainMenu::CreditsButtonClicked()
 {
+	//Audio
+	auto* PlayerController = Cast<AInputController>(GetWorld()->GetFirstPlayerController());
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("PlayerController returned Nullpointer on button click!"));
+		return;
+	}
+	PlayerController->PlayUIConfirmSound();
+
 	UGameplayStatics::OpenLevel(GetWorld(), CREDITS_LEVEL_NAME);
 }
 
 void UMainMenu::QuitButtonClicked()
 {
+	//Audio
+	auto* PlayerController = Cast<AInputController>(GetWorld()->GetFirstPlayerController());
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("PlayerController returned Nullpointer on button click!"));
+		return;
+	}
+	PlayerController->PlayUIConfirmSound();
+	
 	UKismetSystemLibrary::QuitGame(this, GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
 }

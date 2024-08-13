@@ -327,8 +327,16 @@ void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 
 void APinguCharacter::PlaySlapSound()
 {
-	if (!AttackSFXComponent) return;
-	if (!AttackSFXComponent->GetSound()) return;
+	if (!AttackSFXComponent)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the Attack Sounds does not exist!"));
+		return;	
+	}
+	if (!AttackSFXComponent->GetSound())
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("The Attack MetaSound is not loaded into the Component, did you change its location in the project?"));
+		return;
+	}
 
 	if (AttackSFXComponent->IsActive() == false) AttackSFXComponent->SetActive(true);
 	if (AttackSFXComponent->IsPlaying() == false) AttackSFXComponent->Play();
@@ -338,8 +346,16 @@ void APinguCharacter::PlaySlapSound()
 
 void APinguCharacter::PlayNootNootSound()
 {
-	if (!AttackSFXComponent) return;
-	if (!AttackSFXComponent->GetSound()) return;
+	if (!AttackSFXComponent)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the Attack Sounds does not exist!"));
+		return;	
+	}
+	if (!AttackSFXComponent->GetSound())
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("The Attack MetaSound is not loaded into the Component, did you change its location in the project?"));
+		return;
+	}
 
 	if (AttackSFXComponent->IsActive() == false) AttackSFXComponent->SetActive(true);
 	if (AttackSFXComponent->IsPlaying() == false) AttackSFXComponent->Play();
@@ -349,8 +365,16 @@ void APinguCharacter::PlayNootNootSound()
 
 void APinguCharacter::PlayDamageSound()
 {
-	if (!DamageSFXComponent) return;
-	if (!DamageSFXComponent->GetSound()) return;
+	if (!DamageSFXComponent)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the Damage Sound does not exist!"));
+		return;	
+	}
+	if (!DamageSFXComponent->GetSound())
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("The Damage MetaSound is not loaded into the Component, did you change its location in the project?"));
+		return;
+	}
 
 	if (DamageSFXComponent->IsActive() == false) DamageSFXComponent->SetActive(true);
 	if (DamageSFXComponent->IsPlaying() == false) DamageSFXComponent->Play();
@@ -360,8 +384,16 @@ void APinguCharacter::PlayDamageSound()
 
 void APinguCharacter::PlayFootstepSound()
 {
-	if (!FootstepSFXComponent) return;
-	if (!FootstepSFXComponent->GetSound()) return;
+	if (!FootstepSFXComponent)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the Footstep Sound does not exist!"));
+		return;	
+	}
+	if (!FootstepSFXComponent->GetSound())
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("The Jump MetaSound is not loaded into the Component, did you change its location in the project?"));
+		return;
+	}
 
 	if (FootstepSFXComponent->IsActive() == false) FootstepSFXComponent->SetActive(true);
 	if (FootstepSFXComponent->IsPlaying() == false) FootstepSFXComponent->Play();
@@ -371,11 +403,44 @@ void APinguCharacter::PlayFootstepSound()
 
 void APinguCharacter::PlayJumpSound()
 {
-	if (!JumpSFXComponent) return;
-	if (!JumpSFXComponent->GetSound()) return;
+	if (!JumpSFXComponent) 
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the Jumping Sound does not exist!"));
+		return;	
+	}
+	else 
+	{
+		//No idea what to write here, Marcus made me do this else statement
+	}
+	if (!JumpSFXComponent->GetSound())
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("The Jump MetaSound is not loaded into the Component, did you change its location in the project?"));
+		return;
+	}
+	else 
+	{
+		//No idea what to write here, Marcus made me do this else statement
+	}
 
 	if (JumpSFXComponent->IsActive() == false) JumpSFXComponent->SetActive(true);
+	else 
+	{
+		//No idea what to write here, Marcus made me do this else statement
+	}
 	if (JumpSFXComponent->IsPlaying() == false) JumpSFXComponent->Play();
+	else 
+	{
+		//No idea what to write here, Marcus made me do this else statement
+	}
 
 	if (CanJump()) JumpSFXComponent->SetTriggerParameter(*JUMP_TRIGGER_NAME);
+	else 
+	{
+		//No idea what to write here, Marcus made me do this else statement
+	}
+	/*
+		Diese Methode wurde so geschrieben wie Marcus Schaal das von mir verlangt hat. Jetzt ist es so unübersichtlich, dass ich mich in meinem eigenen Code nicht mehr auskenne.
+		"Für jedes if ein else".
+		Liebe Grüße, euer Hubsi (Für Marcus: Hubsi == Alex Huber)
+	*/
 }
