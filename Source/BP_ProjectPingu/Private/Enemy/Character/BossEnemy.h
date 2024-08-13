@@ -76,10 +76,10 @@ public:
 	APinguCharacter* PinguCharacter = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Delay", Category = "Respawn")
-	float RespawnDelay = 3;
+	float RespawnDelay = 1.75;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Delay", Category = "Respawn")
-	float RespawnDelayFast = 1;
+	float RespawnDelayFast = 1.5;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Timer Handle", Category = "Respawn")
 	FTimerHandle RespawnTimerHandle;

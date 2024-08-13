@@ -19,27 +19,26 @@ ABossEnemy::ABossEnemy()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	GetCapsuleComponent()->InitCapsuleSize(350.0f, 350.0f);
+	GetCapsuleComponent()->InitCapsuleSize(175.0f, 175.0f);
 
 	Material = ConstructorHelpers::FObjectFinder<UMaterial>(*MATERIAL_PATH).Object;
 	GetMesh()->SetSkeletalMesh(ConstructorHelpers::FObjectFinder<USkeletalMesh>(*MESH_PATH).Object);
-	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -320.0f));
+	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -180.0f));
 	GetMesh()->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
-	GetMesh()->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
+	GetMesh()->SetRelativeScale3D(FVector(.5f, 0.5f, 0.5f));
 	GetMesh()->SetMaterial(0, Material);
 	
 	OilBarrelProjectile = ConstructorHelpers::FClassFinder<AOilBarrel>(*OIL_BARREL_PATH).Class;
-	OilBarrel->SetActorRelativeScale3D(FVector(5, 5, 5));
 
 	CollisionMesh = CreateDefaultSubobject<UBoxComponent>(*BOX_COLLISION_NAME);
 	CollisionMesh->bDynamicObstacle = true;
 	CollisionMesh->SetupAttachment(RootComponent);
 	CollisionMesh->SetGenerateOverlapEvents(true);
-	CollisionMesh->SetBoxExtent(FVector(200.0f, 200.0f, 300.0f));
+	CollisionMesh->SetBoxExtent(FVector(100.0f, 150.0f, 150.0f));
 	CollisionMesh->SetHiddenInGame(false);
 
 	SphereColl = CreateDefaultSubobject<USphereComponent>(TEXT("Perception Trigger"));
-	SphereColl->SetSphereRadius(2000);
+	SphereColl->SetSphereRadius(3000);
 	SphereColl->SetRelativeLocation(FVector(0, 0, 90));
 	SphereColl->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
 	SphereColl->SetHiddenInGame(true);
@@ -48,7 +47,7 @@ ABossEnemy::ABossEnemy()
 	SphereColl->SetupAttachment(GetMesh());
 
 	SpawnLocationOilBarrel = CreateDefaultSubobject<USceneComponent>(*SPAWNLOCATION_OIL_BARREL_NAME);
-	SpawnLocationOilBarrel->SetRelativeLocation(FVector(0.0f, 0.0f, 420.0f));
+	SpawnLocationOilBarrel->SetRelativeLocation(FVector(0.0f, 0.0f, 200.0f));
 	SpawnLocationOilBarrel->SetupAttachment(RootComponent);
 
 	AIControllerClass = ConstructorHelpers::FClassFinder<ABossAIController>(*FSM_CONTROLLER_PATH).Class;
@@ -125,14 +124,7 @@ void ABossEnemy::ThrowOilBarrel()
 
 			FRotator Rotator = GetActorRotation();
 
-			if (Rotator.Yaw >= 90.0f)
-			{
-				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(-70.0f, 0.0f, 50.0f), FRotator(0.0f, 90.0f, 0.0f), ActorSpawnParams);
-			}
-			else
-			{
-				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(70.0f, 0.0f, 50.0f), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
-			}
+			World->SpawnActor<AOilBarrel>(OilBarrelProjectile, SpawnLocationOilBarrel->GetRelativeLocation() + GetActorLocation(), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
 		}
 	}
 	else
@@ -157,14 +149,8 @@ void ABossEnemy::ThrowThreeOilBarel()
 
 			FRotator Rotator = GetActorRotation();
 
-			if (Rotator.Yaw >= 90.0f)
-			{
-				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(-70.0f, 0.0f, 50.0f), FRotator(0.0f, 90.0f, 0.0f), ActorSpawnParams);
-			}
-			else
-			{
-				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(70.0f, 0.0f, 50.0f), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
-			}
+			World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(70.0f, 0.0f, 50.0f), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
+			
 		}
 	}
 	else
