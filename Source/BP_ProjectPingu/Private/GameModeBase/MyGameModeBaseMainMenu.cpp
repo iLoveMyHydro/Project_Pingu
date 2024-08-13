@@ -2,10 +2,11 @@
 
 
 #include "GameModeBase/MyGameModeBaseMainMenu.h"
-
 #include "GUI/MainMenu.h"
+#include "Player/InputController.h"
 
 AMyGameModeBaseMainMenu::AMyGameModeBaseMainMenu()
 {
 	HUDClass = UMainMenu::StaticClass();
+	PlayerControllerClass = AInputController::StaticClass();
 }
