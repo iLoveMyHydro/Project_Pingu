@@ -51,7 +51,8 @@ public:
 	void PlayBossDamageSFX();
 	//less Audio Functions from here
 
-	const FString MESH_PATH = FString(TEXT("/Engine/EditorMeshes/SkeletalMesh/DefaultSkeletalMesh"));
+	const FString MESH_PATH = FString(TEXT("/Game/Assets/Artist/Jean-Marc/Enemy/FBX/Scientist_Idle"));
+	const FString MATERIAL_PATH = FString(TEXT("/Game/Assets/Artist/Jean-Marc/Enemy/Material/MAT_Enemy"));
 	const FString FSM_CONTROLLER_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.BossAIController'"));
 	const FString PLAYER_CLASS_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.PinguCharacter'"));
 	const FString OIL_BARREL_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.OilBarrel'"));
@@ -75,10 +76,10 @@ public:
 	APinguCharacter* PinguCharacter = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Delay", Category = "Respawn")
-	float RespawnDelay = 3;
+	float RespawnDelay = 1.75;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Delay", Category = "Respawn")
-	float RespawnDelayFast = 1;
+	float RespawnDelayFast = 1.5;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Timer Handle", Category = "Respawn")
 	FTimerHandle RespawnTimerHandle;
@@ -98,6 +99,9 @@ public:
 	//More Audio
 	UPROPERTY(EditAnywhere, DisplayName = "BossDamageSFX", Category = "Components")
 	TObjectPtr<UAudioComponent> BossDamageSFXComponent = nullptr;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Material", Category = "Components")
+	UMaterial* Material = nullptr;
 
 	UPROPERTY(VisibleAnywhere, DisplayName = "Audio Component Auto Activation", Category = "Components")
 	bool bAutoActivate = false;
