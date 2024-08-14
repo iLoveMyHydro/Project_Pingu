@@ -3,8 +3,10 @@
 
 #include "GameModeBase/MyGameModeBaseCreditsMenu.h"
 #include "GUI/CreditsMenu.h"
+#include "Player/InputController.h"
 
 AMyGameModeBaseCreditsMenu::AMyGameModeBaseCreditsMenu()
 {
 	HUDClass = UCreditsMenu::StaticClass();
+	PlayerControllerClass = AInputController::StaticClass();
 }

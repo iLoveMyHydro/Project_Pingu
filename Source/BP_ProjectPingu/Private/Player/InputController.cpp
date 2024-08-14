@@ -354,7 +354,7 @@ void AInputController::PauseLevelTheme()
 	if (!MusicComponent->GetSound())
 	{
 		UE_LOG(LogTemp, Fatal, TEXT("The Music MetaSound is not loaded into the Component, did you change its location in the project?"));
-
+	}
 	if (MusicComponent->IsActive() == false)
 	{
 		MusicComponent->SetActive(true);
