@@ -26,7 +26,4 @@ void BossThrowThreeObjectsState::ThrowThreeObjects()
 	if (Character == nullptr) return;
 
 	Character->ThrowThreeOilBarel();
-
-	//TODO: Implement Animation for Enemy
-	//Character->SetNootAnimation();
 }

@@ -51,6 +51,10 @@ public:
 	void PlayBossDamageSFX();
 	//less Audio Functions from here
 
+	ABossEnemy& SetIdleAnimation(void);
+	ABossEnemy& SetThrowAnimation(void);
+
+private:
 	const FString MESH_PATH = FString(TEXT("/Game/Assets/Artist/Jean-Marc/Enemy/FBX/Scientist_Idle"));
 	const FString MATERIAL_PATH = FString(TEXT("/Game/Assets/Artist/Jean-Marc/Enemy/Material/MAT_Enemy"));
 	const FString FSM_CONTROLLER_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.BossAIController'"));
@@ -58,6 +62,10 @@ public:
 	const FString OIL_BARREL_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.OilBarrel'"));
 	const FString BOX_COLLISION_NAME = FString(TEXT("Box Collision"));
 	const FString SPAWNLOCATION_OIL_BARREL_NAME = FString(TEXT("Oil Barrel Spawn Location"));
+	const FString IDLE_ANIM_PATH = FString(TEXT("/Game/Assets/Artist/Jean-Marc/Enemy/FBX/Scientist_Idle_Anim"));
+	const FString THROW_ANIM_PATH = FString(TEXT("/Game/Assets/Artist/Jean-Marc/Enemy/FBX/Scientist_Throw_Anim"));
+	const FName MAIN_MENU_LEVEL = FName(TEXT("/Game/Maps/MainMenu_Code"));
+
 
 	//this audio section has been brought to you by Hubsi (Für Marcus: Hubsi == Alex Huber)
 	const FString BOSS_DAMAGE_SFX_COMPONENT_NAME = FString(TEXT("BossDamageSFX"));
@@ -96,12 +104,18 @@ public:
 	UPROPERTY(EditAnywhere, DisplayName = "Oil Barrel Actor", Category = "Attack", meta = (AllowPrivateAccess = true));
 	TSubclassOf<class AOilBarrel> OilBarrelProjectile;
 
-	//More Audio
-	UPROPERTY(EditAnywhere, DisplayName = "BossDamageSFX", Category = "Components")
-	TObjectPtr<UAudioComponent> BossDamageSFXComponent = nullptr;
+	UPROPERTY(EditAnywhere, DisplayName = "Animation Idle", Category = "Animation")
+	UAnimSequence* IdleAnim = nullptr;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Animation Throw", Category = "Animation")
+	UAnimSequence* ThrowAnim = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Material", Category = "Components")
 	UMaterial* Material = nullptr;
+
+	//More Audio
+	UPROPERTY(EditAnywhere, DisplayName = "BossDamageSFX", Category = "Components")
+	TObjectPtr<UAudioComponent> BossDamageSFXComponent = nullptr;
 
 	UPROPERTY(VisibleAnywhere, DisplayName = "Audio Component Auto Activation", Category = "Components")
 	bool bAutoActivate = false;

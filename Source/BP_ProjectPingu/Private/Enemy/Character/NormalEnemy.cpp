@@ -9,7 +9,7 @@
 #include "BP_ProjectPingu/Private/FiniteStateMachine/FSM/NormalFSM.h"
 #include "Player/PinguCharacter.h"
 #include "Player/InputController.h"
-
+#include "Components/CapsuleComponent.h"
 #include "Components/AudioComponent.h"
 
 // Sets default values
@@ -18,9 +18,14 @@ ANormalEnemy::ANormalEnemy()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	GetCapsuleComponent()->InitCapsuleSize(100.0f, 100.0f);
+
+	Material = ConstructorHelpers::FObjectFinder<UMaterial>(*MATERIAL_PATH).Object;
 	GetMesh()->SetSkeletalMesh(ConstructorHelpers::FObjectFinder<USkeletalMesh>(*MESH_PATH).Object);
-	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
-	GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
+	GetMesh()->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
+	GetMesh()->SetRelativeScale3D(FVector(.25f, 0.25f, 0.25f));
+	GetMesh()->SetMaterial(0, Material);
 
 	//Get Oil Barrel
 	OilBarrelProjectile = ConstructorHelpers::FClassFinder<AOilBarrel>(*OIL_BARREL_PATH).Class;
@@ -29,11 +34,11 @@ ANormalEnemy::ANormalEnemy()
 	CollisionMesh->bDynamicObstacle = true;
 	CollisionMesh->SetupAttachment(RootComponent);
 	CollisionMesh->SetGenerateOverlapEvents(true);
-	CollisionMesh->SetBoxExtent(FVector(64.0f, 64.0f, 64.0f));
+	CollisionMesh->SetBoxExtent(FVector(50.0f, 80.0f, 80.0f));
 	CollisionMesh->SetHiddenInGame(false);
 
 	SphereColl = CreateDefaultSubobject<USphereComponent>(TEXT("Perception Trigger"));
-	SphereColl->SetSphereRadius(500);
+	SphereColl->SetSphereRadius(3000);
 	SphereColl->SetRelativeLocation(FVector(0, 0, 90));
 	SphereColl->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
 	SphereColl->SetHiddenInGame(true);
@@ -42,11 +47,14 @@ ANormalEnemy::ANormalEnemy()
 	SphereColl->SetupAttachment(GetMesh());
 
 	SpawnLocationOilBarrel = CreateDefaultSubobject<USceneComponent>(*SPAWNLOCATION_OIL_BARREL_NAME);
-	SpawnLocationOilBarrel->SetRelativeLocation(FVector(40.0f, 0.0f, 50.0f));
+	SpawnLocationOilBarrel->SetRelativeLocation(FVector(0.0f, 0.0f, 120.0f));
 	SpawnLocationOilBarrel->SetupAttachment(RootComponent);
 
 	AIControllerClass = ConstructorHelpers::FClassFinder<ANormalAIController>(*FSM_CONTROLLER_PATH).Class;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	IdleAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*IDLE_ANIM_PATH).Object;
+	ThrowAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*THROW_ANIM_PATH).Object;
 
 	//Audio Code
 	EnemyDamageSFXComponent = CreateDefaultSubobject<UAudioComponent>(*ENEMY_DAMAGE_SFX_COMPONENT_NAME);
@@ -79,6 +87,7 @@ void ANormalEnemy::BeginPlay()
 	{
 		Fsm->Initialize();
 	}
+	SetIdleAnimation();
 }
 
 // Called every frame
@@ -124,12 +133,13 @@ void ANormalEnemy::ThrowOilBarrel()
 
 			if (Rotator.Yaw >= 90.0f)
 			{
-				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(-70.0f, 0.0f, 50.0f), FRotator(0.0f, 90.0f, 0.0f), ActorSpawnParams);
+				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, SpawnLocationOilBarrel->GetRelativeLocation() + GetActorLocation(), FRotator(0.0f, 90.0f, 0.0f), ActorSpawnParams);
 			}
 			else
 			{
-				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(70.0f, 0.0f, 50.0f), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
+				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, SpawnLocationOilBarrel->GetRelativeLocation() + GetActorLocation(), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
 			}
+			SetThrowAnimation();
 		}
 	}
 	else
@@ -139,13 +149,11 @@ void ANormalEnemy::ThrowOilBarrel()
 }
 
 //OnCollisionOverlap ->Add Dynamic richtige Hitbox -> if state schlag von pingu -> gib mir schaden
-
 void ANormalEnemy::OnCollision(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (OtherActor->IsA(APinguCharacter::StaticClass()) && !PlayerController->IsPaused())
 	{
-		GetMesh()->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
 		GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, [this]() {Fsm->Transition(static_cast<NormalSimpleFSM*>(Fsm)->GetThrowObjectState()); }, RespawnDelay, !PlayerController->IsPaused());
 		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Enter"));
 	}
@@ -158,6 +166,7 @@ void ANormalEnemy::OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AAc
 		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Exit"));
 		Fsm->Transition(static_cast<NormalSimpleFSM*>(Fsm)->GetSearchPlayerState());
 		GetWorld()->GetTimerManager().ClearTimer(RespawnTimerHandle);
+		SetIdleAnimation();
 	}
 }
 
@@ -170,4 +179,16 @@ void ANormalEnemy::PlayEnemyDamageSFX()
 	if (EnemyDamageSFXComponent->IsPlaying() == false) EnemyDamageSFXComponent->Play();
 
 	EnemyDamageSFXComponent->SetTriggerParameter(*ENEMY_DAMAGE_SFX_TRIGGER_NAME);
+}
+
+ANormalEnemy& ANormalEnemy::SetIdleAnimation()
+{
+	GetMesh()->PlayAnimation(IdleAnim, true);
+	return *this;
+}
+
+ANormalEnemy& ANormalEnemy::SetThrowAnimation()
+{
+	GetMesh()->PlayAnimation(ThrowAnim, false);
+	return *this;
 }

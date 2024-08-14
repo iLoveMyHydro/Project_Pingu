@@ -34,7 +34,6 @@ public:
 
 	void SetCharacter(class ABossEnemy* A_Character) { Character = A_Character; };
 
-
 private:
 	const FString PERCEPTION_NAME = FString(TEXT("Perception Component"));
 

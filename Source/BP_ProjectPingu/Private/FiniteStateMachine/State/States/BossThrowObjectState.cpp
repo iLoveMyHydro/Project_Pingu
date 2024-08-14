@@ -26,7 +26,5 @@ void BossThrowObjectState::ThrowObject()
 	if (Character == nullptr) return;
 
 	Character->ThrowOilBarrel();
-
-	//TODO: Implement Animation for Enemy
-	//Character->SetNootAnimation();
+	Character->SetThrowAnimation();
 }

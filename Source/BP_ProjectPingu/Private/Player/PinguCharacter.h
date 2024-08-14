@@ -65,6 +65,10 @@ private:
 	void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	UFUNCTION()
+	void OnBoxBeginOverlapFeet(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
+		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 	FORCEINLINE class UCameraComponent* Get2DCameraComponent() const { return PinguCameraComponent; }
 
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
@@ -88,6 +92,7 @@ private:
 	const FString CAMERA_NAME = FString(TEXT("Camera"));
 	const FString CAMERA_ARM_NAME = FString(TEXT("CameraBoom"));
 	const FString BOX_COLLISION_NAME = FString(TEXT("Box Collision"));
+	const FString FEET_COLLISION_NAME = FString(TEXT("Feet Collision"));
 	const FString SCENE_ROOT_NAME = FString(TEXT("Scene Root"));
 	const FString SPAWNLOCATION_ICE_SPIKE_NAME = FString(TEXT("Ice Spike Spawn Location"));
 	const FString ICE_SPIKE_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.IceSpikes'"));
@@ -138,6 +143,9 @@ private:
 
 	UPROPERTY(EditAnywhere, DisplayName = "BoxCollider", Category = "Components", meta = (AllowPrivateAccess = true))
 	TObjectPtr<UBoxComponent> CollisionMesh = nullptr;
+
+	UPROPERTY(EditAnywhere, DisplayName = "FeetCollider", Category = "Components", meta = (AllowPrivateAccess = true))
+	TObjectPtr<UBoxComponent> CollisionFeet = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Material", Category = "Components", meta = (AllowPrivateAccess = true))
 	UMaterial* Material = nullptr;

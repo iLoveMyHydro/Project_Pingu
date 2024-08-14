@@ -49,13 +49,19 @@ public:
 	void PlayEnemyDamageSFX();
 	//less Audio Functions from here
 
+	ANormalEnemy& SetIdleAnimation(void);
+	ANormalEnemy& SetThrowAnimation(void);
+
 private:
-	const FString MESH_PATH = FString(TEXT("/Script/Engine.SkeletalMesh'/Engine/EditorMeshes/SkeletalMesh/DefaultSkeletalMesh.DefaultSkeletalMesh'"));
+	const FString MESH_PATH = FString(TEXT("/Game/Assets/Artist/Jean-Marc/Enemy/FBX/Scientist_Idle"));
+	const FString MATERIAL_PATH = FString(TEXT("/Game/Assets/Artist/Jean-Marc/Enemy/Material/MAT_Enemy"));
 	const FString FSM_CONTROLLER_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.NormalAIController'"));
 	const FString PLAYER_CLASS_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.PinguCharacter'"));
 	const FString OIL_BARREL_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.OilBarrel'"));
 	const FString BOX_COLLISION_NAME = FString(TEXT("Box Collision"));
 	const FString SPAWNLOCATION_OIL_BARREL_NAME = FString(TEXT("Oil Barrel Spawn Location"));
+	const FString IDLE_ANIM_PATH = FString(TEXT("/Game/Assets/Artist/Jean-Marc/Enemy/FBX/Scientist_Idle_Anim"));
+	const FString THROW_ANIM_PATH = FString(TEXT("/Game/Assets/Artist/Jean-Marc/Enemy/FBX/Scientist_Throw_Anim"));
 
 	//this audio section has been brought to you by Hubsi (Für Marcus: Hubsi == Alex Huber)
 	const FString ENEMY_DAMAGE_SFX_COMPONENT_NAME = FString(TEXT("EnemyDamageSFX"));
@@ -100,9 +106,18 @@ private:
 	bool bAutoActivate = false;
 	//Less Audio
 
+	UPROPERTY(EditAnywhere, DisplayName = "Animation Idle", Category = "Animation")
+	UAnimSequence* IdleAnim = nullptr;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Animation Throw", Category = "Animation")
+	UAnimSequence* ThrowAnim = nullptr;
+
 	NormalFSM* Fsm = nullptr;
 
 	ANormalAIController* Controller = nullptr;
 
 	AInputController* PlayerController = nullptr;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Material", Category = "Components")
+	UMaterial* Material = nullptr;
 };

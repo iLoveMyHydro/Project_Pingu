@@ -12,6 +12,7 @@
 
 #include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ABossEnemy::ABossEnemy()
@@ -38,7 +39,7 @@ ABossEnemy::ABossEnemy()
 	CollisionMesh->SetHiddenInGame(false);
 
 	SphereColl = CreateDefaultSubobject<USphereComponent>(TEXT("Perception Trigger"));
-	SphereColl->SetSphereRadius(3000);
+	SphereColl->SetSphereRadius(5000);
 	SphereColl->SetRelativeLocation(FVector(0, 0, 90));
 	SphereColl->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
 	SphereColl->SetHiddenInGame(true);
@@ -52,6 +53,9 @@ ABossEnemy::ABossEnemy()
 
 	AIControllerClass = ConstructorHelpers::FClassFinder<ABossAIController>(*FSM_CONTROLLER_PATH).Class;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
+
+	IdleAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*IDLE_ANIM_PATH).Object;
+	ThrowAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*THROW_ANIM_PATH).Object;
 
 	//Audio Code
 	BossDamageSFXComponent = CreateDefaultSubobject<UAudioComponent>(*BOSS_DAMAGE_SFX_COMPONENT_NAME);
@@ -82,6 +86,7 @@ void ABossEnemy::BeginPlay()
 	{
 		Fsm->Initialize();
 	}
+	SetIdleAnimation();
 }
 
 // Called every frame
@@ -105,6 +110,8 @@ void ABossEnemy::ApplyDamage(int A_DamageAmount)
 	if (Health <= 0)
 	{
 		ABossEnemy::Destroy();
+
+		UGameplayStatics::OpenLevel(GetWorld(), MAIN_MENU_LEVEL);
 	}
 }
 
@@ -126,6 +133,7 @@ void ABossEnemy::ThrowOilBarrel()
 
 			World->SpawnActor<AOilBarrel>(OilBarrelProjectile, SpawnLocationOilBarrel->GetRelativeLocation() + GetActorLocation(), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
 		}
+		SetThrowAnimation();
 	}
 	else
 	{
@@ -149,9 +157,10 @@ void ABossEnemy::ThrowThreeOilBarel()
 
 			FRotator Rotator = GetActorRotation();
 
-			World->SpawnActor<AOilBarrel>(OilBarrelProjectile, Character->GetActorLocation() + FVector(70.0f, 0.0f, 50.0f), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
-			
+			World->SpawnActor<AOilBarrel>(OilBarrelProjectile, SpawnLocationOilBarrel->GetRelativeLocation() + GetActorLocation(), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
+
 		}
+		SetThrowAnimation();
 	}
 	else
 	{
@@ -186,6 +195,7 @@ void ABossEnemy::OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AActo
 		Fsm->Transition(static_cast<NormalSimpleFSM*>(Fsm)->GetSearchPlayerState());
 		GetWorld()->GetTimerManager().ClearTimer(RespawnTimerHandle);
 		GetWorld()->GetTimerManager().ClearTimer(RespawnTimerHandleThree);
+		SetIdleAnimation();
 	}
 }
 
@@ -198,4 +208,16 @@ void ABossEnemy::PlayBossDamageSFX()
 	if (BossDamageSFXComponent->IsPlaying() == false) BossDamageSFXComponent->Play();
 
 	BossDamageSFXComponent->SetTriggerParameter(*BOSS_DAMAGE_SFX_TRIGGER_NAME);
+}
+
+ABossEnemy& ABossEnemy::SetIdleAnimation()
+{
+	GetMesh()->PlayAnimation(IdleAnim, true);
+	return *this;
+}
+
+ABossEnemy& ABossEnemy::SetThrowAnimation()
+{
+	GetMesh()->PlayAnimation(ThrowAnim, false);
+	return *this;
 }

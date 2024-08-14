@@ -17,9 +17,9 @@ ASpike::ASpike()
 	//Get the Collision Box
 	CollisionMesh = CreateDefaultSubobject<UBoxComponent>(*BOX_COLLISION_NAME);
 	CollisionMesh->bDynamicObstacle = true;
-	CollisionMesh->SetupAttachment(RootComponent);
+	CollisionMesh->SetupAttachment(Mesh);
 	CollisionMesh->SetGenerateOverlapEvents(true);
-	CollisionMesh->SetBoxExtent(FVector(100.0f,100.0f, 30.0f));
+	CollisionMesh->SetBoxExtent(FVector(90.0f,90.0f, 20.0f));
 	CollisionMesh->SetRelativeLocation(FVector(0.0f, 0.0f, 30.0f));
 	CollisionMesh->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
 }
