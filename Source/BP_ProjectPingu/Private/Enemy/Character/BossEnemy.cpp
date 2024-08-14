@@ -39,7 +39,7 @@ ABossEnemy::ABossEnemy()
 	CollisionMesh->SetHiddenInGame(false);
 
 	SphereColl = CreateDefaultSubobject<USphereComponent>(TEXT("Perception Trigger"));
-	SphereColl->SetSphereRadius(5000);
+	SphereColl->SetSphereRadius(4000);
 	SphereColl->SetRelativeLocation(FVector(0, 0, 90));
 	SphereColl->SetCollisionProfileName(TEXT("OverlapAllDynamic"));
 	SphereColl->SetHiddenInGame(true);

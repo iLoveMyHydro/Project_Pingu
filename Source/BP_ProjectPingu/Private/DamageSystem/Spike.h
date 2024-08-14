@@ -6,8 +6,6 @@
 #include "GameFramework/Actor.h"
 #include "Spike.generated.h"
 
-class UBoxComponent;
-
 UCLASS()
 class ASpike : public AActor
 {
@@ -32,8 +30,4 @@ private:
 
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Mesh", Category = "Components"))
 	TObjectPtr<UStaticMeshComponent> Mesh = nullptr;
-
-	UPROPERTY(EditAnywhere, DisplayName = "BoxCollider", Category = "Components", meta = (AllowPrivateAccess = true))
-	TObjectPtr<UBoxComponent> CollisionMesh = nullptr;
-
 };

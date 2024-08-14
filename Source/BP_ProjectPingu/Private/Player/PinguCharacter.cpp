@@ -334,13 +334,12 @@ void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 void APinguCharacter::OnBoxBeginOverlapFeet(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 200, FColor::Magenta, OtherComp->GetName());
-
 	if (!GetWorld()) return;
 
 	if (OtherActor->IsA<ASpike>())
 	{
 		ApplyDamage(1);
+		GEngine->AddOnScreenDebugMessage(-1, 200, FColor::Magenta, OtherComp->GetName());
 	}
 	IsColliding = true;
 }
