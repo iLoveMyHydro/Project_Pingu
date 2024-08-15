@@ -11,10 +11,14 @@
 //Audio necessities
 #include "Player/InputController.h"
 
-// void UOptionMenu::SetVisibility(ESlateVisibility InVisibility)
-// {
-	
-// }
+void UOptionMenu::SetVisibility(ESlateVisibility InVisibility)
+{
+	Super::SetVisibility(InVisibility);
+
+	MainMenuButton->SetVisibility(InVisibility);
+	FullscreenCheckBox->SetVisibility(InVisibility);
+	VsyncCheckBox->SetVisibility(InVisibility);
+}
 
 void UOptionMenu::NativeConstruct()
 {
@@ -65,5 +69,18 @@ void UOptionMenu::MainMenuButtonClicked()
 	}
 	PlayerController->PlayUIConfirmSound();
 
-	UGameplayStatics::OpenLevel(GetWorld(), MAIN_MENU_NAME);
+	if (GetWorld())
+	{
+		FString MapName = GetWorld()->GetMapName();
+		MapName.RemoveFromStart(GetWorld()->StreamingLevelsPrefix);
+		if (MapName == MAIN_MENU_LEVEL_NAME)
+		{
+			SetVisibility(ESlateVisibility::Hidden);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Map name: %s"), *MapName);
+			UGameplayStatics::OpenLevel(GetWorld(), MAIN_MENU_NAME);
+		}
+	}
 }

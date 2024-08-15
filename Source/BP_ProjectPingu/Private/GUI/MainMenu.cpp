@@ -4,10 +4,18 @@
 #include "GUI/MainMenu.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
+#include "GUI/OptionMenu.h"
+#include "GUI/CreditsMenu.h"
 
 //Audio necessities
 #include "Player/InputController.h"
 
+UMainMenu::UMainMenu(const FObjectInitializer& ObjectInitializer)
+: Super(ObjectInitializer)
+{
+	OptionMenuObject = ConstructorHelpers::FClassFinder<UOptionMenu>(*OPTION_MENU_PATH).Class;
+	CreditsMenuObject = ConstructorHelpers::FClassFinder<UCreditsMenu>(*CREDITS_MENU_PATH).Class;
+}
 
 void UMainMenu::NativeConstruct()
 {
@@ -15,6 +23,16 @@ void UMainMenu::NativeConstruct()
 
 	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+
+	if (OptionMenuObject)
+	{
+		OptionMenu = CreateWidget<UOptionMenu>(this, OptionMenuObject, "Object Menu");
+	}
+
+	if (CreditsMenuObject)
+	{
+		CreditsMenu = CreateWidget<UCreditsMenu>(this, CreditsMenuObject, "Credits Menu");
+	}
 
 	//Binding the Methods to the UI Events
 	PlayButton->OnClicked.AddDynamic(this, &UMainMenu::PlayButtonClicked);
@@ -48,7 +66,17 @@ void UMainMenu::OptionButtonClicked()
 	}
 	PlayerController->PlayUIConfirmSound();
 
-	UGameplayStatics::OpenLevel(GetWorld(), OPTION_LEVEL_NAME);
+	// UGameplayStatics::OpenLevel(GetWorld(), OPTION_LEVEL_NAME);
+	if (OptionMenu)
+	{
+		OptionMenu->SetVisibility(ESlateVisibility::Visible);
+		OptionMenu->AddToViewport();
+	}
+
+	if (OptionMenu->IsInViewport() == true)
+	{
+		UE_LOG(LogTemp, Display, TEXT("OptionMenu is in Viewport!"));
+	}
 }
 
 void UMainMenu::CreditsButtonClicked()
@@ -62,7 +90,13 @@ void UMainMenu::CreditsButtonClicked()
 	}
 	PlayerController->PlayUIConfirmSound();
 
-	UGameplayStatics::OpenLevel(GetWorld(), CREDITS_LEVEL_NAME);
+	// UGameplayStatics::OpenLevel(GetWorld(), CREDITS_LEVEL_NAME);
+
+	if (CreditsMenu)
+	{
+		CreditsMenu->SetVisibility(ESlateVisibility::Visible);
+		CreditsMenu->AddToViewport();
+	}
 }
 
 void UMainMenu::QuitButtonClicked()
@@ -78,3 +112,14 @@ void UMainMenu::QuitButtonClicked()
 	
 	UKismetSystemLibrary::QuitGame(this, GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
 }
+
+void UMainMenu::OpenOptionsMenu()
+{
+	
+}
+
+void UMainMenu::OpenCreditsMenu()
+{
+	
+}
+
