@@ -49,7 +49,8 @@ void UPauseMenu::PlayButtonClicked()
 		Character = Cast<APinguCharacter>(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn());
 	}
 	Controller = Cast<AInputController>(Character->GetController());
-	Controller->PlayLevelTheme();
+	Controller->UnpauseLevelTheme();
+	Controller->PlayUIConfirmSound();
 
 }
 

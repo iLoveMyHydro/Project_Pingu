@@ -34,11 +34,13 @@ AInputController::AInputController()
 	MusicComponent = CreateDefaultSubobject<UAudioComponent>(*MUSIC_NAME);
 	MusicComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*MUSIC_PATH).Object);
 	MusicComponent->SetAutoActivate(bAutoActivate);
+	MusicComponent->SetUISound(true);
 	MusicComponent->SetupAttachment(RootComponent);
 
 	UISFXComponent = CreateDefaultSubobject<UAudioComponent>(*UI_NAME);
 	UISFXComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*UI_PATH).Object);
 	UISFXComponent->SetAutoActivate(bAutoActivate);
+	UISFXComponent->SetUISound(true);
 	UISFXComponent->SetupAttachment(RootComponent);
 }
 
@@ -49,7 +51,7 @@ void AInputController::BeginPlay()
 
 	//Hubsi
 	PlayLevelTheme();
-
+	
 	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(
 		GetLocalPlayer()))
 	{
@@ -269,11 +271,11 @@ void AInputController::HandlePauseAction()
 		PauseMenu->SetVisibility(ESlateVisibility::Visible);
 		PlayerController->bShowMouseCursor = true;
 		PlayerController->SetInputMode(FInputModeUIOnly());
+		PlayerController->SetPause(true);
 		//Code from Hubsi
 		PauseLevelTheme();
 		PlayUIOpenSound();
 		//No more Hubsi
-		PlayerController->SetPause(true);
 	}
 }
 
@@ -365,6 +367,29 @@ void AInputController::PauseLevelTheme()
 	}
 
 	MusicComponent->SetTriggerParameter(*PAUSE_MUSIC_TRIGGER_NAME);
+}
+
+void AInputController::UnpauseLevelTheme()
+{
+	if (!MusicComponent) 
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the Music does not exist!"));
+		return;	
+	}
+	if (!MusicComponent->GetSound())
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("The Music MetaSound is not loaded into the Component, did you change its location in the project?"));
+	}
+	if (MusicComponent->IsActive() == false)
+	{
+		MusicComponent->SetActive(true);
+	}
+	if (MusicComponent->IsPlaying() == false)
+	{
+		MusicComponent->Play();
+	}
+
+	MusicComponent->SetTriggerParameter(*UNPAUSE_MUSIC_TRIGGER_NAME);
 }
 
 void AInputController::PlayUIConfirmSound()

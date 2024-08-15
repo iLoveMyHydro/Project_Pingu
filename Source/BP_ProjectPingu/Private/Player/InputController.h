@@ -25,6 +25,7 @@ public:
 	//Audio Stuff Begin
 	void PlayLevelTheme();
 	void PauseLevelTheme();
+	void UnpauseLevelTheme();
 	void PlayUIConfirmSound();
 	void PlayUIHoverSound();
 	void PlayUIOpenSound();
@@ -65,6 +66,7 @@ private:
 	const FString MUSIC_NAME = FString(TEXT("Music"));
 	const FString MUSIC_TRIGGER_NAME = FString(TEXT("PlayLevelTheme"));
 	const FString PAUSE_MUSIC_TRIGGER_NAME = FString(TEXT("PauseLevelTheme"));
+	const FString UNPAUSE_MUSIC_TRIGGER_NAME = FString(TEXT("UnpauseLevelTheme"));
 	const FString UI_PATH = FString(TEXT("/Script/MetasoundEngine.MetaSoundSource'/Game/Audio/MetaSounds/META_UI.META_UI'"));
 	const FString UI_NAME = FString(TEXT("UI SFX"));
 	const FString UI_CONFIRM_TRIGGER_NAME = FString(TEXT("UIConfirm"));
