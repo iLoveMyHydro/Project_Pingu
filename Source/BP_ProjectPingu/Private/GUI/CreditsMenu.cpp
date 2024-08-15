@@ -25,7 +25,7 @@ void UCreditsMenu::MainMenuButtonClicked()
 	auto* PlayerController = Cast<AInputController>(GetWorld()->GetFirstPlayerController());
 	if (!PlayerController)
 	{
-		UE_LOG(LogTemp, Fatal, TEXT("PlayerController returned Nullpointer on button click!"));
+		UE_LOG(LogTemp, Error, TEXT("PlayerController returned Nullpointer on button click!"));
 		return;
 	}
 	PlayerController->PlayUIConfirmSound();

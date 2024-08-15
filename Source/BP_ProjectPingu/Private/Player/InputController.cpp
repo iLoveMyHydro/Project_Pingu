@@ -9,6 +9,7 @@
 #include "Enemy/Character/NormalEnemy.h"
 #include "GameFramework/Character.h"
 #include "GUI/PauseMenu.h"
+#include "GUI/OptionMenu.h"
 #include "HUD/PlayerHUD.h"
 #include "Enemy/Character/BossEnemy.h"
 
@@ -27,6 +28,8 @@ AInputController::AInputController()
 	InitInputAction();
 
 	PauseMenuObject = ConstructorHelpers::FClassFinder<UPauseMenu>(*PAUSE_MENU_PATH).Class;
+
+	OptionMenuObject = ConstructorHelpers::FClassFinder<UOptionMenu>(*OPTION_MENU_PATH).Class;
 
 	PlayerHUDObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PLAYER_HUD_PATH).Class;
 
@@ -447,4 +450,24 @@ void AInputController::PlayUIOpenSound()
 	if (UISFXComponent->IsPlaying() == false) UISFXComponent->Play();
 
 	UISFXComponent->SetTriggerParameter(*UI_OPEN_TRIGGER_NAME);
+}
+
+void AInputController::OpenOptionsMenu()
+{
+	if (!OptionMenuObject)
+	{
+		UE_LOG(LogTemp, Error, TEXT("OptionMenu is not valid!"));
+		return;
+	}
+
+	OptionMenu = CreateWidget<UOptionMenu>(this, OptionMenuObject, "Option Menu");
+
+	if (OptionMenu)
+	{
+		OptionMenu->AddToViewport();
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("OptionMenu is not valid!"));
+	}
 }

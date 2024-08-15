@@ -15,6 +15,9 @@ class UOptionMenu : public UUserWidget
 {
 	GENERATED_BODY()
 
+// public:
+// 	virtual void SetVisibility(ESlateVisibility InVisibility) override;
+
 private:
 	virtual void NativeConstruct() override;
 

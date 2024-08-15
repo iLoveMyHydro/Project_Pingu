@@ -65,7 +65,10 @@ void UPauseMenu::OptionButtonClicked()
 	}
 	PlayerController->PlayUIConfirmSound();
 
-	UGameplayStatics::OpenLevel(GetWorld(), OPTION_MENU_NAME);
+	// UGameplayStatics::OpenLevel(GetWorld(), OPTION_MENU_NAME);
+
+	PlayerController->OpenOptionsMenu();
+
 	SetVisibility(ESlateVisibility::Hidden);
 }
 

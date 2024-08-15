@@ -11,6 +11,11 @@
 //Audio necessities
 #include "Player/InputController.h"
 
+// void UOptionMenu::SetVisibility(ESlateVisibility InVisibility)
+// {
+	
+// }
+
 void UOptionMenu::NativeConstruct()
 {
 	Super::NativeConstruct();

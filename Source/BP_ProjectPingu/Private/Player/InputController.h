@@ -31,6 +31,8 @@ public:
 	void PlayUIOpenSound();
 	//Audio Stuff End
 
+	void OpenOptionsMenu();
+
 protected:
 	virtual void BeginPlay() override;
 
@@ -59,6 +61,7 @@ private:
 	const FString IMC_PATH = TEXT("/Game/Input/IMC_Character");
 	const FString IA_PAUSE_PATH = TEXT("/Game/Input/Actions/IA_Pause");
 	const FString PAUSE_MENU_PATH = FString(TEXT("/Game/Blueprint/HUD/C++/WBP_PauseMenu_Code"));
+	const FString OPTION_MENU_PATH = FString(TEXT("/Game/Blueprint/HUD/C++/WBP_OptionsMenu_Code"));
 	const FString PLAYER_HUD_PATH = FString(TEXT("/Game/Blueprint/HUD/C++/WBP_PlayerHUD_Code"));
 
 	//Audio Stuff by Hubsi
@@ -146,6 +149,12 @@ private:
 
 	UPROPERTY()
 	TSubclassOf<class UPauseMenu> PauseMenuObject;
+
+	UPROPERTY()
+	TSubclassOf<class UOptionMenu> OptionMenuObject;
+
+	UPROPERTY()
+	class UOptionMenu* OptionMenu = nullptr;
 
 	UPROPERTY()
 	class UPlayerHUD* PlayerHUD = nullptr;
