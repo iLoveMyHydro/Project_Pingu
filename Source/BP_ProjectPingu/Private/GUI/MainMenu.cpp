@@ -4,7 +4,18 @@
 #include "GUI/MainMenu.h"
 #include "Components/Button.h"
 #include "Kismet/GameplayStatics.h"
+#include "GUI/OptionMenu.h"
+#include "GUI/CreditsMenu.h"
 
+//Audio necessities
+#include "Player/InputController.h"
+
+UMainMenu::UMainMenu(const FObjectInitializer& ObjectInitializer)
+: Super(ObjectInitializer)
+{
+	OptionMenuObject = ConstructorHelpers::FClassFinder<UOptionMenu>(*OPTION_MENU_PATH).Class;
+	CreditsMenuObject = ConstructorHelpers::FClassFinder<UCreditsMenu>(*CREDITS_MENU_PATH).Class;
+}
 
 void UMainMenu::NativeConstruct()
 {
@@ -12,6 +23,16 @@ void UMainMenu::NativeConstruct()
 
 	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
+
+	if (OptionMenuObject)
+	{
+		OptionMenu = CreateWidget<UOptionMenu>(this, OptionMenuObject, "Object Menu");
+	}
+
+	if (CreditsMenuObject)
+	{
+		CreditsMenu = CreateWidget<UCreditsMenu>(this, CreditsMenuObject, "Credits Menu");
+	}
 
 	//Binding the Methods to the UI Events
 	PlayButton->OnClicked.AddDynamic(this, &UMainMenu::PlayButtonClicked);
@@ -22,20 +43,93 @@ void UMainMenu::NativeConstruct()
 
 void UMainMenu::PlayButtonClicked()
 {
-	UGameplayStatics::OpenLevel(GetWorld(), LEVEL_NAME);
+	//Audio
+	auto* PlayerController = Cast<AInputController>(GetWorld()->GetFirstPlayerController());
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("PlayerController returned Nullpointer on button click!"));
+		return;
+	}
+	PlayerController->PlayUIConfirmSound();
+	EnableButtons(false);
+	GetWorld()->GetTimerManager().SetTimer(ButtonDisableTimerHandle, 
+	[this]() 
+	{
+		EnableButtons(true);
+		UGameplayStatics::OpenLevel(GetWorld(), LEVEL_NAME);
+		GetWorld()->GetTimerManager().ClearTimer(ButtonDisableTimerHandle);
+	}, 
+	ButtonDisableTime, 
+	false);
+	GetWorld()->GetTimerManager().ListTimers();
 }
 
 void UMainMenu::OptionButtonClicked()
 {
-	UGameplayStatics::OpenLevel(GetWorld(), OPTION_LEVEL_NAME);
+	//Audio
+	auto* PlayerController = Cast<AInputController>(GetWorld()->GetFirstPlayerController());
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("PlayerController returned Nullpointer on button click!"));
+		return;
+	}
+	PlayerController->PlayUIConfirmSound();
+
+	// UGameplayStatics::OpenLevel(GetWorld(), OPTION_LEVEL_NAME);
+	if (OptionMenu)
+	{
+		OptionMenu->SetVisibility(ESlateVisibility::Visible);
+		OptionMenu->AddToViewport();
+	}
 }
 
 void UMainMenu::CreditsButtonClicked()
 {
-	UGameplayStatics::OpenLevel(GetWorld(), CREDITS_LEVEL_NAME);
+	//Audio
+	auto* PlayerController = Cast<AInputController>(GetWorld()->GetFirstPlayerController());
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("PlayerController returned Nullpointer on button click!"));
+		return;
+	}
+	PlayerController->PlayUIConfirmSound();
+
+	// UGameplayStatics::OpenLevel(GetWorld(), CREDITS_LEVEL_NAME);
+
+	if (CreditsMenu)
+	{
+		CreditsMenu->SetVisibility(ESlateVisibility::Visible);
+		CreditsMenu->AddToViewport();
+	}
 }
 
 void UMainMenu::QuitButtonClicked()
 {
-	UKismetSystemLibrary::QuitGame(this, GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
+	//Audio
+	auto* PlayerController = Cast<AInputController>(GetWorld()->GetFirstPlayerController());
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("PlayerController returned Nullpointer on button click!"));
+		return;
+	}
+	PlayerController->PlayUIConfirmSound();
+	EnableButtons(false);
+	GetWorld()->GetTimerManager().SetTimer(ButtonDisableTimerHandle, 
+	[this]() 
+	{
+		EnableButtons(true);
+		UKismetSystemLibrary::QuitGame(this, GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
+		GetWorld()->GetTimerManager().ClearTimer(ButtonDisableTimerHandle);
+	}, 
+	ButtonDisableTime, 
+	false);
 }
+
+void UMainMenu::EnableButtons(bool Enable)
+{
+	PlayButton->SetIsEnabled(Enable);
+	OptionButton->SetIsEnabled(Enable);
+	CreditsButton->SetIsEnabled(Enable);
+	QuitButton->SetIsEnabled(Enable);
+}
+

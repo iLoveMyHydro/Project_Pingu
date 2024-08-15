@@ -2,10 +2,12 @@
 
 
 #include "GameModeBase/MyGameModeBaseOptionMenu.h"
+#include "Player/InputController.h"
 
 #include "GUI/OptionMenu.h"
 
 AMyGameModeBaseOptionMenu::AMyGameModeBaseOptionMenu()
 {
 	HUDClass = UOptionMenu::StaticClass();
+	PlayerControllerClass = AInputController::StaticClass();
 }

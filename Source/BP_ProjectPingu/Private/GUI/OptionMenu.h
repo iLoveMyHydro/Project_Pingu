@@ -15,6 +15,9 @@ class UOptionMenu : public UUserWidget
 {
 	GENERATED_BODY()
 
+public:
+	virtual void SetVisibility(ESlateVisibility InVisibility) override;
+
 private:
 	virtual void NativeConstruct() override;
 
@@ -39,4 +42,5 @@ private:
 private:
 	const FName MAIN_MENU_NAME = FName(TEXT("/Game/Maps/MainMenu_Code"));
 
+	const FString MAIN_MENU_LEVEL_NAME = FString(TEXT("MainMenu_Code"));
 };

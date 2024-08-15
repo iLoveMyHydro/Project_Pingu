@@ -172,8 +172,16 @@ void ANormalEnemy::OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AAc
 
 void ANormalEnemy::PlayEnemyDamageSFX()
 {
-	if (!EnemyDamageSFXComponent) return;
-	if (!EnemyDamageSFXComponent->GetSound()) return;
+	if (!EnemyDamageSFXComponent)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the EnemyDamage Sound does not exist!"));
+		return;	
+	}
+	if (!EnemyDamageSFXComponent->GetSound())
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("The EnemyDamage MetaSound is not loaded into the Component, did you change its location in the project?"));
+		return;
+	}
 
 	if (EnemyDamageSFXComponent->IsActive() == false) EnemyDamageSFXComponent->SetActive(true);
 	if (EnemyDamageSFXComponent->IsPlaying() == false) EnemyDamageSFXComponent->Play();

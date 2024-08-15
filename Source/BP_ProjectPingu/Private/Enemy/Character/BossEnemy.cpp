@@ -201,8 +201,16 @@ void ABossEnemy::OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AActo
 
 void ABossEnemy::PlayBossDamageSFX()
 {
-	if (!BossDamageSFXComponent) return;
-	if (!BossDamageSFXComponent->GetSound()) return;
+	if (!BossDamageSFXComponent)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the BossDamage Sound does not exist!"));
+		return;	
+	}
+	if (!BossDamageSFXComponent->GetSound())
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("The BossDamage MetaSound is not loaded into the Component, did you change its location in the project?"));
+		return;
+	}
 
 	if (BossDamageSFXComponent->IsActive() == false) BossDamageSFXComponent->SetActive(true);
 	if (BossDamageSFXComponent->IsPlaying() == false) BossDamageSFXComponent->Play();

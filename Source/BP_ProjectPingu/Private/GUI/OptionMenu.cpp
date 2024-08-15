@@ -8,6 +8,18 @@
 #include "GameFramework/GameUserSettings.h"
 #include "Kismet/GameplayStatics.h"
 
+//Audio necessities
+#include "Player/InputController.h"
+
+void UOptionMenu::SetVisibility(ESlateVisibility InVisibility)
+{
+	Super::SetVisibility(InVisibility);
+
+	MainMenuButton->SetVisibility(InVisibility);
+	FullscreenCheckBox->SetVisibility(InVisibility);
+	VsyncCheckBox->SetVisibility(InVisibility);
+}
+
 void UOptionMenu::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -48,5 +60,27 @@ void UOptionMenu::VsyncBoxClicked(bool bIsChecked)
 
 void UOptionMenu::MainMenuButtonClicked()
 {
-	UGameplayStatics::OpenLevel(GetWorld(), MAIN_MENU_NAME);
+	//Audio
+	auto* PlayerController = Cast<AInputController>(GetWorld()->GetFirstPlayerController());
+	if (!PlayerController)
+	{
+		UE_LOG(LogTemp, Fatal, TEXT("PlayerController returned Nullpointer on button click!"));
+		return;
+	}
+	PlayerController->PlayUIConfirmSound();
+
+	if (GetWorld())
+	{
+		FString MapName = GetWorld()->GetMapName();
+		MapName.RemoveFromStart(GetWorld()->StreamingLevelsPrefix);
+		if (MapName == MAIN_MENU_LEVEL_NAME)
+		{
+			SetVisibility(ESlateVisibility::Hidden);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Map name: %s"), *MapName);
+				UGameplayStatics::OpenLevel(GetWorld(), MAIN_MENU_NAME);
+		}
+	}
 }

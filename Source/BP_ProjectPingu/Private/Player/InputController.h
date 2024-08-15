@@ -22,9 +22,16 @@ class AInputController : public APlayerController
 public:
 	AInputController();
 
+	//Audio Stuff Begin
 	void PlayLevelTheme();
 	void PauseLevelTheme();
+	void UnpauseLevelTheme();
+	void PlayUIConfirmSound();
+	void PlayUIHoverSound();
+	void PlayUIOpenSound();
 	//Audio Stuff End
+
+	void OpenOptionsMenu();
 
 protected:
 	virtual void BeginPlay() override;
@@ -54,6 +61,7 @@ private:
 	const FString IMC_PATH = TEXT("/Game/Input/IMC_Character");
 	const FString IA_PAUSE_PATH = TEXT("/Game/Input/Actions/IA_Pause");
 	const FString PAUSE_MENU_PATH = FString(TEXT("/Game/Blueprint/HUD/C++/WBP_PauseMenu_Code"));
+	const FString OPTION_MENU_PATH = FString(TEXT("/Game/Blueprint/HUD/C++/WBP_OptionsMenu_Code"));
 	const FString PLAYER_HUD_PATH = FString(TEXT("/Game/Blueprint/HUD/C++/WBP_PlayerHUD_Code"));
 
 	//Audio Stuff by Hubsi
@@ -61,9 +69,18 @@ private:
 	const FString MUSIC_NAME = FString(TEXT("Music"));
 	const FString MUSIC_TRIGGER_NAME = FString(TEXT("PlayLevelTheme"));
 	const FString PAUSE_MUSIC_TRIGGER_NAME = FString(TEXT("PauseLevelTheme"));
+	const FString UNPAUSE_MUSIC_TRIGGER_NAME = FString(TEXT("UnpauseLevelTheme"));
+	const FString UI_PATH = FString(TEXT("/Script/MetasoundEngine.MetaSoundSource'/Game/Audio/MetaSounds/META_UI.META_UI'"));
+	const FString UI_NAME = FString(TEXT("UI SFX"));
+	const FString UI_CONFIRM_TRIGGER_NAME = FString(TEXT("UIConfirm"));
+	const FString UI_HOVER_TRIGGER_NAME = FString(TEXT("UIHover"));
+	const FString UI_OPEN_TRIGGER_NAME = FString(TEXT("UIOpen"));
 
 	UPROPERTY(VisibleAnywhere, DisplayName = "Music", Category = "Components")
 	TObjectPtr<class UAudioComponent> MusicComponent = nullptr;
+
+	UPROPERTY(VisibleAnywhere, DisplayName = "UI SFX", Category = "Components")
+	TObjectPtr<class UAudioComponent> UISFXComponent = nullptr;
 
 	UPROPERTY(VisibleAnywhere, DisplayName = "Audio Component Auto Activation", Category = "Components")
 	bool bAutoActivate = false;
@@ -132,6 +149,12 @@ private:
 
 	UPROPERTY()
 	TSubclassOf<class UPauseMenu> PauseMenuObject;
+
+	UPROPERTY()
+	TSubclassOf<class UOptionMenu> OptionMenuObject;
+
+	UPROPERTY()
+	class UOptionMenu* OptionMenu = nullptr;
 
 	UPROPERTY()
 	class UPlayerHUD* PlayerHUD = nullptr;
