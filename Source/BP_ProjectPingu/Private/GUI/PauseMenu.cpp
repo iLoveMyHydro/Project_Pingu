@@ -65,8 +65,6 @@ void UPauseMenu::OptionButtonClicked()
 	}
 	PlayerController->PlayUIConfirmSound();
 
-	// UGameplayStatics::OpenLevel(GetWorld(), OPTION_MENU_NAME);
-
 	PlayerController->OpenOptionsMenu();
 
 	SetVisibility(ESlateVisibility::Hidden);
@@ -97,6 +95,4 @@ void UPauseMenu::QuitButtonClicked()
 		return;
 	}
 	PlayerController->PlayUIConfirmSound();
-
-	UKismetSystemLibrary::QuitGame(this, GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
 }

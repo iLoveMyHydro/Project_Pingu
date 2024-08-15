@@ -80,7 +80,7 @@ void UOptionMenu::MainMenuButtonClicked()
 		else
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Map name: %s"), *MapName);
-			UGameplayStatics::OpenLevel(GetWorld(), MAIN_MENU_NAME);
+				UGameplayStatics::OpenLevel(GetWorld(), MAIN_MENU_NAME);
 		}
 	}
 }

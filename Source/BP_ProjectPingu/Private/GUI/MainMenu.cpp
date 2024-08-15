@@ -51,8 +51,17 @@ void UMainMenu::PlayButtonClicked()
 		return;
 	}
 	PlayerController->PlayUIConfirmSound();
-
-	UGameplayStatics::OpenLevel(GetWorld(), LEVEL_NAME);
+	EnableButtons(false);
+	GetWorld()->GetTimerManager().SetTimer(ButtonDisableTimerHandle, 
+	[this]() 
+	{
+		EnableButtons(true);
+		UGameplayStatics::OpenLevel(GetWorld(), LEVEL_NAME);
+		GetWorld()->GetTimerManager().ClearTimer(ButtonDisableTimerHandle);
+	}, 
+	ButtonDisableTime, 
+	false);
+	GetWorld()->GetTimerManager().ListTimers();
 }
 
 void UMainMenu::OptionButtonClicked()
@@ -71,11 +80,6 @@ void UMainMenu::OptionButtonClicked()
 	{
 		OptionMenu->SetVisibility(ESlateVisibility::Visible);
 		OptionMenu->AddToViewport();
-	}
-
-	if (OptionMenu->IsInViewport() == true)
-	{
-		UE_LOG(LogTemp, Display, TEXT("OptionMenu is in Viewport!"));
 	}
 }
 
@@ -109,17 +113,23 @@ void UMainMenu::QuitButtonClicked()
 		return;
 	}
 	PlayerController->PlayUIConfirmSound();
-	
-	UKismetSystemLibrary::QuitGame(this, GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
+	EnableButtons(false);
+	GetWorld()->GetTimerManager().SetTimer(ButtonDisableTimerHandle, 
+	[this]() 
+	{
+		EnableButtons(true);
+		UKismetSystemLibrary::QuitGame(this, GetWorld()->GetFirstPlayerController(), EQuitPreference::Quit, true);
+		GetWorld()->GetTimerManager().ClearTimer(ButtonDisableTimerHandle);
+	}, 
+	ButtonDisableTime, 
+	false);
 }
 
-void UMainMenu::OpenOptionsMenu()
+void UMainMenu::EnableButtons(bool Enable)
 {
-	
-}
-
-void UMainMenu::OpenCreditsMenu()
-{
-	
+	PlayButton->SetIsEnabled(Enable);
+	OptionButton->SetIsEnabled(Enable);
+	CreditsButton->SetIsEnabled(Enable);
+	QuitButton->SetIsEnabled(Enable);
 }
 

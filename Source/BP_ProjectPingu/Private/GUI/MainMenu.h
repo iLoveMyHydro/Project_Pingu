@@ -33,10 +33,7 @@ private:
 	void QuitButtonClicked();
 
 	UFUNCTION()
-	void OpenOptionsMenu();
-
-	UFUNCTION()
-	void OpenCreditsMenu();
+	void EnableButtons(bool Enable);
 
 	UPROPERTY(meta = (BindWidget))
 	class UButton* PlayButton = nullptr;
@@ -61,6 +58,12 @@ private:
 
 	UPROPERTY()
 	class UCreditsMenu* CreditsMenu = nullptr;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Button Disable Time", Category = "UI")
+	float ButtonDisableTime = 1;
+
+	UPROPERTY(EditAnywhere, DisplayName = "Button Disable Timer Handle", Category = "UI")
+	FTimerHandle ButtonDisableTimerHandle;
 
 	const FName LEVEL_NAME = FName(TEXT("/Game/Maps/First_Level"));
 	const FName OPTION_LEVEL_NAME = FName(TEXT("/Game/Maps/OptionMenu_Code"));
