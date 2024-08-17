@@ -6,6 +6,7 @@
 // Sets default values
 AIceSpikeSpawn::AIceSpikeSpawn()
 {
+	// Setting the Material and the Mesh
 	Material = ConstructorHelpers::FObjectFinder<UMaterialInterface>(*MAT_PATH).Object;
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(*MESH_NAME);
 
@@ -15,6 +16,7 @@ AIceSpikeSpawn::AIceSpikeSpawn()
 	Mesh->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 	Mesh->SetRelativeScale3D(FVector(0.4f, 0.4f, 0.4f));
 
+	// Setting the Box Collision
 	BoxCollision = CreateDefaultSubobject<UBoxComponent>(*BOX_NAME);
 	BoxCollision->SetupAttachment(Mesh);
 	BoxCollision->bDynamicObstacle = true;

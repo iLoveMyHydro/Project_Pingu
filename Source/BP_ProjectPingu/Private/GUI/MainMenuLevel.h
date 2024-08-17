@@ -14,14 +14,17 @@ class AMainMenuLevel : public ALevelScriptActor
 {
 	GENERATED_BODY()
 
+	// Constructor
 	AMainMenuLevel();
 
 protected:
 	virtual void BeginPlay() override;
 
+	// Main Menu Object
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UMainMenu> MainMenuObject;
 
+	// Main Menu
 	UPROPERTY()
 	class UMainMenu* MainMenu;
 

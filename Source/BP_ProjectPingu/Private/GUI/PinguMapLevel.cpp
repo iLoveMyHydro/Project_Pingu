@@ -7,6 +7,7 @@ void APinguMapLevel::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Sets the Input Mode
 	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeGameOnly());
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = false;
 }

@@ -25,9 +25,11 @@ private:
 	const FString MAT_PATH = FString(TEXT("/Game/IcePropsContent/Materials/M_Ice_Main"));
 	const FString BOX_COLLISION_NAME = FString(TEXT("Box Collision"));
 
+	/// <summary>Material for the Spike</summary>
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Material", Category = "Components"))
 	TObjectPtr<UMaterialInterface> Material = nullptr;
 
+	/// <summary>Mesh for the Spike</summary>
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Mesh", Category = "Components"))
 	TObjectPtr<UStaticMeshComponent> Mesh = nullptr;
 };

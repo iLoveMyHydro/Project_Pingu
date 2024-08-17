@@ -5,11 +5,13 @@
 #include "GUI/PauseMenu.h"
 #include "Blueprint/UserWidget.h"
 
+// Constructor
 APauseMenuLevel::APauseMenuLevel()
 {
 	PauseMenuObejct = ConstructorHelpers::FClassFinder<UPauseMenu>(*OBJECT_PATH).Class;
 }
 
+// Called when the game starts or when spawned
 void APauseMenuLevel::BeginPlay()
 {
 	Super::BeginPlay();

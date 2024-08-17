@@ -4,6 +4,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Player/PinguCharacter.h"
 
+// Sound Stuff
 void UFootstepNotify::Notify(USkeletalMeshComponent *MeshComp, UAnimSequenceBase *Animation)
 {
     if (IsRunningGame())

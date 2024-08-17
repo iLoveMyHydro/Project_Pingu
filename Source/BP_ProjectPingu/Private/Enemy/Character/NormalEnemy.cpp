@@ -18,8 +18,10 @@ ANormalEnemy::ANormalEnemy()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	// Sets the Capsule Size
 	GetCapsuleComponent()->InitCapsuleSize(100.0f, 100.0f);
 
+	// Setting the Material & Mesh
 	Material = ConstructorHelpers::FObjectFinder<UMaterial>(*MATERIAL_PATH).Object;
 	GetMesh()->SetSkeletalMesh(ConstructorHelpers::FObjectFinder<USkeletalMesh>(*MESH_PATH).Object);
 	GetMesh()->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
@@ -27,9 +29,10 @@ ANormalEnemy::ANormalEnemy()
 	GetMesh()->SetRelativeScale3D(FVector(.25f, 0.25f, 0.25f));
 	GetMesh()->SetMaterial(0, Material);
 
-	//Get Oil Barrel
+	// Get Oil Barrel
 	OilBarrelProjectile = ConstructorHelpers::FClassFinder<AOilBarrel>(*OIL_BARREL_PATH).Class;
 
+	// Setting the Box Collision
 	CollisionMesh = CreateDefaultSubobject<UBoxComponent>(*BOX_COLLISION_NAME);
 	CollisionMesh->bDynamicObstacle = true;
 	CollisionMesh->SetupAttachment(RootComponent);
@@ -37,6 +40,7 @@ ANormalEnemy::ANormalEnemy()
 	CollisionMesh->SetBoxExtent(FVector(50.0f, 80.0f, 80.0f));
 	CollisionMesh->SetHiddenInGame(false);
 
+	// Setting the Sphere Collision
 	SphereColl = CreateDefaultSubobject<USphereComponent>(TEXT("Perception Trigger"));
 	SphereColl->SetSphereRadius(3000);
 	SphereColl->SetRelativeLocation(FVector(0, 0, 90));
@@ -46,13 +50,16 @@ ANormalEnemy::ANormalEnemy()
 	SphereColl->OnComponentEndOverlap.AddDynamic(this, &ANormalEnemy::OnCollisionExit);
 	SphereColl->SetupAttachment(GetMesh());
 
+	// Setting the Spawn Location of the Oil Barrel
 	SpawnLocationOilBarrel = CreateDefaultSubobject<USceneComponent>(*SPAWNLOCATION_OIL_BARREL_NAME);
 	SpawnLocationOilBarrel->SetRelativeLocation(FVector(0.0f, 0.0f, 120.0f));
 	SpawnLocationOilBarrel->SetupAttachment(RootComponent);
 
+	// Setting the Controller
 	AIControllerClass = ConstructorHelpers::FClassFinder<ANormalAIController>(*FSM_CONTROLLER_PATH).Class;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
+	// Setting the Animations
 	IdleAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*IDLE_ANIM_PATH).Object;
 	ThrowAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*THROW_ANIM_PATH).Object;
 
@@ -65,7 +72,6 @@ ANormalEnemy::ANormalEnemy()
 
 	EnemyDamageSFXComponent->SetupAttachment(RootComponent);
 	//No more Audio Code
-
 }
 
 // Called when the game starts or when spawned
@@ -73,6 +79,7 @@ void ANormalEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Setting the FSM
 	Controller = Cast<ANormalAIController>(GetController());
 	Controller->SetCharacter(this);
 
@@ -87,6 +94,7 @@ void ANormalEnemy::BeginPlay()
 	{
 		Fsm->Initialize();
 	}
+	// Sets the Idle Animation
 	SetIdleAnimation();
 }
 
@@ -94,7 +102,6 @@ void ANormalEnemy::BeginPlay()
 void ANormalEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input
@@ -103,6 +110,7 @@ void ANormalEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
+// Applies Damage to the Normal Enemy -> if its 0 the Enemy will be destroyed
 void ANormalEnemy::ApplyDamage(int A_DamageAmount)
 {
 	Health -= A_DamageAmount;
@@ -115,6 +123,7 @@ void ANormalEnemy::ApplyDamage(int A_DamageAmount)
 	PlayEnemyDamageSFX();
 }
 
+// Throws the Oil Barrel
 void ANormalEnemy::ThrowOilBarrel()
 {
 	Character = GetController()->GetPawn<ANormalEnemy>();
@@ -148,7 +157,7 @@ void ANormalEnemy::ThrowOilBarrel()
 	}
 }
 
-//OnCollisionOverlap ->Add Dynamic richtige Hitbox -> if state schlag von pingu -> gib mir schaden
+// If the Pingu enters the Sphere the Enemy will shoot Oil Barrels
 void ANormalEnemy::OnCollision(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
@@ -159,6 +168,7 @@ void ANormalEnemy::OnCollision(UPrimitiveComponent* OverlappedComponent, AActor*
 	}
 }
 
+// If the Pingu exits the Sphere the Enemy will go back to Idle State
 void ANormalEnemy::OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	if (OtherActor->IsA(APinguCharacter::StaticClass()) && !PlayerController->IsPaused())
@@ -170,6 +180,7 @@ void ANormalEnemy::OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AAc
 	}
 }
 
+// Plays the SFX 
 void ANormalEnemy::PlayEnemyDamageSFX()
 {
 	if (!EnemyDamageSFXComponent)
@@ -189,12 +200,14 @@ void ANormalEnemy::PlayEnemyDamageSFX()
 	EnemyDamageSFXComponent->SetTriggerParameter(*ENEMY_DAMAGE_SFX_TRIGGER_NAME);
 }
 
+// Sets the Idle Animation
 ANormalEnemy& ANormalEnemy::SetIdleAnimation()
 {
 	GetMesh()->PlayAnimation(IdleAnim, true);
 	return *this;
 }
 
+// Sets the Throw Animation
 ANormalEnemy& ANormalEnemy::SetThrowAnimation()
 {
 	GetMesh()->PlayAnimation(ThrowAnim, false);

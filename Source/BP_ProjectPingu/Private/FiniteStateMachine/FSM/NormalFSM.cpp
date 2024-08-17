@@ -4,10 +4,12 @@
 #include "FiniteStateMachine/FSM/NormalFSM.h"
 #include "FiniteStateMachine/State/NormalStateAI.h"
 
+// Initialize the FSM
 void NormalFSM::Initialize()
 {
 }
 
+// Called every frame
 void NormalFSM::Tick(float A_DeltaTime)
 {
 	if(CurrentState != nullptr)
@@ -16,6 +18,7 @@ void NormalFSM::Tick(float A_DeltaTime)
 	}
 }
 
+// Transition between the States
 void NormalFSM::Transition(NormalStateAI* A_NewState)
 {
 	if(CurrentState != nullptr)
@@ -26,6 +29,7 @@ void NormalFSM::Transition(NormalStateAI* A_NewState)
 	CurrentState->Enter();
 }
 
+// Returns the Current State
 NormalStateAI* NormalFSM::GetCurrentState() const
 {
 	return CurrentState;

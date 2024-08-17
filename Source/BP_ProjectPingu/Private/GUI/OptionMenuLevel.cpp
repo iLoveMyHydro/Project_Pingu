@@ -5,11 +5,13 @@
 #include "OptionMenu.h"
 #include "Blueprint/UserWidget.h"
 
+// Constructor
 AOptionMenuLevel::AOptionMenuLevel()
 {
 	OptionMenuObject = ConstructorHelpers::FClassFinder<UOptionMenu>(*OBJECT_PATH).Class;
 }
 
+// Called when the game starts or when spawned
 void AOptionMenuLevel::BeginPlay()
 {
 	Super::BeginPlay();

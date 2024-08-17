@@ -5,6 +5,7 @@
 #include "GUI/DeathScreen.h"
 #include "Blueprint/UserWidget.h"
 
+// Called when the game starts or when spawned
 void ADeathScreenLevel::BeginPlay()
 {
 	Super::BeginPlay();

@@ -26,12 +26,15 @@ private:
 	const FString MESH_PATH = FString(TEXT("/Game/Assets/Artist/Jean-Marc/IceSpike/IceSpike"));
 	const FString MAT_PATH = FString(TEXT("/Game/IcePropsContent/Materials/M_Ice_Main"));
 
+	/// <summary>Box Collision for the Spawner</summary>
 	UPROPERTY(EditAnywhere, DisplayName = "Box Collision", Category = "Components", meta = (AllowPrivateAccess = true))
 	TObjectPtr<UBoxComponent> BoxCollision = nullptr;
 
+	/// <summary> Material for the Spawner</summary>
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Material", Category = "Components"))
 	TObjectPtr<UMaterialInterface> Material = nullptr;
 
+	/// <summary>Mesh for the Spawner</summary>
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Mesh", Category = "Components"))
 	TObjectPtr<UStaticMeshComponent> Mesh = nullptr;
 

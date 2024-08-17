@@ -10,6 +10,7 @@
 #include "Player/InputController.h"
 #include "Player/PinguCharacter.h"
 
+// Sets the Visibility
 void UPauseMenu::SetVisibility(ESlateVisibility InVisibility)
 {
 	Super::SetVisibility(InVisibility);
@@ -21,6 +22,7 @@ void UPauseMenu::SetVisibility(ESlateVisibility InVisibility)
 	PlayButton->SetVisibility(InVisibility);
 }
 
+// Native Constructor
 void UPauseMenu::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -33,6 +35,7 @@ void UPauseMenu::NativeConstruct()
 
 }
 
+// Play Button Clicked
 void UPauseMenu::PlayButtonClicked()
 {
 	AInputController* const PlayerController = Cast<AInputController>(GEngine->GetFirstLocalPlayerController(GetWorld()));
@@ -54,6 +57,7 @@ void UPauseMenu::PlayButtonClicked()
 
 }
 
+// Option Button 
 void UPauseMenu::OptionButtonClicked()
 {
 	//Audio
@@ -70,6 +74,7 @@ void UPauseMenu::OptionButtonClicked()
 	SetVisibility(ESlateVisibility::Hidden);
 }
 
+// Main Menu
 void UPauseMenu::MainMenuButtonClicked()
 {
 	//Audio
@@ -85,6 +90,7 @@ void UPauseMenu::MainMenuButtonClicked()
 	SetVisibility(ESlateVisibility::Hidden);
 }
 
+// Quit Button
 void UPauseMenu::QuitButtonClicked()
 {
 	//Audio

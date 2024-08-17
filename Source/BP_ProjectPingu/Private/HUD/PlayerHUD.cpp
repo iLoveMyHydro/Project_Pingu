@@ -9,7 +9,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Player/PinguCharacter.h"
 
-
+// Set the Life Amount
 void UPlayerHUD::SetLifeAmount(int CurrentLife, int MaxLife)
 {
 	if(CurrentLife == 2)
@@ -29,6 +29,7 @@ void UPlayerHUD::SetLifeAmount(int CurrentLife, int MaxLife)
 	}
 }
 
+// Set Ice Spike Amount
 void UPlayerHUD::SetIceSpikeAmount(int CurrentIceSpike, int MaxIceSpike)
 {
 	if (UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn())

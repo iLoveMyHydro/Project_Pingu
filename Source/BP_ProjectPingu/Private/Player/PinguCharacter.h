@@ -27,26 +27,35 @@ public:
 	// Sets default values for this character's properties
 	APinguCharacter();
 
+	// Applies the Damage to the Player
 	virtual void ApplyDamage(int A_DamageAmount) override;
 
+	// Return bool if colliding
 	bool GetIsColliding();
 
+	// Get Other Character
 	ACharacter* GetOtherCharacter();
 
+	// Get IceSpike Value
 	int GetIceSpikes();
 
+	// Set Ice Spike Value
 	void SetIceSpikes(int A_IceSpikes);
 
+	// Throw Ice Spike
 	void ThrowIceSpikes();
 
+	// Get Info if got Ice Spike
 	bool GetGotIceSpikes();
 
+	// Animations
 	APinguCharacter& SetIdleAnimation(void);
 	APinguCharacter& SetNootAnimation(void);
 	APinguCharacter& SetWalkAnimation(void);
 	APinguCharacter& SetJumpAnimation(void);
 	APinguCharacter& SetSlapAnimation(void);
 
+	// Respawn Player
 	void Respawn();
 
 	//Audio methods from Hubsi
@@ -57,20 +66,26 @@ public:
 	void PlayJumpSound();
 
 private:
+	// Initialize Camera
 	auto InitCamera(void) -> class UCameraComponent*;
 
+	// Initialize Player Values
 	void InitPlayer(void);
 
+	// Box Begin Overlap
 	UFUNCTION()
 	void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	// Box Begin Overlap Feet
 	UFUNCTION()
 	void OnBoxBeginOverlapFeet(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	// Camera Component
 	FORCEINLINE class UCameraComponent* Get2DCameraComponent() const { return PinguCameraComponent; }
 
+	// Spring Arm
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 
 

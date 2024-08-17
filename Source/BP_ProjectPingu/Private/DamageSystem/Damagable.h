@@ -22,6 +22,7 @@ class IDamagable
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
+	/// <summary>Applies the Damage to the actor</summary>
 	virtual void ApplyDamage(int A_DamageAmount) {};
 
 	int DamageAmount = -1;

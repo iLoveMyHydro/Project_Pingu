@@ -24,6 +24,8 @@ public:
 	UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
 
 private:
+
+	/// <summary>When the IceSpike hits something this method will be called</summary>
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
@@ -34,14 +36,18 @@ private:
 	const FString BOX_NAME = TEXT("Box Collision Oil Barrel");
 	const FString PROJECTILE_MOVEMENT_NAME = TEXT("Projectile Movement Oil Barrel");
 
+	/// <summary>Material for the Oil Barrell</summary>
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Material", Category = "Components"))
 	UMaterialInterface* Material = nullptr;
 
+	/// <summary>Mesh for the Oil Barrel</summary>
 	UPROPERTY(EditAnywhere, meta = (DisplayName = "Mesh", Category = "Components"))
 	UStaticMeshComponent* Mesh = nullptr;
 
+	/// <summary>Projectile Movement for the Oil Barrel</summary>
 	UPROPERTY(EditAnywhere, DisplayName = "Projectile Movement", Category = "Components", meta = (AllowPrivateAccess = true))
 	UProjectileMovementComponent* ProjectileMovement = nullptr;
 
+	/// <summary>Player can be hit from the Oil Barrel</summary>
 	APinguCharacter* PinguCharacter = nullptr;
 };

@@ -5,6 +5,7 @@
 #include "GUI/MainMenu.h"
 #include "Player/InputController.h"
 
+// Constructor for the Main Menu GameModeBase
 AMyGameModeBaseMainMenu::AMyGameModeBaseMainMenu()
 {
 	HUDClass = UMainMenu::StaticClass();

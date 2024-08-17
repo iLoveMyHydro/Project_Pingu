@@ -7,12 +7,14 @@
 #include "BP_ProjectPingu/Private/Enemy/Character/BossEnemy.h"
 #include "BP_ProjectPingu/Private/Enemy/Controller/BossAIController.h"
 
+// Constructor for the State
 BossThrowObjectState::BossThrowObjectState(FString A_Name, NormalFSM* A_Machine)
 {
 	Name = A_Name;
 	Machine = A_Machine;
 }
 
+// Enters the State
 void BossThrowObjectState::Enter()
 {
 	NormalStateAI::Enter();
@@ -20,11 +22,12 @@ void BossThrowObjectState::Enter()
 	ThrowObject();
 }
 
+// Throws the Objects
 void BossThrowObjectState::ThrowObject()
 {
 	Character = Machine->GetControllerBoss()->GetPawn<ABossEnemy>();
 	if (Character == nullptr) return;
 
-	Character->ThrowOilBarrel();
 	Character->SetThrowAnimation();
+	Character->ThrowOilBarrel();
 }

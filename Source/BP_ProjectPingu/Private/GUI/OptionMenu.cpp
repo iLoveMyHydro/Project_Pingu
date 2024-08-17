@@ -11,6 +11,7 @@
 //Audio necessities
 #include "Player/InputController.h"
 
+// Sets the Visbility of the Buttons
 void UOptionMenu::SetVisibility(ESlateVisibility InVisibility)
 {
 	Super::SetVisibility(InVisibility);
@@ -20,10 +21,12 @@ void UOptionMenu::SetVisibility(ESlateVisibility InVisibility)
 	VsyncCheckBox->SetVisibility(InVisibility);
 }
 
+// Native Constructor
 void UOptionMenu::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	// Sets the InputMode
 	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 
@@ -34,15 +37,26 @@ void UOptionMenu::NativeConstruct()
 
 }
 
+// FullscreenBox
 void UOptionMenu::FullscreenBoxClicked(bool bIsChecked)
 {
 	UGameUserSettings* Settings = GEngine->GetGameUserSettings();
-	auto FullscreenMode = bIsChecked ? EWindowMode::Type::Fullscreen : EWindowMode::Type::Windowed;
-	Settings->SetFullscreenMode(FullscreenMode);
-	Settings->ApplyResolutionSettings(false);
-	Settings->SaveSettings();
+
+	if(bIsChecked)
+	{
+		Settings->SetFullscreenMode(EWindowMode::Fullscreen);
+		Settings->ApplyResolutionSettings(false);
+		Settings->SaveSettings();
+	}
+	else
+	{
+		Settings->SetFullscreenMode(EWindowMode::Windowed);
+		Settings->ApplyResolutionSettings(false);
+		Settings->SaveSettings();
+	}
 }
 
+//VsyncBox
 void UOptionMenu::VsyncBoxClicked(bool bIsChecked)
 {
 	UGameUserSettings* Settings = GEngine->GetGameUserSettings();
@@ -58,6 +72,7 @@ void UOptionMenu::VsyncBoxClicked(bool bIsChecked)
 	Settings->ApplySettings(true);
 }
 
+// Main Menu
 void UOptionMenu::MainMenuButtonClicked()
 {
 	//Audio

@@ -7,6 +7,7 @@
 #include "Player/PinguCharacter.h"
 #include "Player/InputController.h"
 
+// Constructor for the GameModeBose
 AGameModeBaseCode::AGameModeBaseCode()
 {
 	DefaultPawnClass = APinguCharacter::StaticClass();

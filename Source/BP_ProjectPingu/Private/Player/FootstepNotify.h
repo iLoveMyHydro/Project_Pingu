@@ -18,5 +18,6 @@ class UFootstepNotify : public UAnimNotify
 	
 protected:
 
+	// Sound Stuff
 	void Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation) override;
 };

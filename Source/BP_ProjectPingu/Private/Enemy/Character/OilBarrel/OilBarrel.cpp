@@ -9,6 +9,7 @@
 // Sets default values
 AOilBarrel::AOilBarrel()
 {
+	// Setting the Material and the Mesh
 	Material = ConstructorHelpers::FObjectFinder<UMaterialInterface>(*MAT_PATH).Object;
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 
@@ -16,11 +17,11 @@ AOilBarrel::AOilBarrel()
 	Mesh->SetMaterial(0, Material);
 	Mesh->SetupAttachment(RootComponent);
 	Mesh->SetRelativeScale3D(FVector(0.7f, 0.7f, 0.7f));
-	//Mesh->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
 	Mesh->OnComponentHit.AddDynamic(this, &AOilBarrel::OnHit);
 
 	RootComponent = Mesh;
 
+	// Setting the Projectile Movement
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(*PROJECTILE_MOVEMENT_NAME);
 	ProjectileMovement->InitialSpeed = 750.0f;
 	ProjectileMovement->MaxSpeed = 750.0f;
@@ -32,6 +33,7 @@ AOilBarrel::AOilBarrel()
 	InitialLifeSpan = 3.0f;
 }
 
+// When the IceSpike hits something this method will be called
 void AOilBarrel::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {

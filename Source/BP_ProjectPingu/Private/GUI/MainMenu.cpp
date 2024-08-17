@@ -10,6 +10,7 @@
 //Audio necessities
 #include "Player/InputController.h"
 
+// Constructor
 UMainMenu::UMainMenu(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer)
 {
@@ -17,10 +18,12 @@ UMainMenu::UMainMenu(const FObjectInitializer& ObjectInitializer)
 	CreditsMenuObject = ConstructorHelpers::FClassFinder<UCreditsMenu>(*CREDITS_MENU_PATH).Class;
 }
 
+// Native Constructor
 void UMainMenu::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	// Set Input Mode
 	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 
@@ -41,6 +44,7 @@ void UMainMenu::NativeConstruct()
 	QuitButton->OnClicked.AddDynamic(this, &UMainMenu::QuitButtonClicked);
 }
 
+// Play Button
 void UMainMenu::PlayButtonClicked()
 {
 	//Audio
@@ -64,6 +68,7 @@ void UMainMenu::PlayButtonClicked()
 	GetWorld()->GetTimerManager().ListTimers();
 }
 
+// Option Button
 void UMainMenu::OptionButtonClicked()
 {
 	//Audio
@@ -83,6 +88,7 @@ void UMainMenu::OptionButtonClicked()
 	}
 }
 
+// Credits Button
 void UMainMenu::CreditsButtonClicked()
 {
 	//Audio
@@ -103,6 +109,7 @@ void UMainMenu::CreditsButtonClicked()
 	}
 }
 
+// Quit Button 
 void UMainMenu::QuitButtonClicked()
 {
 	//Audio
@@ -125,6 +132,7 @@ void UMainMenu::QuitButtonClicked()
 	false);
 }
 
+// Enables the Buttons
 void UMainMenu::EnableButtons(bool Enable)
 {
 	PlayButton->SetIsEnabled(Enable);

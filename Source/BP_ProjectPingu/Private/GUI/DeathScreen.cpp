@@ -7,6 +7,7 @@
 
 void UDeathScreen::SetDeathScreen(bool bIsScreenOn)
 {
+	// If the bool is on the Screen is shown else not
 	if(bIsScreenOn)
 	{
 		Background->SetVisibility(ESlateVisibility::Visible);

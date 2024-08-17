@@ -5,11 +5,13 @@
 #include "MainMenu.h"
 #include "Blueprint/UserWidget.h"
 
+// Constructor
 AMainMenuLevel::AMainMenuLevel()
 {
 	MainMenuObject = ConstructorHelpers::FClassFinder<UMainMenu>(*OBJECT_PATH).Class;
 }
 
+// Called when the game starts or when spawned
 void AMainMenuLevel::BeginPlay()
 {
 	Super::BeginPlay();

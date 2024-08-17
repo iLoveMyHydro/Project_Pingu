@@ -5,12 +5,13 @@
 #include "BP_ProjectPingu/Private/GUI/CreditsMenu.h"
 #include "Blueprint/UserWidget.h"
 
+// Constructor
 ACreditsMenuLevel::ACreditsMenuLevel()
 {
 	CreditsMenuObject = ConstructorHelpers::FClassFinder<UCreditsMenu>(*OBJECT_PATH).Class;
-
 }
 
+// Called when the game starts or when spawned
 void ACreditsMenuLevel::BeginPlay()
 {
 	Super::BeginPlay();

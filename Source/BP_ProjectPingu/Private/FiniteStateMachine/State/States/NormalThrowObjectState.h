@@ -14,13 +14,19 @@ class ANormalEnemy;
 class NormalThrowObjectState : public NormalStateAI
 {
 public:
+	// Constructor for the State
 	NormalThrowObjectState(FString A_Name, NormalFSM* A_Machine);
+
+	// Deconstructor for the State
 	virtual ~NormalThrowObjectState() override {};
 
+	// Enters the State
 	virtual void Enter(void) override;
 
 private:
+	// State
 	void ThrowObject(void);
 
+	// Normal Enemy
 	class ANormalEnemy* Character = nullptr;
 };

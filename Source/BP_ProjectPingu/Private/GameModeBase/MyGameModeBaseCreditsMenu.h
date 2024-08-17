@@ -13,6 +13,7 @@ UCLASS()
 class AMyGameModeBaseCreditsMenu : public AGameModeBase
 {
 	GENERATED_BODY()
+	// Constructor for the Credits GameModeBase
 	AMyGameModeBaseCreditsMenu();
 	
 };

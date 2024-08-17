@@ -5,6 +5,7 @@
 #include "GUI/CreditsMenu.h"
 #include "Player/InputController.h"
 
+// Constructor for the Credits GameModeBase
 AMyGameModeBaseCreditsMenu::AMyGameModeBaseCreditsMenu()
 {
 	HUDClass = UCreditsMenu::StaticClass();

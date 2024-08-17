@@ -8,6 +8,7 @@
 //Audio necessities
 #include "Player/InputController.h"
 
+// Sets the Visibility of the MainMenuButton
 void UCreditsMenu::SetVisibility(ESlateVisibility InVisibility)
 {
 	Super::SetVisibility(InVisibility);
@@ -15,10 +16,12 @@ void UCreditsMenu::SetVisibility(ESlateVisibility InVisibility)
 	MainMenuButton->SetVisibility(InVisibility);
 }
 
+// Native Construct of the CreditsMenu
 void UCreditsMenu::NativeConstruct()
 {
 	Super::NativeConstruct();
 
+	// Sets the Input Mode
 	GetWorld()->GetFirstPlayerController()->SetInputMode(FInputModeUIOnly());
 	GetWorld()->GetFirstPlayerController()->bShowMouseCursor = true;
 
@@ -26,6 +29,7 @@ void UCreditsMenu::NativeConstruct()
 	MainMenuButton->OnClicked.AddDynamic(this, &UCreditsMenu::MainMenuButtonClicked);
 }
 
+// MainMenuButton Clicked
 void UCreditsMenu::MainMenuButtonClicked()
 {
 	//Audio

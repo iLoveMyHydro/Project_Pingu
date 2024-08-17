@@ -126,21 +126,25 @@ void APinguCharacter::ApplyDamage(int A_DamageAmount)
 	}
 }
 
+// Returns bool if player is colliding
 bool APinguCharacter::GetIsColliding()
 {
 	return IsColliding;
 }
 
+// Returns other Character
 ACharacter* APinguCharacter::GetOtherCharacter()
 {
 	return OtherCharacter;
 }
 
+// Get Ice Spike Value
 int APinguCharacter::GetIceSpikes()
 {
 	return IceSpikes;
 }
 
+// Set Ice Spike Value
 void APinguCharacter::SetIceSpikes(int A_IceSpikes)
 {
 	IceSpikes = A_IceSpikes;
@@ -184,35 +188,41 @@ void APinguCharacter::ThrowIceSpikes()
 	}
 }
 
+// Returns bool if got Ice Spike
 bool APinguCharacter::GetGotIceSpikes()
 {
 	return bGotIceSpikes;
 }
 
+// Set Idle Animation
 APinguCharacter& APinguCharacter::SetIdleAnimation()
 {
 	GetMesh()->PlayAnimation(IdleAnim, true);
 	return *this;
 }
 
+// Set Noot Noot Animation
 APinguCharacter& APinguCharacter::SetNootAnimation()
 {
 	GetMesh()->PlayAnimation(NootAnim, false);
 	return *this;
 }
 
+// Set Walk Animation
 APinguCharacter& APinguCharacter::SetWalkAnimation()
 {
 	GetMesh()->PlayAnimation(WalkAnim, true);
 	return *this;
 }
 
+// Set Jump Animation
 APinguCharacter& APinguCharacter::SetJumpAnimation()
 {
 	GetMesh()->PlayAnimation(JumpAnim, false);
 	return *this;
 }
 
+// Set Slap Animation
 APinguCharacter& APinguCharacter::SetSlapAnimation()
 {
 	GetMesh()->PlayAnimation(SlapAnim, false);
@@ -331,6 +341,7 @@ void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 	IsColliding = true;
 }
 
+// On Box Begin Overlap -> Set damage
 void APinguCharacter::OnBoxBeginOverlapFeet(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
@@ -364,6 +375,8 @@ void APinguCharacter::PlaySlapSound()
 	AttackSFXComponent->SetTriggerParameter(*MELEE_ATTACK_TRIGGER_NAME);
 }
 
+// Audio
+// Play Noot Sound
 void APinguCharacter::PlayNootNootSound()
 {
 	if (!AttackSFXComponent)
@@ -383,6 +396,7 @@ void APinguCharacter::PlayNootNootSound()
 	AttackSFXComponent->SetTriggerParameter(*RANGED_ATTACK_TRIGGER_NAME);
 }
 
+// Plays Damage Sound
 void APinguCharacter::PlayDamageSound()
 {
 	if (!DamageSFXComponent)
@@ -402,6 +416,7 @@ void APinguCharacter::PlayDamageSound()
 	DamageSFXComponent->SetTriggerParameter(*DAMAGE_TRIGGER_NAME);
 }
 
+// Plays Footstep sound
 void APinguCharacter::PlayFootstepSound()
 {
 	if (!FootstepSFXComponent)
@@ -421,6 +436,7 @@ void APinguCharacter::PlayFootstepSound()
 	FootstepSFXComponent->SetTriggerParameter(*FOOTSTEP_TRIGGER_NAME);
 }
 
+// Play Jump Sound
 void APinguCharacter::PlayJumpSound()
 {
 	if (!JumpSFXComponent) 

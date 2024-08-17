@@ -15,14 +15,18 @@ class APauseMenuLevel : public ALevelScriptActor
 	GENERATED_BODY()
 
 public:
+	// Constructor
 	APauseMenuLevel();
 
 protected:
+	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// Pause Menu Object
 	UPROPERTY(EditAnywhere)
 	TSubclassOf<class UPauseMenu> PauseMenuObejct;
 
+	// Pause Menu
 	UPROPERTY()
 	class UPauseMenu* PauseMenu;
 

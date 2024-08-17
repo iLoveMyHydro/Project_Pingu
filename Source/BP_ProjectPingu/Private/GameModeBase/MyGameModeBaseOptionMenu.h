@@ -15,5 +15,6 @@ class AMyGameModeBaseOptionMenu : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+	// Constructor for the Option Menu GameModeBase
 	AMyGameModeBaseOptionMenu();
 };

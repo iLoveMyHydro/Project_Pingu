@@ -8,12 +8,14 @@
 #include "BP_ProjectPingu/Private/Enemy/Controller/NormalAIController.h"
 
 
+// Constructor for the State
 NormalThrowObjectState::NormalThrowObjectState(FString A_Name, NormalFSM* A_Machine)
 {
 	Name = A_Name;
 	Machine = A_Machine;
 }
 
+// Enters the State
 void NormalThrowObjectState::Enter()
 {
 	NormalStateAI::Enter();
@@ -21,13 +23,12 @@ void NormalThrowObjectState::Enter()
 	ThrowObject();
 }
 
+// Throws the Object
 void NormalThrowObjectState::ThrowObject()
 {
 	Character = Machine->GetController()->GetPawn<ANormalEnemy>();
 	if (Character == nullptr) return;
 
+	Character->SetThrowAnimation();
 	Character->ThrowOilBarrel();
-
-	//TODO: Implement Animation for Enemy
-	//Character->SetNootAnimation();
 }

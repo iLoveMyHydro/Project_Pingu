@@ -15,6 +15,7 @@ class AMyGameModeBaseMainMenu : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+	// Constructor for the Main Menu GameModeBase
 	AMyGameModeBaseMainMenu();
 
 };

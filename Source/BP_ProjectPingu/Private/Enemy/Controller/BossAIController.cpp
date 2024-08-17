@@ -6,14 +6,17 @@
 #include "Kismet/GameplayStatics.h"
 #include "Player/PinguCharacter.h"
 
+// Sets default values
 ABossAIController::ABossAIController()
 {
 }
 
+// Called when the game starts or when spawned
 void ABossAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Sets  the FSM for the Boss Enemy
 	Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 
 	if(Fsm == nullptr)
@@ -26,10 +29,12 @@ void ABossAIController::BeginPlay()
 	}
 }
 
+// Called every frame
 void ABossAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// Tick for the FSM
 	if(Fsm != nullptr)
 	{
 		Fsm->Tick(DeltaTime);

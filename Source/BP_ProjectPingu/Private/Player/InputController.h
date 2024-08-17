@@ -31,25 +31,50 @@ public:
 	void PlayUIOpenSound();
 	//Audio Stuff End
 
+	// Opens the Option Menu
 	void OpenOptionsMenu();
 
 protected:
+	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	// Sets the Input Component
 	virtual void SetupInputComponent() override;
+
+	//Initialize the Mapping Context and the Input Actions
 	void InitInputAction(void);
 
+	// Called every frame
 	void Tick(float DeltaSeconds) override;
 
+	// Handle Move
 	void Move(const FInputActionValue& Value);
+
+	// Handle Jump
 	void Jump(void);
+
+	// Handle Jump Stop
 	void StopJump(void);
+
+	// Handle Stop Movement
 	void HandleStopMovement(const FInputActionValue& Value);
+
+	// Handle Slap Attack
 	void HandleSlapAttack(void);
+
+	// Handle Noot Noot Attack
 	void HandleNootAttack(void);
+
+	// Handle Slap Attack Stop
 	void HandleSlapAttackComplete(void);
+
+	// Handle Pause 
 	void HandlePauseAction(void);
+
+	// Handle Move Start
 	void HandleStartedMovement();
+
+	// Handle Animation
 	void AnimationHandler(void);
 
 private:
@@ -84,6 +109,7 @@ private:
 
 	UPROPERTY(VisibleAnywhere, DisplayName = "Audio Component Auto Activation", Category = "Components")
 	bool bAutoActivate = false;
+	// End Audio
 
 	UPROPERTY(EditAnywhere, DisplayName = "Walking State", Category = "AnimationHandler")
 	bool bIsWalking = false;

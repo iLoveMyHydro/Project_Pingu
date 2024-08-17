@@ -14,6 +14,7 @@ class AGameModeBaseCode : public AGameModeBase
 {
 	GENERATED_BODY()
 public:
+	// Constructor
 	AGameModeBaseCode();
 
 };

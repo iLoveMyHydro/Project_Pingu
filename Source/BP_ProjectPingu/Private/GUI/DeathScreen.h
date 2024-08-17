@@ -15,11 +15,14 @@ class UDeathScreen : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	// Sets the Visibility of the Screen
 	void SetDeathScreen(bool bIsScreenOn);
 
+	// Background
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UImage* Background = nullptr;
 
+	// Text
 	UPROPERTY(EditAnywhere, meta = (BindWidget))
 	class UTextBlock* DeathText = nullptr;
 

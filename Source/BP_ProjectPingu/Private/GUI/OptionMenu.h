@@ -16,26 +16,34 @@ class UOptionMenu : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	// Set Visibility 
 	virtual void SetVisibility(ESlateVisibility InVisibility) override;
 
 private:
+	// Native Constructor
 	virtual void NativeConstruct() override;
 
+	// Fullscreen Button
 	UFUNCTION()
 	void FullscreenBoxClicked(bool bIsChecked);
 
+	// Vsync Button
 	UFUNCTION()
 	void VsyncBoxClicked(bool bIsChecked);
 
+	// Main Menu Button
 	UFUNCTION()
 	void MainMenuButtonClicked();
 
+	// Main Menu Button
 	UPROPERTY(meta = (BindWidget))
 	class UButton* MainMenuButton = nullptr;
 
+	// FullscreenBox
 	UPROPERTY(meta = (BindWidget))
 	class UCheckBox* FullscreenCheckBox = nullptr;
 
+	// Vsync Box
 	UPROPERTY(meta = (BindWidget))
 	class UCheckBox* VsyncCheckBox = nullptr;
 

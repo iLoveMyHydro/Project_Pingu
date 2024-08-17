@@ -16,15 +16,18 @@ class UCreditsMenu : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	// Can set the Visibility of the Credits Menu
 	virtual void SetVisibility(ESlateVisibility InVisibility) override;
 
 private:
-
+	// Native Construct 
 	virtual void NativeConstruct() override;
 
+	// Main Menu Button Clicked
 	UFUNCTION()
 	void MainMenuButtonClicked();
 
+	// Button
 	UPROPERTY(meta = (BindWidget))
 	class UButton* MainMenuButton = nullptr;
 

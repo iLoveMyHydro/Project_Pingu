@@ -8,6 +8,7 @@
 // Sets default values
 AIceSpikes::AIceSpikes()
 {
+	// Setting the Material and Mesh
 	Material = ConstructorHelpers::FObjectFinder<UMaterialInterface>(*MAT_PATH).Object;
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(*MESH_NAME);
 
@@ -20,6 +21,7 @@ AIceSpikes::AIceSpikes()
 
 	RootComponent = Mesh;
 
+	// Setting the Projectile Movement
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(*PROJECTILE_MOVEMENT_NAME);
 	ProjectileMovement->InitialSpeed = 1500.0f;
 	ProjectileMovement->MaxSpeed = 1500.0f;
@@ -35,15 +37,14 @@ AIceSpikes::AIceSpikes()
 void AIceSpikes::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
+// When the IceSpike hits something this method will be called
 void AIceSpikes::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 	FVector NormalImpulse, const FHitResult& Hit)
 {
 	if((OtherActor != nullptr) && (OtherActor != this))
 	{
-
 		if(OtherActor->IsA<ANormalEnemy>())
 		{
 			Enemy = CastChecked<ANormalEnemy>(OtherActor);

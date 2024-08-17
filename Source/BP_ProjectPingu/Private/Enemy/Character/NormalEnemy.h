@@ -34,21 +34,26 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	// Applies the Damage to the Normal Enemy
 	virtual void ApplyDamage(int A_DamageAmount) override;
 
+	// Spawns the Oil Barrel 
 	void ThrowOilBarrel();
 
+	// When the Normal Enemy gets hit by the Ice Spikes or the Slap Attack 
 	UFUNCTION()
 	void OnCollision(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
+	// When the Player exits the Sphere
 	UFUNCTION()
 	void OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
-	//Audio Functions
+	// Audio Functions
 	void PlayEnemyDamageSFX();
-	//less Audio Functions from here
+	// less Audio Functions from here
 
+	// Animations for the Normal Enemy
 	ANormalEnemy& SetIdleAnimation(void);
 	ANormalEnemy& SetThrowAnimation(void);
 
@@ -63,37 +68,42 @@ private:
 	const FString IDLE_ANIM_PATH = FString(TEXT("/Game/Assets/Artist/Jean-Marc/Enemy/FBX/Scientist_Idle_Anim"));
 	const FString THROW_ANIM_PATH = FString(TEXT("/Game/Assets/Artist/Jean-Marc/Enemy/FBX/Scientist_Throw_Anim"));
 
-	//this audio section has been brought to you by Hubsi (Für Marcus: Hubsi == Alex Huber)
+	// this audio section has been brought to you by Hubsi (Für Marcus: Hubsi == Alex Huber)
 	const FString ENEMY_DAMAGE_SFX_COMPONENT_NAME = FString(TEXT("EnemyDamageSFX"));
 	
 	const FString ENEMY_DAMAGE_SFX_PATH = FString(TEXT("/Script/MetasoundEngine.MetaSoundSource'/Game/Audio/MetaSounds/META_EnemyDamage.META_EnemyDamage'"));
 
 	const FString ENEMY_DAMAGE_SFX_TRIGGER_NAME = FString(TEXT("EnemyDamage"));
-	//end of this audio section
+	// end of this audio section
 
+	// Spawn Location for the Oil Barrel
 	UPROPERTY(EditAnywhere, DisplayName = "Spawnlocation Oil Barrel", Category = "Attack")
 	USceneComponent* SpawnLocationOilBarrel = nullptr;
 
+	// Health Amount for the Normal Enemy
 	UPROPERTY(EditAnywhere, DisplayName = "Health", Category = "Value", meta = (AllowPrivateAccess = true))
 	int Health = 3;
 
+	// Sphere Collider for the Normal Enemy
 	UPROPERTY(EditAnywhere)
 	USphereComponent* SphereColl = nullptr;
 
+	// Box Collider for the Normal Enemy
 	UPROPERTY(EditAnywhere, DisplayName = "BoxCollider", Category = "Components", meta = (AllowPrivateAccess = true))
 	TObjectPtr<UBoxComponent> CollisionMesh = nullptr;
 
+	// Projectile of the Oil Barrel
 	UPROPERTY(EditAnywhere, DisplayName = "Oil Barrel Actor", Category = "Attack", meta = (AllowPrivateAccess = true));
 	TSubclassOf<class AOilBarrel> OilBarrelProjectile;
 
-	TSubclassOf<AActor> PlayerClass;
-
+	// Oil Barrel to spawn
 	TObjectPtr<AOilBarrel> OilBarrel = nullptr;
 
+	// Character of the Normal Enemy
 	ANormalEnemy* Character = nullptr;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Delay", Category = "Respawn")
-	float RespawnDelay = 2;
+	float RespawnDelay = 1.75f;
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Timer Handle", Category = "Respawn")
 	FTimerHandle RespawnTimerHandle;
@@ -112,12 +122,16 @@ private:
 	UPROPERTY(EditAnywhere, DisplayName = "Animation Throw", Category = "Animation")
 	UAnimSequence* ThrowAnim = nullptr;
 
+	// FSM for the Normal Enemy
 	NormalFSM* Fsm = nullptr;
 
+	// BossController
 	ANormalAIController* Controller = nullptr;
 
+	// Controller of the PinguCharacter
 	AInputController* PlayerController = nullptr;
 
+	// Material of the Normal Enemy
 	UPROPERTY(EditAnywhere, DisplayName = "Material", Category = "Components")
 	UMaterial* Material = nullptr;
 };

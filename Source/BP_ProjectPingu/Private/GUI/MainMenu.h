@@ -15,23 +15,30 @@ class UMainMenu : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	// Constructor
 	UMainMenu(const FObjectInitializer& ObjectInitializer);
 
 private:
+	// Native Constructor
 	virtual void NativeConstruct() override;
 
+	// Play Button Clicked
 	UFUNCTION()
 	void PlayButtonClicked();
 
+	// Option Button Clicked
 	UFUNCTION()
 	void OptionButtonClicked();
 
+	// Credits Menu Clicked
 	UFUNCTION()
 	void CreditsButtonClicked();
 
+	// Quit Button Clicked
 	UFUNCTION()
 	void QuitButtonClicked();
 
+	// Enable Buttons
 	UFUNCTION()
 	void EnableButtons(bool Enable);
 

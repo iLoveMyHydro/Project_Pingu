@@ -12,12 +12,17 @@
 class BossThrowObjectState : public NormalStateAI
 {
 public:
+	// Constructor for the State
 	BossThrowObjectState(FString A_Name, NormalFSM* A_Machine);
+
+	// Deconstructor for the State
 	virtual ~BossThrowObjectState() override {};
 
+	// Enters the State
 	virtual void Enter() override;
 
 private:
+	// Throws the Object
 	void ThrowObject(void); 
 
 	class ABossEnemy* Character = nullptr;

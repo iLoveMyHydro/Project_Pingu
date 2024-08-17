@@ -6,14 +6,17 @@
 #include "Kismet/GameplayStatics.h"
 #include "BP_ProjectPingu/Private/Player/PinguCharacter.h"
 
+// Sets default values
 ANormalAIController::ANormalAIController()
 {
 }
 
+// Called when the game starts or when spawned
 void ANormalAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// Setting the FSM
 	Player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
 
 	if (Fsm == nullptr)
@@ -26,10 +29,12 @@ void ANormalAIController::BeginPlay()
 	}
 }
 
+// Called every frame
 void ANormalAIController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// Tick for the FSM
 	if (Fsm != nullptr)
 	{
 		Fsm->Tick(DeltaTime);

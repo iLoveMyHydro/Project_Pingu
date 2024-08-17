@@ -6,6 +6,7 @@
 // Sets default values
 ASpike::ASpike()
 {
+    // Setting the Material and the Mesh
     Material = ConstructorHelpers::FObjectFinder<UMaterialInterface>(*MAT_PATH).Object;
     Mesh = CreateDefaultSubobject<UStaticMeshComponent>(*MESH_NAME);
 
@@ -18,6 +19,4 @@ ASpike::ASpike()
 void ASpike::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
-
