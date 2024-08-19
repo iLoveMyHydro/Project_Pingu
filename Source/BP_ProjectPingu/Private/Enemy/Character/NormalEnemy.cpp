@@ -164,7 +164,7 @@ void ANormalEnemy::OnCollision(UPrimitiveComponent* OverlappedComponent, AActor*
 	if (OtherActor->IsA(APinguCharacter::StaticClass()) && !PlayerController->IsPaused())
 	{
 		GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, [this]() {Fsm->Transition(static_cast<NormalSimpleFSM*>(Fsm)->GetThrowObjectState()); }, RespawnDelay, !PlayerController->IsPaused());
-		//GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Enter"));
+		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Enter"));
 	}
 }
 
@@ -173,7 +173,7 @@ void ANormalEnemy::OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AAc
 {
 	if (OtherActor->IsA(APinguCharacter::StaticClass()) && !PlayerController->IsPaused())
 	{
-		//GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Exit"));
+		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Exit"));
 		Fsm->Transition(static_cast<NormalSimpleFSM*>(Fsm)->GetSearchPlayerState());
 		GetWorld()->GetTimerManager().ClearTimer(RespawnTimerHandle);
 		SetIdleAnimation();

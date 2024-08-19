@@ -64,7 +64,7 @@ void AInputController::BeginPlay()
 
 	if (PauseMenuObject)
 	{
-		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Pause Menu"));
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Pause Menu"));
 
 		PauseMenu = CreateWidget<UPauseMenu>(this, PauseMenuObject, "Pause Menu");
 		check(PauseMenu);
@@ -75,7 +75,7 @@ void AInputController::BeginPlay()
 
 	if (PlayerHUDObject)
 	{
-		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("UI"));
+		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("UI"));
 
 		PlayerHUD = CreateWidget<UPlayerHUD>(this, PlayerHUDObject, "Player HUD");
 		check(PlayerHUD);
