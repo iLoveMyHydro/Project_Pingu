@@ -189,12 +189,12 @@ void ABossEnemy::OnCollision(UPrimitiveComponent* OverlappedComponent, AActor* O
 		if(Health > 3)
 		{
 			GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, [this]() {Fsm->Transition(static_cast<NormalSimpleFSM*>(Fsm)->GetBossThrowObjectState()); }, RespawnDelay, true);
-			GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Enter"));
+			//GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Enter"));
 		}
 		else if(Health <= 3)
 		{
 			GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandleFast, [this]() {Fsm->Transition(static_cast<NormalSimpleFSM*>(Fsm)->GetThrowFastObjectsState()); }, RespawnDelayFast, true);
-			GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Enter"));
+			//GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Enter"));
 		}
 	}
 }
@@ -205,7 +205,7 @@ void ABossEnemy::OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AActo
 {
 	if (OtherActor->IsA(APinguCharacter::StaticClass()) && !PlayerController->IsPaused())
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Exit"));
+		//GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Exit"));
 		Fsm->Transition(static_cast<NormalSimpleFSM*>(Fsm)->GetSearchPlayerState());
 		GetWorld()->GetTimerManager().ClearTimer(RespawnTimerHandle);
 		GetWorld()->GetTimerManager().ClearTimer(RespawnTimerHandleFast);

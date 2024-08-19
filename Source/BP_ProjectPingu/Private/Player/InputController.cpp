@@ -64,7 +64,7 @@ void AInputController::BeginPlay()
 
 	if (PauseMenuObject)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Pause Menu"));
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("Pause Menu"));
 
 		PauseMenu = CreateWidget<UPauseMenu>(this, PauseMenuObject, "Pause Menu");
 		check(PauseMenu);
@@ -75,7 +75,7 @@ void AInputController::BeginPlay()
 
 	if (PlayerHUDObject)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("UI"));
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("UI"));
 
 		PlayerHUD = CreateWidget<UPlayerHUD>(this, PlayerHUDObject, "Player HUD");
 		check(PlayerHUD);
@@ -169,7 +169,7 @@ void AInputController::Jump()
 	bIsJumping = true;
 	PinguCharacter->Jump();
 	PinguCharacter->PlayJumpSound();
-	AnimationHandler();
+	PinguCharacter->SetJumpAnimation();
 }
 
 //When the jump is done
@@ -303,18 +303,11 @@ void AInputController::AnimationHandler()
 	{
 		return;
 	}
-
 	if (!bIsJumping && bIsWalking)
 	{
 		PinguCharacter->SetWalkAnimation();
 		UE_LOG(LogTemp, Warning, TEXT("WalkAnimation Jumping:%s Walking:%s"),
 		       (bIsJumping) ? TEXT("true") : TEXT("false"), (bIsWalking) ? TEXT("true"):TEXT("false"));
-	}
-	else if (bIsJumping)
-	{
-		PinguCharacter->SetJumpAnimation();
-		UE_LOG(LogTemp, Warning, TEXT("JumpAnimation Jumping:%s Walking:%s"),
-		       (bIsJumping) ? TEXT("true") : TEXT("false"), (bIsWalking) ? TEXT("true") : TEXT("false"));
 	}
 	if (!bIsJumping && !bIsWalking)
 	{

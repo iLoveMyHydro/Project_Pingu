@@ -287,7 +287,7 @@ void APinguCharacter::BeginPlay()
 
 	if(PlayerHUDObject && IsLocallyControlled() && DeathScreenObject)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("UI"));
+		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("UI"));
 		AInputController* PlayerController = GetController<AInputController>();
 		check(PlayerController);
 
@@ -350,7 +350,7 @@ void APinguCharacter::OnBoxBeginOverlapFeet(UPrimitiveComponent* OverlappedComp,
 	if (OtherActor->IsA<ASpike>())
 	{
 		ApplyDamage(1);
-		GEngine->AddOnScreenDebugMessage(-1, 200, FColor::Magenta, OtherComp->GetName());
+		//GEngine->AddOnScreenDebugMessage(-1, 200, FColor::Magenta, OtherComp->GetName());
 	}
 	IsColliding = true;
 }
