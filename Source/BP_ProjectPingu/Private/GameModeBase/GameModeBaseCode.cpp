@@ -2,8 +2,6 @@
 
 
 #include "GameModeBase/GameModeBaseCode.h"
-
-#include "GUI/PauseMenu.h"
 #include "Player/PinguCharacter.h"
 #include "Player/InputController.h"
 
@@ -12,5 +10,4 @@ AGameModeBaseCode::AGameModeBaseCode()
 {
 	DefaultPawnClass = APinguCharacter::StaticClass();
 	PlayerControllerClass = AInputController::StaticClass();
-	HUDClass = UPauseMenu::StaticClass();
 }

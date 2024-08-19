@@ -28,6 +28,5 @@ void BossThrowObjectState::ThrowObject()
 	Character = Machine->GetControllerBoss()->GetPawn<ABossEnemy>();
 	if (Character == nullptr) return;
 
-	Character->SetThrowAnimation();
 	Character->ThrowOilBarrel();
 }

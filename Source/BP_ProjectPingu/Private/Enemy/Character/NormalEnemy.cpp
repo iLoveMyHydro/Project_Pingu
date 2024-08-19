@@ -52,26 +52,12 @@ ANormalEnemy::ANormalEnemy()
 
 	// Setting the Spawn Location of the Oil Barrel
 	SpawnLocationOilBarrel = CreateDefaultSubobject<USceneComponent>(*SPAWNLOCATION_OIL_BARREL_NAME);
-	SpawnLocationOilBarrel->SetRelativeLocation(FVector(0.0f, 0.0f, 120.0f));
+	SpawnLocationOilBarrel->SetRelativeLocation(FVector(0.0f, 0.0f, 200.0f));
 	SpawnLocationOilBarrel->SetupAttachment(RootComponent);
 
 	// Setting the Controller
 	AIControllerClass = ConstructorHelpers::FClassFinder<ANormalAIController>(*FSM_CONTROLLER_PATH).Class;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
-
-	// Setting the Animations
-	IdleAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*IDLE_ANIM_PATH).Object;
-	ThrowAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*THROW_ANIM_PATH).Object;
-
-	//Audio Code
-	EnemyDamageSFXComponent = CreateDefaultSubobject<UAudioComponent>(*ENEMY_DAMAGE_SFX_COMPONENT_NAME);
-
-	EnemyDamageSFXComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*ENEMY_DAMAGE_SFX_PATH).Object);
-
-	EnemyDamageSFXComponent->SetAutoActivate(bAutoActivate);
-
-	EnemyDamageSFXComponent->SetupAttachment(RootComponent);
-	//No more Audio Code
 }
 
 // Called when the game starts or when spawned
@@ -94,8 +80,6 @@ void ANormalEnemy::BeginPlay()
 	{
 		Fsm->Initialize();
 	}
-	// Sets the Idle Animation
-	SetIdleAnimation();
 }
 
 // Called every frame
@@ -119,8 +103,6 @@ void ANormalEnemy::ApplyDamage(int A_DamageAmount)
 	{
 		ANormalEnemy::Destroy();
 	}
-
-	PlayEnemyDamageSFX();
 }
 
 // Throws the Oil Barrel
@@ -148,7 +130,6 @@ void ANormalEnemy::ThrowOilBarrel()
 			{
 				World->SpawnActor<AOilBarrel>(OilBarrelProjectile, SpawnLocationOilBarrel->GetRelativeLocation() + GetActorLocation(), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
 			}
-			SetThrowAnimation();
 		}
 	}
 	else
@@ -175,41 +156,5 @@ void ANormalEnemy::OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AAc
 	{
 		//GEngine->AddOnScreenDebugMessage(-1, 2, FColor::Cyan, TEXT("Exit"));
 		Fsm->Transition(static_cast<NormalSimpleFSM*>(Fsm)->GetSearchPlayerState());
-		GetWorld()->GetTimerManager().ClearTimer(RespawnTimerHandle);
-		SetIdleAnimation();
 	}
-}
-
-// Plays the SFX 
-void ANormalEnemy::PlayEnemyDamageSFX()
-{
-	if (!EnemyDamageSFXComponent)
-	{
-		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the EnemyDamage Sound does not exist!"));
-		return;	
-	}
-	if (!EnemyDamageSFXComponent->GetSound())
-	{
-		UE_LOG(LogTemp, Fatal, TEXT("The EnemyDamage MetaSound is not loaded into the Component, did you change its location in the project?"));
-		return;
-	}
-
-	if (EnemyDamageSFXComponent->IsActive() == false) EnemyDamageSFXComponent->SetActive(true);
-	if (EnemyDamageSFXComponent->IsPlaying() == false) EnemyDamageSFXComponent->Play();
-
-	EnemyDamageSFXComponent->SetTriggerParameter(*ENEMY_DAMAGE_SFX_TRIGGER_NAME);
-}
-
-// Sets the Idle Animation
-ANormalEnemy& ANormalEnemy::SetIdleAnimation()
-{
-	GetMesh()->PlayAnimation(IdleAnim, true);
-	return *this;
-}
-
-// Sets the Throw Animation
-ANormalEnemy& ANormalEnemy::SetThrowAnimation()
-{
-	GetMesh()->PlayAnimation(ThrowAnim, false);
-	return *this;
 }

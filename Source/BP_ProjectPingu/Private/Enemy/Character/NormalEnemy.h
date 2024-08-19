@@ -49,32 +49,14 @@ public:
 	UFUNCTION()
 	void OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
-	// Audio Functions
-	void PlayEnemyDamageSFX();
-	// less Audio Functions from here
-
-	// Animations for the Normal Enemy
-	ANormalEnemy& SetIdleAnimation(void);
-	ANormalEnemy& SetThrowAnimation(void);
-
 private:
-	const FString MESH_PATH = FString(TEXT("/Game/Assets/Artist/Jean-Marc/Enemy/FBX/Scientist_Idle"));
-	const FString MATERIAL_PATH = FString(TEXT("/Game/Assets/Artist/Jean-Marc/Enemy/Material/MAT_Enemy"));
+	const FString MESH_PATH = FString(TEXT("/Script/Engine.SkeletalMesh'/Engine/EditorMeshes/SkeletalMesh/DefaultSkeletalMesh.DefaultSkeletalMesh'"));
+	const FString MATERIAL_PATH = FString(TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'"));
 	const FString FSM_CONTROLLER_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.NormalAIController'"));
 	const FString PLAYER_CLASS_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.PinguCharacter'"));
 	const FString OIL_BARREL_PATH = FString(TEXT("/Script/CoreUObject.Class'/Script/BP_ProjectPingu.OilBarrel'"));
 	const FString BOX_COLLISION_NAME = FString(TEXT("Box Collision"));
 	const FString SPAWNLOCATION_OIL_BARREL_NAME = FString(TEXT("Oil Barrel Spawn Location"));
-	const FString IDLE_ANIM_PATH = FString(TEXT("/Game/Assets/Artist/Jean-Marc/Enemy/FBX/Scientist_Idle_Anim"));
-	const FString THROW_ANIM_PATH = FString(TEXT("/Game/Assets/Artist/Jean-Marc/Enemy/FBX/Scientist_Throw_Anim"));
-
-	// this audio section has been brought to you by Hubsi (Für Marcus: Hubsi == Alex Huber)
-	const FString ENEMY_DAMAGE_SFX_COMPONENT_NAME = FString(TEXT("EnemyDamageSFX"));
-	
-	const FString ENEMY_DAMAGE_SFX_PATH = FString(TEXT("/Script/MetasoundEngine.MetaSoundSource'/Game/Audio/MetaSounds/META_EnemyDamage.META_EnemyDamage'"));
-
-	const FString ENEMY_DAMAGE_SFX_TRIGGER_NAME = FString(TEXT("EnemyDamage"));
-	// end of this audio section
 
 	// Spawn Location for the Oil Barrel
 	UPROPERTY(EditAnywhere, DisplayName = "Spawnlocation Oil Barrel", Category = "Attack")
@@ -107,20 +89,6 @@ private:
 
 	UPROPERTY(EditAnywhere, DisplayName = "Respawn Timer Handle", Category = "Respawn")
 	FTimerHandle RespawnTimerHandle;
-
-	//More Audio
-	UPROPERTY(EditAnywhere, DisplayName = "EnemyDamageSFX", Category = "Components")
-	TObjectPtr<UAudioComponent> EnemyDamageSFXComponent = nullptr;
-
-	UPROPERTY(VisibleAnywhere, DisplayName = "Audio Component Auto Activation", Category = "Components")
-	bool bAutoActivate = false;
-	//Less Audio
-
-	UPROPERTY(EditAnywhere, DisplayName = "Animation Idle", Category = "Animation")
-	UAnimSequence* IdleAnim = nullptr;
-
-	UPROPERTY(EditAnywhere, DisplayName = "Animation Throw", Category = "Animation")
-	UAnimSequence* ThrowAnim = nullptr;
 
 	// FSM for the Normal Enemy
 	NormalFSM* Fsm = nullptr;

@@ -7,18 +7,12 @@
 #include "Components/CapsuleComponent.h"
 #include "DamageSystem/IceSpikeSpawn.h"
 #include "Enemy/Character/NormalEnemy.h"
+#include "Enemy/Character/BossEnemy.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "DamageSystem/Spike.h"
 #include "RespawnSystem/RespawnPoint.h"
-#include "HUD/PlayerHUD.h"
-#include "GUI/DeathScreen.h"
-
-//Audio Hubsi here again
-#include "Components/AudioComponent.h"
-#include "Enemy/Character/BossEnemy.h"
 
 // Sets default values
 APinguCharacter::APinguCharacter()
@@ -33,30 +27,12 @@ APinguCharacter::APinguCharacter()
 	GetMesh()->SetRelativeScale3D(FVector(0.3f, 0.3f, 0.3f));
 	GetMesh()->SetMaterial(0, Material);
 
-	//Get the Animations
-	IdleAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*IDLE_ANIM_PATH).Object;
-	WalkAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*WALK_ANIM_PATH).Object;
-	NootAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*NOOT_ANIM_PATH).Object;
-	JumpAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*JUMP_ANIM_PATH).Object;
-	SlapAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*SLAP_ANIM_PATH).Object;
-
-	//Start Idle Animation
-	GetMesh()->PlayAnimation(IdleAnim, true);
-
 	//Get the Collision Box
 	CollisionMesh = CreateDefaultSubobject<UBoxComponent>(*BOX_COLLISION_NAME);
 	CollisionMesh->bDynamicObstacle = true;
 	CollisionMesh->SetupAttachment(RootComponent);
 	CollisionMesh->SetGenerateOverlapEvents(true);
 	CollisionMesh->SetBoxExtent(FVector(100.0f, 60.0f, 80.0f));
-
-	//Get the Collision Box
-	CollisionFeet = CreateDefaultSubobject<UBoxComponent>(*FEET_COLLISION_NAME);
-	CollisionFeet->bDynamicObstacle = true;
-	CollisionFeet->SetupAttachment(RootComponent);
-	CollisionFeet->SetGenerateOverlapEvents(true);
-	CollisionFeet->SetBoxExtent(FVector(40.0f, 50.0f, 5.0f));
-	CollisionFeet->SetRelativeLocation(FVector(0.0f, 0.0f, -90.0f));
 
 	//Get IceSpikes
 	IceSpikeProjectile = ConstructorHelpers::FClassFinder<AIceSpikes>(*ICE_SPIKE_PATH).Class;
@@ -70,35 +46,9 @@ APinguCharacter::APinguCharacter()
 	// Default offset from the character location for projectiles to spawn
 	MuzzleOffset = FVector(0.0f, 0.0f, 0.0f);
 
-	//Get HUD Object
-	PlayerHUDObject = ConstructorHelpers::FClassFinder<UPlayerHUD>(*PLAYER_HUD_PATH).Class;
-
-	DeathScreenObject = ConstructorHelpers::FClassFinder<UDeathScreen>(*DEATH_SCREEN_PATH).Class;
-
 	SpawnLocationIceSpike = CreateDefaultSubobject<USceneComponent>(*SPAWNLOCATION_ICE_SPIKE_NAME);
 	SpawnLocationIceSpike->SetRelativeLocation(FVector(40.0f, 0.0f, 50.0f));
 	SpawnLocationIceSpike->SetupAttachment(RootComponent);
-
-	//Set up Audio Components (Hubsi-code)
-	AttackSFXComponent = CreateDefaultSubobject<UAudioComponent>(*ATTACK_SFX_NAME);
-	DamageSFXComponent = CreateDefaultSubobject<UAudioComponent>(*DAMAGE_SFX_NAME);
-	FootstepSFXComponent = CreateDefaultSubobject<UAudioComponent>(*FOOTSTEPS_SFX_NAME);
-	JumpSFXComponent = CreateDefaultSubobject<UAudioComponent>(*JUMP_SFX_NAME);
-
-	AttackSFXComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*ATTACK_SFX_PATH).Object);
-	DamageSFXComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*DAMAGE_SFX_PATH).Object);
-	FootstepSFXComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*FOOTSTEPS_SFX_PATH).Object);
-	JumpSFXComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*JUMP_SFX_PATH).Object);
-
-	AttackSFXComponent->SetAutoActivate(bAutoActivate);
-	DamageSFXComponent->SetAutoActivate(bAutoActivate);
-	FootstepSFXComponent->SetAutoActivate(bAutoActivate);
-	JumpSFXComponent->SetAutoActivate(bAutoActivate);
-
-	AttackSFXComponent->SetupAttachment(RootComponent);
-	DamageSFXComponent->SetupAttachment(RootComponent);
-	FootstepSFXComponent->SetupAttachment(RootComponent);
-	JumpSFXComponent->SetupAttachment(RootComponent);
 }
 
 //If the Player get hits by something he will get damage
@@ -107,10 +57,6 @@ void APinguCharacter::ApplyDamage(int A_DamageAmount)
 {
 	Health -= A_DamageAmount;
 
-	PlayerHUD->SetLifeAmount(Health, MaxHealth);
-
-	PlayDamageSound(); //Hubsi strikes again
-
 	if (Health <= 0)
 	{
 		UGameplayStatics::SetGamePaused(GetWorld(), true);
@@ -118,9 +64,7 @@ void APinguCharacter::ApplyDamage(int A_DamageAmount)
 		AInputController* const PlayerController = Cast<AInputController>(GEngine->GetFirstLocalPlayerController(GetWorld()));
 		if (PlayerController != nullptr)
 		{
-			DeathScreen->SetDeathScreen(true);
 			GetWorld()->GetTimerManager().SetTimer(RespawnTimerHandle, this, &APinguCharacter::Respawn, RespawnDelay, false);
-			PlayerHUD->SetLifeAmount(MaxHealth, MaxHealth);
 			UGameplayStatics::SetGamePaused(GetWorld(), false);
 		}
 	}
@@ -179,7 +123,6 @@ void APinguCharacter::ThrowIceSpikes()
 			{
 				World->SpawnActor<AIceSpikes>(IceSpikeProjectile, Character->GetActorLocation() + FVector(70.0f, 0.0f, 50.0f), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
 			}
-			PlayNootNootSound();
 		}
 	}
 	else
@@ -194,47 +137,11 @@ bool APinguCharacter::GetGotIceSpikes()
 	return bGotIceSpikes;
 }
 
-// Set Idle Animation
-APinguCharacter& APinguCharacter::SetIdleAnimation()
-{
-	GetMesh()->PlayAnimation(IdleAnim, true);
-	return *this;
-}
-
-// Set Noot Noot Animation
-APinguCharacter& APinguCharacter::SetNootAnimation()
-{
-	GetMesh()->PlayAnimation(NootAnim, false);
-	return *this;
-}
-
-// Set Walk Animation
-APinguCharacter& APinguCharacter::SetWalkAnimation()
-{
-	GetMesh()->PlayAnimation(WalkAnim, true);
-	return *this;
-}
-
-// Set Jump Animation
-APinguCharacter& APinguCharacter::SetJumpAnimation()
-{
-	GetMesh()->PlayAnimation(JumpAnim, false);
-	return *this;
-}
-
-// Set Slap Animation
-APinguCharacter& APinguCharacter::SetSlapAnimation()
-{
-	GetMesh()->PlayAnimation(SlapAnim, false);
-	return *this;
-}
-
 //When the player has no life left, he will be respawned
 void APinguCharacter::Respawn()
 {
 	SetActorLocation(SpawnLocation);
 	Health = 3;
-	DeathScreen->SetDeathScreen(false);
 }
 
 //Initialize some STats for the Camera
@@ -283,29 +190,6 @@ void APinguCharacter::BeginPlay()
 	Super::BeginPlay();
 
 	CollisionMesh->OnComponentBeginOverlap.AddDynamic(this, &APinguCharacter::OnBoxBeginOverlap);
-	CollisionFeet->OnComponentBeginOverlap.AddDynamic(this, &APinguCharacter::OnBoxBeginOverlapFeet);
-
-	if(PlayerHUDObject && IsLocallyControlled() && DeathScreenObject)
-	{
-		//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Emerald, TEXT("UI"));
-		AInputController* PlayerController = GetController<AInputController>();
-		check(PlayerController);
-
-		PlayerHUD = CreateWidget<UPlayerHUD>(PlayerController, PlayerHUDObject, "Player HUD");
-		check(PlayerHUD);
-
-		PlayerHUD->AddToPlayerScreen();
-		PlayerHUD->SetLifeAmount(MaxHealth, MaxHealth);
-		PlayerHUD->SetIceSpikeAmount(IceSpikes, IceSpikesMax);
-
-		DeathScreen = CreateWidget<UDeathScreen>(PlayerController, DeathScreenObject, "Death Screen");
-		check(DeathScreen);
-
-		DeathScreen->AddToPlayerScreen();
-		DeathScreen->SetDeathScreen(false);
-	}
-
-	SetIdleAnimation();
 
 	SpawnLocation = GetActorLocation();
 }
@@ -330,7 +214,6 @@ void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 		if(IceSpikes <= IceSpikesMax)
 		{
 			IceSpikes = IceSpikesMax;
-			PlayerHUD->SetIceSpikeAmount(IceSpikes, IceSpikesMax);
 		}
 	}
 	else if(OtherActor->IsA<ARespawnPoint>())
@@ -339,144 +222,4 @@ void APinguCharacter::OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AAc
 		UE_LOG(LogTemp, Warning, TEXT("Neuer SpawnPoint"));
 	}
 	IsColliding = true;
-}
-
-// On Box Begin Overlap -> Set damage
-void APinguCharacter::OnBoxBeginOverlapFeet(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-	if (!GetWorld()) return;
-
-	if (OtherActor->IsA<ASpike>())
-	{
-		ApplyDamage(1);
-		//GEngine->AddOnScreenDebugMessage(-1, 200, FColor::Magenta, OtherComp->GetName());
-	}
-	IsColliding = true;
-}
-
-//audio methods from header file, you guessed it, Hubsi did this
-void APinguCharacter::PlaySlapSound()
-{
-	if (!AttackSFXComponent)
-	{
-		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the Attack Sounds does not exist!"));
-		return;	
-	}
-	if (!AttackSFXComponent->GetSound())
-	{
-		UE_LOG(LogTemp, Fatal, TEXT("The Attack MetaSound is not loaded into the Component, did you change its location in the project?"));
-		return;
-	}
-
-	if (AttackSFXComponent->IsActive() == false) AttackSFXComponent->SetActive(true);
-	if (AttackSFXComponent->IsPlaying() == false) AttackSFXComponent->Play();
-
-	AttackSFXComponent->SetTriggerParameter(*MELEE_ATTACK_TRIGGER_NAME);
-}
-
-// Audio
-// Play Noot Sound
-void APinguCharacter::PlayNootNootSound()
-{
-	if (!AttackSFXComponent)
-	{
-		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the Attack Sounds does not exist!"));
-		return;	
-	}
-	if (!AttackSFXComponent->GetSound())
-	{
-		UE_LOG(LogTemp, Fatal, TEXT("The Attack MetaSound is not loaded into the Component, did you change its location in the project?"));
-		return;
-	}
-
-	if (AttackSFXComponent->IsActive() == false) AttackSFXComponent->SetActive(true);
-	if (AttackSFXComponent->IsPlaying() == false) AttackSFXComponent->Play();
-
-	AttackSFXComponent->SetTriggerParameter(*RANGED_ATTACK_TRIGGER_NAME);
-}
-
-// Plays Damage Sound
-void APinguCharacter::PlayDamageSound()
-{
-	if (!DamageSFXComponent)
-	{
-		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the Damage Sound does not exist!"));
-		return;	
-	}
-	if (!DamageSFXComponent->GetSound())
-	{
-		UE_LOG(LogTemp, Fatal, TEXT("The Damage MetaSound is not loaded into the Component, did you change its location in the project?"));
-		return;
-	}
-
-	if (DamageSFXComponent->IsActive() == false) DamageSFXComponent->SetActive(true);
-	if (DamageSFXComponent->IsPlaying() == false) DamageSFXComponent->Play();
-
-	DamageSFXComponent->SetTriggerParameter(*DAMAGE_TRIGGER_NAME);
-}
-
-// Plays Footstep sound
-void APinguCharacter::PlayFootstepSound()
-{
-	if (!FootstepSFXComponent)
-	{
-		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the Footstep Sound does not exist!"));
-		return;	
-	}
-	if (!FootstepSFXComponent->GetSound())
-	{
-		UE_LOG(LogTemp, Fatal, TEXT("The Jump MetaSound is not loaded into the Component, did you change its location in the project?"));
-		return;
-	}
-
-	if (FootstepSFXComponent->IsActive() == false) FootstepSFXComponent->SetActive(true);
-	if (FootstepSFXComponent->IsPlaying() == false) FootstepSFXComponent->Play();
-
-	FootstepSFXComponent->SetTriggerParameter(*FOOTSTEP_TRIGGER_NAME);
-}
-
-// Play Jump Sound
-void APinguCharacter::PlayJumpSound()
-{
-	if (!JumpSFXComponent) 
-	{
-		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the Jumping Sound does not exist!"));
-		return;	
-	}
-	else 
-	{
-		//No idea what to write here, Marcus made me do this else statement
-	}
-	if (!JumpSFXComponent->GetSound())
-	{
-		UE_LOG(LogTemp, Fatal, TEXT("The Jump MetaSound is not loaded into the Component, did you change its location in the project?"));
-		return;
-	}
-	else 
-	{
-		//No idea what to write here, Marcus made me do this else statement
-	}
-
-	if (JumpSFXComponent->IsActive() == false) JumpSFXComponent->SetActive(true);
-	else 
-	{
-		//No idea what to write here, Marcus made me do this else statement
-	}
-	if (JumpSFXComponent->IsPlaying() == false) JumpSFXComponent->Play();
-	else 
-	{
-		//No idea what to write here, Marcus made me do this else statement
-	}
-
-	if (CanJump()) JumpSFXComponent->SetTriggerParameter(*JUMP_TRIGGER_NAME);
-	else 
-	{
-		//No idea what to write here, Marcus made me do this else statement
-	}
-	/*
-		Diese Methode wurde so geschrieben wie Marcus Schaal das von mir verlangt hat. Jetzt ist es so unübersichtlich, dass ich mich in meinem eigenen Code nicht mehr auskenne.
-		"Für jedes if ein else".
-		Liebe Grüße, euer Hubsi (Für Marcus: Hubsi == Alex Huber)
-	*/
 }

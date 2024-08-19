@@ -48,22 +48,8 @@ public:
 	// Get Info if got Ice Spike
 	bool GetGotIceSpikes();
 
-	// Animations
-	APinguCharacter& SetIdleAnimation(void);
-	APinguCharacter& SetNootAnimation(void);
-	APinguCharacter& SetWalkAnimation(void);
-	APinguCharacter& SetJumpAnimation(void);
-	APinguCharacter& SetSlapAnimation(void);
-
 	// Respawn Player
 	void Respawn();
-
-	//Audio methods from Hubsi
-	void PlaySlapSound();
-	void PlayNootNootSound();
-	void PlayDamageSound();
-	void PlayFootstepSound();
-	void PlayJumpSound();
 
 private:
 	// Initialize Camera
@@ -75,11 +61,6 @@ private:
 	// Box Begin Overlap
 	UFUNCTION()
 	void OnBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
-		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-
-	// Box Begin Overlap Feet
-	UFUNCTION()
-	void OnBoxBeginOverlapFeet(UPrimitiveComponent* OverlappedComp, AActor* OtherActor,
 		UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	// Camera Component
@@ -94,8 +75,8 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	const FString MESH_PATH = FString(TEXT("/Script/Engine.SkeletalMesh'/Game/Assets/Artist/Jean-Marc/Character/FBX/Pinguin_Idle.Pinguin_Idle'"));
-	const FString MAT_PATH = FString(TEXT("/Script/Engine.Material'/Game/Assets/Artist/Jean-Marc/Character/Material/MAT_Pingu.MAT_Pingu'"));
+	const FString MESH_PATH = FString(TEXT("/Script/Engine.SkeletalMesh'/Engine/EngineMeshes/SkeletalCube.SkeletalCube'"));
+	const FString MAT_PATH = FString(TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'"));
 	const FString MESH_ICE_SPIKE_PATH = FString(TEXT("/Script/Engine.StaticMesh'/Engine/BasicShapes/Cone.Cone'"));
 	const FString MAT_ICE_SPIKE_PATH = FString(TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'"));
 	const FString ANIM_PATH = FString(TEXT("/Script/Engine.AnimBlueprint'/Game/Animation/Player/BP_AnimInstance.BP_AnimInstance_C'"));
@@ -188,52 +169,8 @@ private:
 
 	APinguCharacter* Character = nullptr;
 
-	UPROPERTY()
-	class UPlayerHUD* PlayerHUD = nullptr;
-
-	UPROPERTY()
-	TSubclassOf<class UPlayerHUD> PlayerHUDObject;
-
-	UPROPERTY()
-	class UDeathScreen* DeathScreen = nullptr;
-
-	UPROPERTY()
-	TSubclassOf<class UDeathScreen> DeathScreenObject;
-
-	UPROPERTY(EditAnywhere, DisplayName = "Animation Idle", Category = "Animation")
-	UAnimSequence* IdleAnim;
-
-	UPROPERTY(EditAnywhere, DisplayName = "Animation Walk", Category = "Animation")
-	UAnimSequence* WalkAnim;
-
-	UPROPERTY(EditAnywhere, DisplayName = "Animation Noot", Category = "Animation")
-	UAnimSequence* NootAnim;
-
-	UPROPERTY(EditAnywhere, DisplayName = "Animation Jump", Category = "Animation")
-	UAnimSequence* JumpAnim;
-
-	UPROPERTY(EditAnywhere, DisplayName = "Animation Slap", Category = "Animation")
-	UAnimSequence* SlapAnim;
-
 	UPROPERTY(EditAnywhere, DisplayName = "Spawnlocation Ice Spike", Category = "Attack")
 	USceneComponent* SpawnLocationIceSpike = nullptr;
-
-	//More Audio Stuff (by Hubsi)
-	UPROPERTY(EditAnywhere, DisplayName = "Attack SFX", Category = "Components", meta = (AllowPrivateAccess = true))
-	TObjectPtr<class UAudioComponent> AttackSFXComponent = nullptr;
-
-	UPROPERTY(EditAnywhere, DisplayName = "Damage SFX", Category = "Components", meta = (AllowPrivateAccess = true))
-	TObjectPtr<class UAudioComponent> DamageSFXComponent = nullptr;
-
-	UPROPERTY(EditAnywhere, DisplayName = "Footstep SFX", Category = "Components", meta = (AllowPrivateAccess = true))
-	TObjectPtr<class UAudioComponent> FootstepSFXComponent = nullptr;
-
-	UPROPERTY(EditAnywhere, DisplayName = "Jump SFX", Category = "Components", meta = (AllowPrivateAccess = true))
-	TObjectPtr<class UAudioComponent> JumpSFXComponent = nullptr;
-
-	UPROPERTY(VisibleAnywhere, DisplayName = "Audio Component Auto Activation", Category = "Components")
-	bool bAutoActivate = false;
-	//Less Audio Stuff
 
 	UPROPERTY(EditAnywhere, DisplayName = "Got IceSpikes", Category = "Attack")
 	bool bGotIceSpikes = false;

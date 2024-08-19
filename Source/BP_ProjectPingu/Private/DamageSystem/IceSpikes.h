@@ -33,8 +33,8 @@ private:
 	void OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 private:
-	const FString MESH_PATH = TEXT("/Game/Assets/Artist/Jean-Marc/IceSpike/IceSpike");
-	const FString MAT_PATH = TEXT("/Game/IcePropsContent/Materials/M_Ice_Main");
+	const FString MESH_PATH = TEXT("/Script/Engine.StaticMesh'/Engine/EngineMeshes/Cube.Cube'");
+	const FString MAT_PATH = TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'");
 	const FString MESH_NAME = FString(TEXT("Mesh"));
 	const FString BOX_NAME = TEXT("Box Collision");
 	const FString PROJECTILE_MOVEMENT_NAME = TEXT("Projectile Movement");

@@ -29,6 +29,5 @@ void NormalThrowObjectState::ThrowObject()
 	Character = Machine->GetController()->GetPawn<ANormalEnemy>();
 	if (Character == nullptr) return;
 
-	Character->SetThrowAnimation();
 	Character->ThrowOilBarrel();
 }

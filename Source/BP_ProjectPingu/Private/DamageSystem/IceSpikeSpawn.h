@@ -23,8 +23,8 @@ protected:
 private:
 	const FString BOX_NAME = TEXT("Box Collision");
 	const FString MESH_NAME = FString(TEXT("Mesh"));
-	const FString MESH_PATH = FString(TEXT("/Game/Assets/Artist/Jean-Marc/IceSpike/IceSpike"));
-	const FString MAT_PATH = FString(TEXT("/Game/IcePropsContent/Materials/M_Ice_Main"));
+	const FString MESH_PATH = FString(TEXT("/Script/Engine.StaticMesh'/Engine/EngineMeshes/Cube.Cube'"));
+	const FString MAT_PATH = FString(TEXT("/Script/Engine.Material'/Engine/BasicShapes/BasicShapeMaterial.BasicShapeMaterial'"));
 
 	/// <summary>Box Collision for the Spawner</summary>
 	UPROPERTY(EditAnywhere, DisplayName = "Box Collision", Category = "Components", meta = (AllowPrivateAccess = true))

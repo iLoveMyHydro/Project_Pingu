@@ -9,10 +9,7 @@
 #include "FiniteStateMachine/FSM/NormalFSM.h"
 #include "Player/PinguCharacter.h"
 #include "Player/InputController.h"
-
-#include "Components/AudioComponent.h"
 #include "Components/CapsuleComponent.h"
-#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ABossEnemy::ABossEnemy()
@@ -54,26 +51,12 @@ ABossEnemy::ABossEnemy()
 
 	// Setting the Spawn Location for the Oil Barrel Projectile 
 	SpawnLocationOilBarrel = CreateDefaultSubobject<USceneComponent>(*SPAWNLOCATION_OIL_BARREL_NAME);
-	SpawnLocationOilBarrel->SetRelativeLocation(FVector(0.0f, 0.0f, 200.0f));
+	SpawnLocationOilBarrel->SetRelativeLocation(FVector(0.0f, 0.0f, 300.0f));
 	SpawnLocationOilBarrel->SetupAttachment(RootComponent);
 
 	// Setting the Controller Class
 	AIControllerClass = ConstructorHelpers::FClassFinder<ABossAIController>(*FSM_CONTROLLER_PATH).Class;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
-
-	// Setting the Animations
-	IdleAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*IDLE_ANIM_PATH).Object;
-	ThrowAnim = ConstructorHelpers::FObjectFinder<UAnimSequence>(*THROW_ANIM_PATH).Object;
-
-	// Audio Code
-	BossDamageSFXComponent = CreateDefaultSubobject<UAudioComponent>(*BOSS_DAMAGE_SFX_COMPONENT_NAME);
-
-	BossDamageSFXComponent->SetSound(ConstructorHelpers::FObjectFinder<USoundBase>(*BOSS_DAMAGE_SFX_PATH).Object);
-
-	BossDamageSFXComponent->SetAutoActivate(bAutoActivate);
-
-	BossDamageSFXComponent->SetupAttachment(RootComponent);
-	// No more Audio Code
 }
 
 // Called when the game starts or when spawned
@@ -95,8 +78,6 @@ void ABossEnemy::BeginPlay()
 	{
 		Fsm->Initialize();
 	}
-	// Sets the Idle Animation
-	SetIdleAnimation();
 }
 
 // Called every frame
@@ -119,8 +100,6 @@ void ABossEnemy::ApplyDamage(int A_DamageAmount)
 	if (Health <= 0)
 	{
 		ABossEnemy::Destroy();
-
-		UGameplayStatics::OpenLevel(GetWorld(), MAIN_MENU_LEVEL);
 	}
 }
 
@@ -143,7 +122,6 @@ void ABossEnemy::ThrowOilBarrel()
 
 			World->SpawnActor<AOilBarrel>(OilBarrelProjectile, SpawnLocationOilBarrel->GetRelativeLocation() + GetActorLocation(), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
 		}
-		SetThrowAnimation();
 	}
 	else
 	{
@@ -171,7 +149,6 @@ void ABossEnemy::ThrowOilBarrelFast()
 			World->SpawnActor<AOilBarrel>(OilBarrelProjectile, SpawnLocationOilBarrel->GetRelativeLocation() + GetActorLocation(), FRotator(0.0f, -90.0f, 0.0f), ActorSpawnParams);
 
 		}
-		SetThrowAnimation();
 	}
 	else
 	{
@@ -209,40 +186,5 @@ void ABossEnemy::OnCollisionExit(UPrimitiveComponent* OverlappedComponent, AActo
 		Fsm->Transition(static_cast<NormalSimpleFSM*>(Fsm)->GetSearchPlayerState());
 		GetWorld()->GetTimerManager().ClearTimer(RespawnTimerHandle);
 		GetWorld()->GetTimerManager().ClearTimer(RespawnTimerHandleFast);
-		SetIdleAnimation();
 	}
-}
-
-// Plays the SFX for the Boss Damage
-void ABossEnemy::PlayBossDamageSFX()
-{
-	if (!BossDamageSFXComponent)
-	{
-		UE_LOG(LogTemp, Fatal, TEXT("Audio Component for the BossDamage Sound does not exist!"));
-		return;	
-	}
-	if (!BossDamageSFXComponent->GetSound())
-	{
-		UE_LOG(LogTemp, Fatal, TEXT("The BossDamage MetaSound is not loaded into the Component, did you change its location in the project?"));
-		return;
-	}
-
-	if (BossDamageSFXComponent->IsActive() == false) BossDamageSFXComponent->SetActive(true);
-	if (BossDamageSFXComponent->IsPlaying() == false) BossDamageSFXComponent->Play();
-
-	BossDamageSFXComponent->SetTriggerParameter(*BOSS_DAMAGE_SFX_TRIGGER_NAME);
-}
-
-// Sets the Idle Animation
-ABossEnemy& ABossEnemy::SetIdleAnimation()
-{
-	GetMesh()->PlayAnimation(IdleAnim, true);
-	return *this;
-}
-
-// Sets the Throw Animation
-ABossEnemy& ABossEnemy::SetThrowAnimation()
-{
-	GetMesh()->PlayAnimation(ThrowAnim, false);
-	return *this;
 }

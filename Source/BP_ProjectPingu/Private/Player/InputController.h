@@ -22,18 +22,6 @@ class AInputController : public APlayerController
 public:
 	AInputController();
 
-	//Audio Stuff Begin
-	void PlayLevelTheme();
-	void PauseLevelTheme();
-	void UnpauseLevelTheme();
-	void PlayUIConfirmSound();
-	void PlayUIHoverSound();
-	void PlayUIOpenSound();
-	//Audio Stuff End
-
-	// Opens the Option Menu
-	void OpenOptionsMenu();
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -68,14 +56,8 @@ protected:
 	// Handle Slap Attack Stop
 	void HandleSlapAttackComplete(void);
 
-	// Handle Pause 
-	void HandlePauseAction(void);
-
 	// Handle Move Start
 	void HandleStartedMovement();
-
-	// Handle Animation
-	void AnimationHandler(void);
 
 private:
 	const FString PLAYER_CTX_PATH = TEXT("/Game/Input/IMC_Character");
@@ -169,28 +151,5 @@ private:
 	APinguCharacter* PinguCharacter = nullptr;
 	ANormalEnemy* Enemy = nullptr;
 	ABossEnemy* BossEnemy = nullptr;
-
-	UPROPERTY()
-	class UPauseMenu* PauseMenu = nullptr;
-
-	UPROPERTY()
-	TSubclassOf<class UPauseMenu> PauseMenuObject;
-
-	UPROPERTY()
-	TSubclassOf<class UOptionMenu> OptionMenuObject;
-
-	UPROPERTY()
-	class UOptionMenu* OptionMenu = nullptr;
-
-	UPROPERTY()
-	class UPlayerHUD* PlayerHUD = nullptr;
-
-	UPROPERTY()
-	TSubclassOf<class UPlayerHUD> PlayerHUDObject;
-
-	UPROPERTY()
-	float SlapCoolDown = 0;
-
-	const float SlapCoolDownTime = 1;
 
 };
